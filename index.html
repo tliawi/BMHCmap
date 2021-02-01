@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    
+<!--
+index.html
+Copyright 2021 John R C Fairfield, see MIT license
+-->
+
+<head>
+<meta charset="utf8">
+<style>
+    
+canvas {
+    margin-right:15px;
+    border:1px solid #d3d3d3;
+    float: left;
+}
+    
+body {
+    font-size:medium;
+    background-color: linen;
+}
+
+</style>
+
+<title>BMHC map data entry engine</title>
+
+</head>
+<body>
+
+<p style="font-size: small">
+Be advised, this testbed is not user friendly and has been tested only in Chrome on macOS.<br>
+    
+<div style="max-width:512px;">
+  <div style="float:left" >
+    <a href='#' class='button' id='btn-download' download='ckrbdPic.png'>download picture</a>&nbsp;&nbsp;&nbsp;&nbsp;
+    <span id='msgDiv'></span>
+  </div>
+  <div style="float:right">
+    <span id='mousePos' ></span>
+  </div>
+  <br>
+</div>
+    
+
+<canvas id="imgCanvas" width="512" height="600" >Your browser does not support the HTML5 canvas tag.</canvas>
+
+<h2><a href="https://drive.google.com/open?id=1C_2Oy4wpvf8gNk4AH4UV7v6LLSFd9heF85NJPLOfrK0" target="_blank"
+        >The Quincunx Pyramid</a></h2> 
+    
+Mode: <select id = 'selectMode', onChange="schedule(this.value);">
+<option value='foot' >footprints</option>
+<option value='head' >headprints</option>
+<option value='clos'>closest dot</option>
+<option value='voro'>Voronoi-like</option>
+<option value='dela'>Delaunay-like</option>
+</select>
+    
+<p>
+<span style="color:blue;">Newcomers: type an <strong>a</strong> a couple of times slowly, then 
+    a <strong>0</strong>, and then a <strong>5</strong>. Then change the mode, above.</span>
+</p>
+
+<p> <strong>0</strong>: clears picture <br>
+    <strong> 1-9</strong>: adds that many random dots <br>
+    <strong> h</strong>: adds 100 random dots <br>
+    <strong> t</strong>: adds 1000 random dots <br>
+    <strong> click on pic</strong>: adds a dot there<br> 
+    <strong> drag on pic</strong>: adds solid straight line of dots from mouseDown to mouseUp positions<br> <br> 
+    <strong> a</strong>: toggles animated dot wandering<br> 
+    <strong> arrow keys</strong>: move all dots one pixel up/down/left/right.<br>
+    <strong> f </strong>: toggles animation focus between wide and narrow. 
+    <span id = "instructions"></span>
+</p>
+    
+<!--
+<button id="toggleAnimation" type="button" onclick="toggleAnimation()" style="margin-right:50px;">animate</button> 
+-->
+
+</body>
