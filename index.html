@@ -4,35 +4,60 @@
 <!--
 index.html
 Copyright 2021 John R C Fairfield, see MIT license
+
+https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-of-a-javascript-google-map
+
+<div><a href="url to google drive of help documentation" target="_blank" float="right">help manual</a></div>
+
 -->
 
 <head>
 <meta charset="utf8">
     
-    
 <style>
-    
-canvas {
-    margin-right:15px;
-    border:1px solid #d3d3d3;
-    float: left;
-}
-    
+  
 body {
     font-size:medium;
     background-color: linen;
 }
 
+select {
+  width: 100%;
+  padding: 16px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #f1f1f1;
+}
+    
 </style>
 
 
 </head>
 <body>
 
-<h2>Brethren Mennonite Heritage Center map data entry engine</h2> 
+    <div class="container" style="display: flex;">
+        <div class="container" style="width: 380px">
+            <a href="url to google drive of help documentation" target="_blank" font-size="small">help manual</a>
+            <p style="text-align:center" ><br>@38.433956,-78.8791396 </p>
+            <img src="mockupMapCursor.png" alt="mock up map" width="377" height="633" float="left">
+        </div>
+        <div style="flex-grow: 1; background-color:rgb(230,255, 220);"">
+            <p style="font-size: large; text-align:center"><b>Map data entry engine</b> <br>
+                <span style="font-size: small; text-align:center"> Brethren Mennonite Heritage Center </span> 
+            </p>
+        </div>
+                                                                 
+        <form>
+          <select id="country" name="country">
+          <option value="au">Australia</option>
+          <option value="ca">Canada</option>
+          <option value="usa">USA</option>
+          </select>
+        </form>
+                             
+    </div>
 
-<a href="url to google drive of help documentation" target="_blank">help manual</a>
-    
+
 <div style="float:right">
     <span id='copycat' ></span>
 </div>
