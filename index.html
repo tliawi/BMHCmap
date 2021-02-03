@@ -28,32 +28,61 @@ select {
   border-radius: 4px;
   background-color: #f1f1f1;
 }
-    
+  
 </style>
 
-
+<link rel="stylesheet" href="listbox.css"> 
+    
 </head>
 <body>
 
     <div class="container" style="display: flex;">
         <div class="container" style="width: 380px">
-            <a href="url to google drive of help documentation" target="_blank" font-size="small">help manual</a>
-            <p style="text-align:center" ><br>@38.433956,-78.8791396 </p>
+            <a href="url to google drive of help documentation" target="_blank" style="font-size:small">help manual<br></a>
+            <p style="text-align:center" >@38.433956,-78.8791396 </p>
             <img src="mockupMapCursor.png" alt="mock up map" width="377" height="633" float="left">
         </div>
-        <div style="flex-grow: 1; background-color:rgb(230,255, 220);"">
+        <div style="flex-grow: 1; background-color:rgb(230,255, 220);">
             <p style="font-size: large; text-align:center"><b>Map data entry engine</b> <br>
                 <span style="font-size: small; text-align:center"> Brethren Mennonite Heritage Center </span> 
             </p>
         </div>
-                                                                 
-        <form>
-          <select id="country" name="country">
-          <option value="au">Australia</option>
-          <option value="ca">Canada</option>
-          <option value="usa">USA</option>
-          </select>
-        </form>
+          
+        
+<div class="listbox-area">
+  <div class="left-area">
+    <br><br>
+    <span id="ss_elem_list" margin="auto">
+    <input type="checkbox" id="bro" name="Breethren">
+    <label for="bro">Brethren</label>
+    <input type="checkbox" id="menno" name="Meennonite">
+    <label for="menno">Mennonite</label>
+    </span>
+    <br>
+    <ul id="ss_elem_list"
+        tabindex="0"
+        role="listbox"
+        aria-labelledby="ss_elem"
+        style="background-color:#d0efd0;">
+      <li id="ss_elem_bw" role="option">
+        Brethren Woods Camp &amp; Retreat Center
+      </li>
+      <li id="ss_elem_Am" role="option">
+        Bridgewater Church of the Brethren
+      </li>
+      <li id="ss_elem_dm" role="option">
+        Dayton Church of the Brethren
+      </li>
+      <li id="ss_elem_Np" role="option">
+        First Church of the Brethren Harrisonburg
+      </li>
+      <li id="ss_elem_Cm" role="option">
+        Garber&apos;s Church
+      </li>
+        
+    </ul>
+  </div>
+</div>
                              
     </div>
 
@@ -68,6 +97,8 @@ select {
   <input type="submit" value="SAVE">
 </form> 
 
+<script src="myscripts.js"></script>
+                                                             
 <script>
     
 function checkGroup(str) {
