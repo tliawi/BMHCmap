@@ -59,6 +59,7 @@ select {
                 <form id="createAssembly" onsubmit="saveGroup()">
                     A unique assembly name (<span id="BroMenno">Brethren</span>): <br>
                     <input type="text" id="assemblyName" size=50 oninput="checkAssembly(this.value)">
+                    <br>
                     <input type="submit" value = "cancel"> <input type="submit" value="SAVE">
                 </form>
                 
@@ -67,43 +68,47 @@ select {
         </div>
         
         <!-- right third -->
-        <div>
-        amazing turtulllls all the way down
-        <div class="listbox-area" >
+        <div class="container" style="width: 300px">
             
-          <div class="all-area">
-            amazing grace how sweet
-            <!--<div margin="auto" >
-                &nbsp;<input type="checkbox" id="bro" name="Breethren">
-                <label for="bro">Brethren</label>&nbsp;&nbsp;
+            <div style="font-size:small;">
+                <br><br>
+                &nbsp;&nbsp;
+                <input type="checkbox" id="bro" name="Breethren">
+                <label for="bro">Brethren</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
                 <input type="checkbox" id="menno" name="Meennonite">
-                <label for="menno">Mennonite</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <button >create new</button>
-            </div> -->
-            <ul id="ss_elem_list"
-                tabindex="0"
-                role="listbox"
-                aria-labelledby="ss_elem"
-                style="background-color:#d0efd0;">
-              <li id="ss_elem_bw" role="option">
-                Brethren Woods Camp &amp; Retreat Center
-              </li>
-              <li id="ss_elem_Am" role="option">
-                Bridgewater Church of the Brethren
-              </li>
-              <li id="ss_elem_dm" role="option">
-                Dayton Church of the Brethren
-              </li>
-              <li id="ss_elem_Np" role="option">
-                First Church of the Brethren Harrisonburg
-              </li>
-              <li id="ss_elem_Cm" role="option">
-                Garber&apos;s Church
-              </li>
+                <label for="menno">Mennonite</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <button style="font-size:small" >create new</button>
+                <br>
+            </div>
+            
+            <!--<div class="listbox-area" > -->
 
-            </ul>
-          </div>
-        </div>
+            <div class="all-area">
+                <ul id="ss_elem_list"
+                    tabindex="0"
+                    role="listbox"
+                    aria-labelledby="ss_elem"
+                    style="background-color:#d0efd0;">
+                  <li id="ss_elem_bw" role="option">
+                    Brethren Woods Camp &amp; Retreat Center
+                  </li>
+                  <li id="ss_elem_Am" role="option">
+                    Bridgewater Church of the Brethren
+                  </li>
+                  <li id="ss_elem_dm" role="option">
+                    Dayton Church of the Brethren
+                  </li>
+                  <li id="ss_elem_Np" role="option">
+                    First Church of the Brethren Harrisonburg
+                  </li>
+                  <li id="ss_elem_Cm" role="option">
+                    Garber&apos;s Church
+                  </li>
+                </ul>
+            </div>
+            <!-- </div> -->
         </div>            
     </div>
                                                              
