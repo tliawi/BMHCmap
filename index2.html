@@ -7,7 +7,19 @@ Copyright 2021 John R C Fairfield, see MIT license
 
 https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-of-a-javascript-google-map
 
-<div><a href="url to google drive of help documentation" target="_blank" float="right">help manual</a></div>
+select {
+    margin: 0 -2px;
+    text-indent:-2px;
+    width: 38px;
+}
+    
+select {
+  width: 100%;
+  padding: 16px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #f1f1f1;
+}
 
 -->
 
@@ -21,13 +33,6 @@ body {
     background-color: linen;
 }
 
-select {
-  width: 100%;
-  padding: 16px 20px;
-  border: none;
-  border-radius: 4px;
-  background-color: #f1f1f1;
-}
   
 </style>
 
@@ -57,8 +62,31 @@ select {
             <div class="dataEntry" style="margin:0px 20px 0px 20px">
                 
                 <form id="createAssembly" onsubmit="saveGroup()">
-                    A unique assembly name (<span id="BroMenno">Brethren</span>): <br>
-                    <input type="text" id="assemblyName" size=50 oninput="checkAssembly(this.value)">
+                    
+                    <label for="eventDate">date (yyyy/mm/dd) :</label> <br>
+                      <input type="text" id="eventDate" size=10 oninput="checkEventDate(this.value)">
+                    <br>
+                    
+                    <label for="eventSubject">subject assembly:</label> <br>
+                    <input type="text" id="eventSubject" size=50 oninput="checkEventSubject(this.value)">
+                    <br>
+                    
+                    <label for="eventVerb">verb:</label> <br>
+                    <select name="eventVerb" id="eventVerb" style="margin: 0px 0px 0px 0px;" required="true">
+                      <option value="set-weight">set-weight</option>
+                      <option value="display-at">set-locale</option>
+                      <option value="join-assembly">join-association</option>
+                      <option value="leave-assembly">leave-association</option>
+                      <option value="change-name">change-name</option>
+                      <option value="see-note">see-note</option>
+                    </select>
+                    <br>
+                    
+                    <label>object:</label> <br>
+                    <textarea type="text" id="eventObject" rows=5 cols=50 oninput="checkEventSubject(this.value)"> </textarea>
+                    <br>
+                    
+                    <br>
                     <br>
                     <input type="submit" value = "cancel"> <input type="submit" value="SAVE">
                 </form>
@@ -70,16 +98,11 @@ select {
         <!-- right third -->
         <div class="container" style="width: 300px">
             
-            <div style="font-size:small;">
-                <br><br>
-                &nbsp;&nbsp;
-                <input type="checkbox" id="bro" name="Breethren">
-                <label for="bro">Brethren</label>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <input type="checkbox" id="menno" name="Meennonite">
-                <label for="menno">Mennonite</label>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <button style="font-size:small" >create new</button>
+            <div style="font-size:small">
+                <br>
+                &nbsp;&nbsp;<b>Events</b>
+                <br>
+                &nbsp;&nbsp;&nbsp;Bridgewater Church of the Brethren
                 <br>
             </div>
             
@@ -91,20 +114,32 @@ select {
                     role="listbox"
                     aria-labelledby="ss_elem"
                     style="background-color:#d0efd0;">
-                  <li id="ss_elem_bw" role="option">
-                    Brethren Woods Camp &amp; Retreat Center
-                  </li>
                   <li id="ss_elem_Am" role="option">
-                    Bridgewater Church of the Brethren
+                    1801 display-at
                   </li>
                   <li id="ss_elem_dm" role="option">
-                    Dayton Church of the Brethren
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; join-association
                   </li>
                   <li id="ss_elem_Np" role="option">
-                    First Church of the Brethren Harrisonburg
+                    1878/Aug/25 display-at
                   </li>
-                  <li id="ss_elem_Cm" role="option">
-                    Garber&apos;s Church
+                  <li id="ss_elem_C1" role="option">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; change-name
+                  </li>
+                  <li id="ss_elem_C3" role="option">
+                   1907/Jul leave-association
+                  </li>
+                  <li id="ss_elem_C4" role="option">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; join-association
+                  </li>
+                  <li id="ss_elem_C5" role="option">
+                    1915/Jan/17 display-at
+                  </li>
+                  <li id="ss_elem_C6" role="option">
+                    1953/Dec/13 set-weight
+                  </li>
+                  <li id="ss_elem_C7" role="option">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; display-at
                   </li>
                 </ul>
             </div>
