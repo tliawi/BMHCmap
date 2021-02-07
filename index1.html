@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
     
 <!--
-index.html PÉRIMÉ in favor of index1, index2, index3
+index1.html
 Copyright 2021 John R C Fairfield, see MIT license
 
 https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-of-a-javascript-google-map
@@ -18,16 +18,42 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
   
 body {
     font-size:medium;
-    background-color: linen;
+    font-family: 'Times New Roman', serif;
+    background-color:#faf0e6; /*linen is #faf0e6. Or rgb(230,255, 220) is a light green;*/
 }
 
 select {
   width: 100%;
-  padding: 16px 20px;
+  padding: 0px 0px;  /* 16px 20px; */
   border: none;
   border-radius: 4px;
-  background-color: #f1f1f1;
+  background-color: rgb(230,255, 220);
 }
+    input{
+        font-family:'Times New Roman', serif;
+    }
+    .container {
+        padding:0px 20px 0px 20px;
+    }
+
+    .createAssemblyButton {
+        padding: 0px 0px;
+        border: none;
+        font-family: 'Times New Roman', serif;
+        background-color:#fffaf0;
+    }
+
+    
+    .title {
+        box-sizing: border-box;
+        padding: 16px 0px;
+    }
+    
+    .assemblyWrite {
+        box-sizing: border-box;
+        padding:16px 50px;
+    }
+
   
 </style>
 
@@ -38,51 +64,45 @@ select {
     
 </head>
 <body>
-
-    <div class="container" style="display: flex;">
-        
-        <!-- left third -->
-        <div class="container" style="width: 380px">
-            <a href="url to google drive of help documentation" target="_blank" style="font-size:small">help manual<br></a>
-            <p style="text-align:center" >@38.433956,-78.8791396 </p>
-            <img src="mockupMapCursor.png" alt="mock up map" width="377" height="633" float="left">
+   <div class="container">
+        <div class="title">
+            Brethren Mennonite Heritage Center
+            <h1>Map data entry engine</h1>
         </div>
         
-        <!-- center third -->
-        <div style="flex-grow: 1; background-color:rgb(230,255, 220); margin:0px 10px 0px 10px;">
-            <p style="font-size: large; text-align:center"><b>Map data entry engine</b> <br>
-                <span style="font-size: small; text-align:center"> Brethren Mennonite Heritage Center </span> 
-            </p>
-
-            <div class="dataEntry" style="margin:0px 20px 0px 20px">
-                
+        <!--
+        
+        -->
+        <div>
+           <b>Assemblies</b>
+            &nbsp;&nbsp;
+            <input type="checkbox" id="bro" name="Breethren">
+            <label for="bro">Brethren</label>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="checkbox" id="menno" name="Meennonite">
+            <label for="menno">Mennonite</label>
+        </div>
+        
+        <div id="rwAss">
+            <div id="assemblyRead">
+                <br>
+                <button class="createAssemblyButton" >Click here to create a new assembly, </button>
+                <br> or shift+click on a listed assembly to edit its name,
+                <br> or click on a listed assembly to see its events.
+                <br>
+            </div> 
+        
+            <div id="assemblyWrite">         
                 <form id="createAssembly" onsubmit="saveGroup()">
-                    A unique assembly name (<span id="BroMenno">Brethren</span>): <br>
-                    <input type="text" id="assemblyName" size=50 oninput="checkAssembly(this.value)">
+                    <br>
+                    A unique assembly name: 
+                    <br>
+                    <input type="text" id="assemblyName" style="background-color:#d0efd0;" size=70 oninput="checkAssembly(this.value)">
                     <br>
                     <input type="submit" value = "cancel"> <input type="submit" value="SAVE">
                 </form>
-                
             </div>
-    
         </div>
-        
-        <!-- right third -->
-        <div class="container" style="width: 300px">
-            
-            <div style="font-size:small;">
-                <br><b>Assemblies</b>
-                <br>
-                &nbsp;&nbsp;
-                <input type="checkbox" id="bro" name="Breethren">
-                <label for="bro">Brethren</label>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <input type="checkbox" id="menno" name="Meennonite">
-                <label for="menno">Mennonite</label>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <button style="font-size:small" >create new</button>
-            </div>
-            
             <!--<div class="listbox-area" > -->
 
             <div class="all-area">
@@ -97,7 +117,7 @@ select {
                   <li id="ss_elem_Am" role="option">
                     Bridgewater Brethren
                   </li>
-                  <li id="ss_elem_Am" role="option">
+                  <li id="ss_elem_bm" role="option">
                     Bridgewater Church of the Brethren
                   </li>
                   <li id="ss_elem_x1" role="option">
@@ -122,12 +142,25 @@ select {
                     Meeting at Solomon Garber home
                   </li>
                 </ul>
-            </div>
-            <!-- </div> -->
-        </div>            
-    </div>
-                                                             
+            </div>  
+    </div>                                                         
 <script>
+var rAss = "";
+var wAss = "";
+    
+function saveAss(){
+    rAss = document.getElementById("assemblyRead").innerHTML.slice();
+    wAss= document.getElementById("assemblyWrite").innerHTML.slice();
+    
+}
+
+function readingAss() {
+    document.getElementById("rwAss").innerHTML = "<div id=&quot;assemblyRead&quot;>"+rAss;+"</div>";
+}
+
+function writingAss(){
+    document.getElementById("rwAss").innerHTML = "<div id=&quot;assemblyWrite&quot;>"+wAss;+"</div>";
+}
     
 function checkGroup(str) {
   document.getElementById("copycat").innerHTML = str;
