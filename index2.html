@@ -71,7 +71,8 @@ body {
             <div id="assemblyRead">
                 <br>
                 <button class="createAssemblyButton" >Click here to create a new event, </button>
-                <br> or shift+click on a listed event to edit its fields.
+                <br> or shift+click on a listed event to edit its fields,
+                <br> or click on a listed event to see the state of the assembly at that time.
                 <br>
             </div> 
         
@@ -101,9 +102,20 @@ body {
                     <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <input type="submit" value = "cancel"> <input type="submit" value="SAVE">
                 </form>
-                
             </div>
             </div>
+            
+            <div id="assemblyState">
+                <br>
+                date: 1925
+                <br>
+                locale: 38.377180983452404, -79.03095281203223 1915 note: College Ave church
+                <br>
+                weight: 521 1925
+                <br>
+                affiliation: 2nd District of Virginia 1907 note: "Bridgewater" becomes independent from "Cooks Creek".
+            </div>
+    
        </div>
        
             <!--<div class="listbox-area" > -->
@@ -115,41 +127,44 @@ body {
                     aria-labelledby="ss_elem"
                     style="background-color:#d0efd0;">
                   <li id="ss_elem_Am" role="option">
-                    1801 display-at
+                    1878 set-locale 38.3771809888396, -79.03095281203701
                   </li>
                   <li id="ss_elem_dm" role="option">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; join-association
+                    1878 set-affiliation Cooks Creek
                   </li>
                   <li id="ss_elem_Np" role="option">
-                    1878/Aug/25 display-at
+                    1878/06/22 photo: https://photos.app.goo.gl/XCJtqEQEyVsfogGEA
                   </li>
                   <li id="ss_elem_C1" role="option">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; change-name
+                     1907 set-affiliation 2nd District of Virginia note: "Bridgewater" becomes independent from "Cooks Creek".
                   </li>
                   <li id="ss_elem_C3" role="option">
-                   1907/Jul leave-association
+                     1907 set-weight 201
                   </li>
                   <li id="ss_elem_C4" role="option">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; join-association
+                    1915 set-locale 38.377180983452404, -79.03095281203223 note: College Ave church
                   </li>
                   <li id="ss_elem_C5" role="option">
-                    1915/Jan/17 display-at
+                    1915/Jan/17 image https://photos.app.goo.gl/RmJtqEQEyVsfogdBo
                   </li>
                   <li id="ss_elem_C6" role="option">
-                    1953/Dec/13 set-weight
+                    1925 set-weight 521
                   </li>
                   <li id="ss_elem_C7" role="option">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; display-at
+                    1930 set-weight 550
                   </li>
                 </ul>
             </div>
     </div>                                               
 <script>
-
+var rAss = "";
+var wAss = "";
+var sAss = "";
+    
 function saveAss(){
     rAss = document.getElementById("assemblyRead").innerHTML.slice();
-    wAss= document.getElementById("assemblyWrite").innerHTML.slice();
-    
+    wAss = document.getElementById("assemblyWrite").innerHTML.slice();
+    sAss =document.getElementById("assemblyState").innerHTML.slice();
 }
 
 function readingAss() {
@@ -158,6 +173,10 @@ function readingAss() {
 
 function writingAss(){
     document.getElementById("rwAss").innerHTML = "<div id=&quot;assemblyWrite&quot;>"+wAss;+"</div>";
+}
+    
+function stateAss(){
+    document.getElementById("rwAss").innerHTML = "<div id=&quot;assemblyWrite&quot;>"+sAss;+"</div>";
 }
 
 function checkEventDate(){/*stub*/}
