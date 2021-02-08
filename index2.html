@@ -2,24 +2,12 @@
 <html lang="en" dir="ltr">
     
 <!--
-index.html
+index2.html
 Copyright 2021 John R C Fairfield, see MIT license
 
 https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-of-a-javascript-google-map
 
-select {
-    margin: 0 -2px;
-    text-indent:-2px;
-    width: 38px;
-}
-    
-select {
-  width: 100%;
-  padding: 16px 20px;
-  border: none;
-  border-radius: 4px;
-  background-color: #f1f1f1;
-}
+<div><a href="url to google drive of help documentation" target="_blank" float="right">help manual</a></div>
 
 -->
 
@@ -30,8 +18,34 @@ select {
   
 body {
     font-size:medium;
-    background-color: linen;
+    font-family: 'Times New Roman', serif;
+    background-color:#faf0e6; /*linen is #faf0e6. Or rgb(230,255, 220) is a light green;*/
 }
+
+    input{
+        font-family:'Times New Roman', serif;
+    }
+    .container {
+        padding:0px 20px 0px 20px;
+    }
+
+    .createAssemblyButton {
+        padding: 0px 0px;
+        border: none;
+        font-family: 'Times New Roman', serif;
+        background-color:#fffaf0;
+    }
+
+    
+    .title {
+        box-sizing: border-box;
+        padding: 16px 0px;
+    }
+    
+    .assemblyWrite {
+        box-sizing: border-box;
+        padding:16px 50px;
+    }
 
   
 </style>
@@ -43,68 +57,55 @@ body {
     
 </head>
 <body>
-
-    <div class="container" style="display: flex;">
-        
-        <!-- left third -->
-        <div class="container" style="width: 380px">
-            <a href="url to google drive of help documentation" target="_blank" style="font-size:small">help manual<br></a>
-            <p style="text-align:center" >@38.433956,-78.8791396 </p>
-            <img src="mockupMapCursor.png" alt="mock up map" width="377" height="633" float="left">
+   <div class="container">
+        <div class="title">
+            Brethren Mennonite Heritage Center
+            <h1>Map data entry engine</h1>
         </div>
         
-        <!-- center third -->
-        <div style="flex-grow: 1; background-color:rgb(230,255, 220); margin:0px 10px 0px 10px;">
-            <p style="font-size: large; text-align:center"><b>Map data entry engine</b> <br>
-                <span style="font-size: small; text-align:center"> Brethren Mennonite Heritage Center </span> 
-            </p>
-
-            <div class="dataEntry" style="margin:0px 20px 0px 20px">
+       <div>
+           <b>Events of</b> Bridgewater
+        </div>
+         
+        <div id="rwAss">
+            <div id="assemblyRead">
+                <br>
+                <button class="createAssemblyButton" >Click here to create a new event, </button>
+                <br> or shift+click on a listed event to edit its fields.
+                <br>
+            </div> 
+        
+            <div id="assemblyWrite">         
+       
+            <div class="dataEntry">
                 
                 <form id="createAssembly" onsubmit="saveGroup()">
-                    
-                    <label for="eventDate">date (yyyy/mm/dd) :</label> <br>
-                      <input type="text" id="eventDate" size=10 oninput="checkEventDate(this.value)">
                     <br>
-                    
-                    <label for="eventSubject">subject assembly:</label> <br>
-                    <input type="text" id="eventSubject" size=50 oninput="checkEventSubject(this.value)">
-                    <br>
-                    
-                    <label for="eventVerb">verb:</label> <br>
-                    <select name="eventVerb" id="eventVerb" style="margin: 0px 0px 0px 0px;" required="true">
+                    <label for="eventDate">date (yyyy/mm/dd):</label>
+                      <input type="text" id="eventDate" size=8 oninput="checkEventDate(this.value)">
+                    <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label for="eventVerb">verb:</label>
+                    <select name="eventVerb" id="eventVerb"  required="true">
                       <option value="set-weight">set-weight</option>
                       <option value="set-locale">set-locale</option>
                       <option value="set-affiliation">set-affiliation</option>
                       <option value="image">image</option>
                       <option value="see-note">see-note</option>
                     </select>
-                    <br>
-                    
-                    <label>object:</label> <br>
-                    <textarea type="text" id="eventObject" rows=5 cols=50 oninput="checkEventSubject(this.value)"> </textarea>
-                    <br>
-                    
-                    <br>
-                    <br>
+                    <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label>object:</label>
+                    <input type="text" id="assemblyName" size=107 oninput="checkAssembly(this.value)">
+                    <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label>note:</label>
+                    <textarea type="text" id="eventNote" rows=3 cols=92 oninput="checkEventSubject(this.value)"> </textarea>
+                    <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <input type="submit" value = "cancel"> <input type="submit" value="SAVE">
                 </form>
                 
             </div>
-    
-        </div>
-        
-        <!-- right third -->
-        <div class="container" style="width: 300px">
-            
-            <div style="font-size:small">
-                <br>
-                &nbsp;&nbsp;<b>Events</b>
-                <br>
-                &nbsp;&nbsp;&nbsp;Bridgewater Church of the Brethren
-                <br>
             </div>
-            
+       </div>
+       
             <!--<div class="listbox-area" > -->
 
             <div class="all-area">
@@ -142,11 +143,24 @@ body {
                   </li>
                 </ul>
             </div>
-            <!-- </div> -->
-        </div>            
-    </div>
-                                                             
+    </div>                                               
 <script>
+
+function saveAss(){
+    rAss = document.getElementById("assemblyRead").innerHTML.slice();
+    wAss= document.getElementById("assemblyWrite").innerHTML.slice();
+    
+}
+
+function readingAss() {
+    document.getElementById("rwAss").innerHTML = "<div id=&quot;assemblyRead&quot;>"+rAss;+"</div>";
+}
+
+function writingAss(){
+    document.getElementById("rwAss").innerHTML = "<div id=&quot;assemblyWrite&quot;>"+wAss;+"</div>";
+}
+
+function checkEventDate(){/*stub*/}
     
 function checkGroup(str) {
   document.getElementById("copycat").innerHTML = str;
