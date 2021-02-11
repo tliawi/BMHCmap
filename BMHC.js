@@ -13,35 +13,48 @@ function BMHCobj(){
       }, {});
     }
     
-    //name:0 or name:1 pairs, 0 menno, 1 brethren, in names no double quotes, no ampersand. Blanks, Apostrophe are OK
+    const brethren  = 1;
+    const mennonite = 2;
+    // 0 neither, 3 both
+    // name:val pairs, in names no double quotes, no ampersand. Blanks, Apostrophe are OK
+    
     var assemblies = {};
     var events = {};
     
     
     function init(){
-        var mockupAssemblies = {"2nd District of Virginia":1,"Brethren Woods Camp and Retreat Center":1,"Bridgewater":1,"Church of the Brethren":1,"Cooks Creek":1,"Dayton":1,"Garber's":1,"German Baptist Brethren":1,"Harrisonburg First":1,"Meeting at Solomon Garber home":1, "Park View":0, "Community (Harrisonburg)":0, "Dayton Mennonite":0, "Pike":0, "Bank":0, "Weaver's":0, "Harrisonburg":0, "Pleasant View":0};
+        var mockupAssemblies = {"2nd District of Virginia":1,"Brethren Woods Camp and Retreat Center":1,"Bridgewater":1,"Church of the Brethren":1,"Cooks Creek":1,"Dayton":1,"Garber's":1,"German Baptist Brethren":1,"Harrisonburg First":1,"Meeting at Solomon Garber home":1, "Park View":2, "Community (Harrisonburg)":2, "Dayton Mennonite":2, "Pike":2, "Bank":2, "Weaver's":2, "Harrisonburg":2, "Pleasant View":2, "Virginia Conference":2, "MCUSA":2, "Anne Arbor":3, "aaa":0};
         
         //philosopy: maintain assemblies in sorted key order, is read more often than written.
         assemblies = sortObj(mockupAssemblies); 
         
     }
         
-    function getAssemblies(){
+    function getAllAssemblies(){
         return Object.keys(assemblies);
     }
     
-    function getMennos(){
-        return getAssemblies().filter(name => assemblies[name] == 0);
+    function getMennoniteAssemblies(){
+        return getAllAssemblies().filter(name => assemblies[name] & mennonite);
     }
     
-    function getBros(){
-        return getAssemblies().filter(name => assemblies[name] == 1);
+    function getBrethrenAssemblies(){
+        return getAllAssemblies().filter(name => assemblies[name] & brethren);
+    }
+    
+    function getJointAssemblies(){
+        return getAllAssemblies().filter(name => assemblies[name]); //i.e. != 0
+    }
+    
+    function getNeitherAssemblies(){
+        return getAllAssemblies().filter(name => assemblies[name] == 0);
     }
     
     init();
     
-    return {getAssemblies:getAssemblies,
-            getMennos:getMennos,
-            getBros:getBros,
+    return {getAllAssemblies:getAllAssemblies,
+            getMennoniteAssemblies:getMennoniteAssemblies,
+            getBrethrenAssemblies:getBrethrenAssemblies,
+            getNeitherAssemblies:getNeitherAssemblies,
            };
 }

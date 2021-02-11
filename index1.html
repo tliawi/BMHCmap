@@ -72,10 +72,10 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
         <div>
            <b>Assemblies</b>
             &nbsp;&nbsp;
-            <input type="checkbox" id="bro" name="Breethren">
+            <input type="checkbox" id="bro" name="Brethren" onchange='handleChangeBrethren(this);'>
             <label for="bro">Brethren</label>
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="checkbox" id="menno" name="Meennonite">
+            <input type="checkbox" id="mennonite" name="Mennonite" onchange='handleChangeMennonite(this);'>
             <label for="menno">Mennonite</label>
         </div>
         
@@ -114,11 +114,32 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
 <script>
 var rAss = "";
 var wAss = "";
-var BrethrenNotMenno = true;
     
 var bmhc = BMHCobj();
+    
+var denominations = 0;
+setListboxInnerHTML();
+    
+function setListboxInnerHTML(){
+    var names = [];
+    if (denominations == 0) names = bmhc.getNeitherAssemblies();
+    else if (denominations == 1) names = bmhc.getBrethrenAssemblies();
+    else if (denominations == 2) names = bmhc.getMennoniteAssemblies();
+    else names = bmhc.getAllAssemblies();
+    document.getElementById("ss_elem_list").innerHTML = makeLIsOfArray(names);
+}
 
-document.getElementById("ss_elem_list").innerHTML = makeLIsOfArray(bmhc.getMennos());
+function handleChangeBrethren(chkbox){
+    if (chkbox.checked) denominations = denominations | 1;
+    else denominations = denominations & 0xfffffe;  //...11110
+    setListboxInnerHTML();
+}
+    
+function handleChangeMennonite(chkbox){
+    if (chkbox.checked) denominations = denominations | 2;
+    else denominations = denominations & 0xfffffd;  //...11101
+    setListboxInnerHTML();
+}
     
 function saveAss(){
     rAss = document.getElementById("assemblyRead").innerHTML.slice();
