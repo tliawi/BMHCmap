@@ -23,7 +23,7 @@ function BMHCobj(){
     
     
     function init(){
-        var mockupAssemblies = {"2nd District of Virginia":1,"Brethren Woods Camp and Retreat Center":1,"Bridgewater":1,"Church of the Brethren":1,"Cooks Creek":1,"Dayton":1,"Garber's":1,"German Baptist Brethren":1,"Harrisonburg First":1,"Meeting at Solomon Garber home":1, "Park View":2, "Community (Harrisonburg)":2, "Dayton Mennonite":2, "Pike":2, "Bank":2, "Weaver's":2, "Harrisonburg":2, "Pleasant View":2, "Virginia Conference":2, "MCUSA":2, "Anne Arbor":3, "aaa":0};
+        var mockupAssemblies = {"2nd District of Virginia":1,"Brethren Woods Camp and Retreat Center":1,"Bridgewater":1,"Church of the Brethren":1,"Cooks Creek":1,"Dayton":1,"Garber's":1,"German Baptist Brethren":1,"Harrisonburg First":1,"Meeting at Solomon Garber home":1, "Park View":2, "Community (Harrisonburg)":2, "Dayton Mennonite":2, "Pike":2, "Bank":2, "Weaver's":2, "Harrisonburg":2, "Pleasant View":2, "Virginia Conference":2, "MCUSA":2, "Anne Arbor":3, "the National Cathedral":0};
         
         //philosopy: maintain assemblies in sorted key order, is read more often than written.
         assemblies = sortObj(mockupAssemblies); 
