@@ -31,7 +31,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
         padding:0px 20px 0px 20px;
     }
 
-    .createButton {
+    .textButton {
         padding: 0px 0px;
         border: none;
         font-family: 'Times New Roman', serif;
@@ -42,6 +42,10 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
     .title {
         box-sizing: border-box;
         padding: 16px 0px;
+    }
+    
+    #ss_elem_list {
+        background-color:#d0efd0;
     }
     
     .assemblyWrite {
@@ -68,21 +72,22 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
        
         <div id="midscreen">
 
-            <div id="mennoBroCheckboxen">
-               <b>Assemblies</b>
+            <div id="checkboxen">
+               <b>Assembly Editor</b>
                 &nbsp;&nbsp;
-                <input type="checkbox" id="bro" name="Brethren" onchange='handleChangeBrethren(this);'>
+                <input type="checkbox" id="BrethrenCB" name="Brethren" onchange='changeBrethrenCB(this.checked);'>
                 <label for="bro">Brethren</label>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <input type="checkbox" id="mennonite" name="Mennonite" onchange='handleChangeMennonite(this);'>
+                <input type="checkbox" id="MennoniteCB" name="Mennonite" onchange='changeMennoniteCB(this.checked);'>
                 <label for="menno">Mennonite</label>
+                <br>
+                <br>
             </div>
 
             <div id="scanAssemblies">
-                <br>
-                <button class="createButton" >Click here to create a new assembly, </button>
-                <br> or shift+click on a listed assembly to edit its name,
-                <br> or click on a listed assembly to see its events.
+                <button class="textButton">Click here to create a new assembly, </button>
+                <br> or shift+click on a listed assembly to edit it,
+                <br> or click on a listed assembly to go to the Event Editor.
                 <br>
             </div> 
 
@@ -98,12 +103,14 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
             </div>
             
             <div id="eventsConcerning">
-               <b>Events concerning</b>&nbsp;<span id="anAssemblyName" style="font-weight:bold"></span>
+               <button class="textButton" onclick='initAssemblyScreen(0);'>BACK</button>
+               <br>
+               <b>Event Editor for&nbsp;<span id="anAssemblyName"></span></b>
             </div>
             
             <div id="scanEvents">
                 <br>
-                <button class="createButton" >Click here to create a new event, </button>
+                <button class="textButton" >Click here to create a new event, </button>
                 <br> or shift+click on a listed event to edit its fields,
                 <br> or click on a listed event to see the state of the assembly at that time.
                 <br>
@@ -144,25 +151,30 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
                 weight: 521 1925
                 <br>
                 affiliation: 2nd District of Virginia 1907 note: "Bridgewater" becomes independent from "Cooks Creek".
+                labels: salaried pastor, sunday school
             </div>
              
             
         </div> <!-- end of div id=aboveList -->
             <!--<div class="listbox-area" > -->
+       
 
             <div class="all-area">
                 <ul id="ss_elem_list"
                     tabindex="0"
                     role="listbox"
-                    aria-labelledby="ss_elem"
-                    style="background-color:#d0efd0;">
+                    aria-labelledby="ss_elem" >
+            <!--    onclick ="listboxChange(this);"> <!--onselect, onchange don't work -->
                 </ul>
             </div>  
-    </div>                                                         
+    </div>
+    
 <script>
+
+//globals
     
 var divCaches = {
-    mennoBroCheckboxen:"",
+    checkboxen:"",
     scanAssemblies:"",
     editAssembly:"",
     eventsConcerning:"",
@@ -171,49 +183,57 @@ var divCaches = {
     assemblyState:"",
 }
 
-var midscreenStates =
-    [["mennoBroCheckboxen","scanAssemblies"], //0
-     ["mennoBroCheckboxen","editAssembly"],   //1
+var midscreenTypes =
+    [["checkboxen","scanAssemblies"],         //0
+     ["checkboxen","editAssembly"],           //1
      ["eventsConcerning","scanEvents"],       //2
      ["editEvent"],                           //3
      ["assemblyState"],                       //4
     ]
-                       
-cacheDivs(); setMidscreen(0); 
-    
-document.getElementById("Brethren").checked = true; //must be AFTER setMidscreen 0 or 1
-    
-var bmhc = BMHCobj();
-var denominations = 0;
 
-setMidscreen(0);
-setListboxInnerHTML();
+var checkboxState; // 0: assemblies that are neither B nor M, 1 B, 2 M, 3 all
+var bmhc; //for BMHC.js object
 
-function setMidscreen(k){
+function formatMidscreen(screenType){ //see midScreenTypes
+
+    function setCheckboxen() { //0: neither checked, 1 Brethren, 2 Mennonite, 3 both
+        document.getElementById("BrethrenCB").checked  = (checkboxState == 1 || checkboxState == 3);
+        document.getElementById("MennoniteCB").checked = (checkboxState == 2 || checkboxState == 3);
+    }
+
     var htmlStr = "";
-    midscreenStates[k].forEach(item => htmlStr+=divCaches[item]);
+    midscreenTypes[screenType].forEach(item => htmlStr+=divCaches[item]);
     document.getElementById("midscreen").innerHTML = htmlStr;
-}
-    
-function setListboxInnerHTML(){
-    var names = [];
-    if (denominations == 0) names = bmhc.getNeitherAssemblies();
-    else if (denominations == 1) names = bmhc.getBrethrenAssemblies();
-    else if (denominations == 2) names = bmhc.getMennoniteAssemblies();
-    else names = bmhc.getAllAssemblies();
-    document.getElementById("ss_elem_list").innerHTML = makeLIsOfArray(names);
+    if (screenType == 0 || screenType==1) setCheckboxen(); //checkboxen only exist in those types
 }
 
-function handleChangeBrethren(chkbox){
-    if (chkbox.checked) denominations = denominations | 1;
-    else denominations = denominations & 0xfffffe;  //...11110
-    setListboxInnerHTML();
+function initAssemblyScreen(screenType){ //only for screenTypes 0 and 1
+    formatMidscreen(screenType); //always to scanAssemblies
+    setAssemblyListboxInnerHTML(screenType);
+}
+
+    
+function setAssemblyListboxInnerHTML(){
+    var items = [];
+    
+    if (checkboxState == 0) items = bmhc.getNeitherAssemblies();
+    else if (checkboxState == 1) items = bmhc.getBrethrenAssemblies();
+    else if (checkboxState == 2) items = bmhc.getMennoniteAssemblies();
+    else items = bmhc.getAllAssemblies();
+    
+    document.getElementById("ss_elem_list").innerHTML = makeLIsOfArray(items);
+}
+
+function changeBrethrenCB(checked){
+    if (checked) checkboxState = checkboxState | 1;
+    else checkboxState = checkboxState & 0xfffffe;  //...11110
+    setAssemblyListboxInnerHTML();
 }
     
-function handleChangeMennonite(chkbox){
-    if (chkbox.checked) denominations = denominations | 2;
-    else denominations = denominations & 0xfffffd;  //...11101
-    setListboxInnerHTML();
+function changeMennoniteCB(checked){
+    if (checked) checkboxState = checkboxState | 2;
+    else checkboxState = checkboxState & 0xfffffd;  //...11101
+    setAssemblyListboxInnerHTML();
 }
 
 function cacheDivs(){
@@ -222,34 +242,24 @@ function cacheDivs(){
     });
 }
 
-function readingAss() {
-    document.getElementById("rwAss").innerHTML = "<div id=&quot;assemblyRead&quot;>"+rAss;+"</div>";
-}
-
-function writingAss(){
-    document.getElementById("rwAss").innerHTML = "<div id=&quot;assemblyWrite&quot;>"+wAss;+"</div>";
-}
-    
-/* unused
-function makeLIsOfKeys(obj){
-    var result = "";
-    Object.keys(obj).forEach(function(key) {
-        //console.log(key, obj[key]);
-        result+= "<li id=\""+key+"\" role=\"option\">"+key+"</li>"; //"<li id=\"ss_elem_"+key+...
-    });
-    return result;
-} unused */
-    
+//onclick only responds to mouse click, not to movement of selection through typing prefixen
+//or arrowUp arrowDn. Perhaps can use "return" key event to drive selection after movement.
 function makeLIsOfArray(arr){
     var result = "";
-    arr.forEach(makeli);
-    return result;
     
     function makeli(val) {
-      result+= "<li id=\""+val+"\" role=\"option\">"+val+"</li>";
+      result+= "<li id=\""+val+"\" role=\"option\" onclick='listboxChange(\""+val+"\")'>"+val+"</li>";
     }
+    
+    arr.forEach(elem => makeli(elem));
+    return result;
 }
 
+function listboxChange(val){
+    formatMidscreen(2);
+    document.getElementById("ss_elem_list").innerHTML = makeLIsOfArray(bmhc.getEventStrings(val));
+    //console.log(ss_elem_list.getAttribute('aria-activedescendant')); //dom not updated yet, reflects previous value
+}
     
 function checkGroup(str) {
   document.getElementById("copycat").innerHTML = str;
@@ -258,6 +268,12 @@ function checkGroup(str) {
 function saveGroup(str) {
     document.getElementById("copycat").innerHTML = "***"+document.getElementById("groupName").value+"***";
 }
+    
+cacheDivs();
+bmhc = BMHCobj();
+checkboxState = 1;
+initAssemblyScreen(0);
+    
 </script>
 
 </body>

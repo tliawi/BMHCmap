@@ -50,11 +50,16 @@ function BMHCobj(){
         return getAllAssemblies().filter(name => assemblies[name] == 0);
     }
     
+    function getEventStrings(assembly){ 
+        return ["1878 set-locale 38.3771809888396, -79.03095281203701"];
+    }
+    
     init();
     
     return {getAllAssemblies:getAllAssemblies,
             getMennoniteAssemblies:getMennoniteAssemblies,
             getBrethrenAssemblies:getBrethrenAssemblies,
             getNeitherAssemblies:getNeitherAssemblies,
+            getEventStrings:getEventStrings,
            };
 }
