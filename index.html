@@ -44,13 +44,8 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
         padding: 16px 0px;
     }
     
-    #ss_elem_list {
+    #ss_elem_list, #inputAssemblyName {
         background-color:#d0efd0;
-    }
-    
-    .assemblyWrite {
-        box-sizing: border-box;
-        padding:16px 50px;
     }
 
   
@@ -63,6 +58,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
 <script src="BMHC.js"></script>
     
 </head>
+    
 <body>
    <div class="container">
         <div class="title">
@@ -85,27 +81,24 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
             </div>
 
             <div id="scanAssemblies">
-                <button class="textButton">Click here to create a new assembly, </button>
+                <button id="newAssembly" class="textButton" onclick="initAssemblyEditing()">Click here to create a new assembly, </button>
                 <br> or shift+click on a listed assembly to edit it,
                 <br> or click on a listed assembly to go to the Event Editor.
                 <br>
             </div> 
 
             <div id="editAssembly">         
-                <form id="createAssembly" onsubmit="saveGroup()">
-                    <br>
-                    A unique assembly name: 
-                    <br>
-                    <input type="text" id="assemblyName" style="background-color:#d0efd0;" size=70 oninput="checkAssembly(this.value)">
-                    <br>
-                    <input type="submit" value = "cancel"> <input type="submit" value="SAVE">
-                </form>
+                <br>
+                A unique assembly name: 
+                <br>
+                <input type="text" id="inputAssemblyName" size=70>
+                <br>
+                <button type="button" onclick="initAssemblyViewer()">cancel</button> <button type="button" onclick="saveAssembly()">save</button> <button type="button" onclick="deleteAssembly()">delete</button> 
             </div>
             
             <div id="eventsConcerning">
-               <button class="textButton" onclick='initAssemblyScreen(0);'>BACK</button>
+               <b>Event Editor for:&nbsp;<span id="eventsAssemblyName"></span></b>
                <br>
-               <b>Event Editor for&nbsp;<span id="anAssemblyName"></span></b>
             </div>
             
             <div id="scanEvents">
@@ -118,7 +111,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
             
             <div class="editEvent">
                 
-                <form id="editEvent" onsubmit="saveGroup()">
+                <form id="editEvent" onsubmit="unimplemented()">
                     <br>
                     <label for="eventDate">date (yyyy/mm/dd):</label>
                       <input type="text" id="eventDate" size=8 oninput="checkEventDate(this.value)">
@@ -133,7 +126,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
                     </select>
                     <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <label>object:</label>
-                    <input type="text" id="assemblyName" size=107 oninput="checkAssembly(this.value)">
+                    <input type="text" id="assemblyName" size=107 oninput="checkObjectAssembly(this.value)">
                     <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <label>note:</label>
                     <textarea type="text" id="eventNote" rows=3 cols=92 oninput="checkEventSubject(this.value)"> </textarea>
@@ -164,7 +157,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
                     tabindex="0"
                     role="listbox"
                     aria-labelledby="ss_elem" >
-            <!--    onclick ="listboxChange(this);"> <!--onselect, onchange don't work -->
+            <!--    onclick ="whatever();"> <!--onselect, onchange don't work -->
                 </ul>
             </div>  
     </div>
@@ -194,6 +187,8 @@ var midscreenTypes =
 var checkboxState; // 0: assemblies that are neither B nor M, 1 B, 2 M, 3 all
 var bmhc; //for BMHC.js object
 
+// Of general utility:
+    
 function formatMidscreen(screenType){ //see midScreenTypes
 
     function setCheckboxen() { //0: neither checked, 1 Brethren, 2 Mennonite, 3 both
@@ -207,11 +202,30 @@ function formatMidscreen(screenType){ //see midScreenTypes
     if (screenType == 0 || screenType==1) setCheckboxen(); //checkboxen only exist in those types
 }
 
-function initAssemblyScreen(screenType){ //only for screenTypes 0 and 1
-    formatMidscreen(screenType); //always to scanAssemblies
-    setAssemblyListboxInnerHTML(screenType);
-}
 
+function cacheDivs(){
+    Object.keys(divCaches).forEach(key => {
+        divCaches[key] = document.getElementById(key).innerHTML.slice();
+    });
+}
+    
+function makeLIsOfArray(arr){
+    var result = "";
+    
+    function makeli(val) {
+      result+= "<li id=\""+val+"\" role=\"option\" onclick='goToEventsEditor(\""+val+"\")'>"+val+"</li>";
+    }
+    
+    arr.forEach(elem => makeli(elem));
+    return result;
+}
+    
+//Assembly viewer, screenType 0:
+    
+function initAssemblyViewer(){ 
+    formatMidscreen(0);
+    setAssemblyListboxInnerHTML(0);
+}
     
 function setAssemblyListboxInnerHTML(){
     var items = [];
@@ -236,43 +250,39 @@ function changeMennoniteCB(checked){
     setAssemblyListboxInnerHTML();
 }
 
-function cacheDivs(){
-    Object.keys(divCaches).forEach(key => {
-        divCaches[key] = document.getElementById(key).innerHTML.slice();
-    });
-}
-
 //onclick only responds to mouse click, not to movement of selection through typing prefixen
 //or arrowUp arrowDn. Perhaps can use "return" key event to drive selection after movement.
-function makeLIsOfArray(arr){
-    var result = "";
-    
-    function makeli(val) {
-      result+= "<li id=\""+val+"\" role=\"option\" onclick='listboxChange(\""+val+"\")'>"+val+"</li>";
-    }
-    
-    arr.forEach(elem => makeli(elem));
-    return result;
-}
-
-function listboxChange(val){
+function goToEventsEditor(val){
     formatMidscreen(2);
+    document.getElementById("eventsAssemblyName").innerHTML = val;
     document.getElementById("ss_elem_list").innerHTML = makeLIsOfArray(bmhc.getEventStrings(val));
     //console.log(ss_elem_list.getAttribute('aria-activedescendant')); //dom not updated yet, reflects previous value
 }
+
+// Assembly editing, screenType 1
+
+function initAssemblyEditing(name){
+    formatMidscreen(1);
+    document.getElementById("inputAssemblyName").value = (name && name.length)?dname:"";
+}
+
+function checkAssemblyName(name){
+    console.log(name);
+}
+
+
+function saveAssembly(){
     
-function checkGroup(str) {
-  document.getElementById("copycat").innerHTML = str;
+}
+function deleteAssembly(){
+    
 }
     
-function saveGroup(str) {
-    document.getElementById("copycat").innerHTML = "***"+document.getElementById("groupName").value+"***";
-}
     
 cacheDivs();
 bmhc = BMHCobj();
 checkboxState = 1;
-initAssemblyScreen(0);
+initAssemblyViewer();
     
 </script>
 
