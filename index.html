@@ -87,8 +87,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
                 <br>
             </div> 
 
-            <div id="editAssembly">         
-                <br>
+            <div id="editAssembly">
                 A unique assembly name: 
                 <br>
                 <input type="text" id="inputAssemblyName" size=70>
@@ -224,7 +223,7 @@ function makeLIsOfArray(arr){
     
 function initAssemblyViewer(){ 
     formatMidscreen(0);
-    setAssemblyListboxInnerHTML(0);
+    setAssemblyListboxInnerHTML();
 }
     
 function setAssemblyListboxInnerHTML(){
@@ -263,19 +262,25 @@ function goToEventsEditor(val){
 
 function initAssemblyEditing(name){
     formatMidscreen(1);
-    document.getElementById("inputAssemblyName").value = (name && name.length)?dname:"";
+    document.getElementById("inputAssemblyName").value = (name && name.length)?name:"";
 }
-
-function checkAssemblyName(name){
-    console.log(name);
-}
-
 
 function saveAssembly(){
-    
+    var name = document.getElementById("inputAssemblyName").value;
+    if (bmhc.assemblyExists(name)) alert("This assembly already exists.")
+    else {
+        bmhc.addAssembly(name,checkboxState);
+        setAssemblyListboxInnerHTML();
+    }
 }
-function deleteAssembly(){
     
+function deleteAssembly(){
+    var name = document.getElementById("inputAssemblyName").value;
+    if (!bmhc.assemblyExists(name)) alert("This assembly doesn't exist.")
+    else {
+        bmhc.deleteAssembly(name,checkboxState);
+        setAssemblyListboxInnerHTML();
+    }
 }
     
     

@@ -89,11 +89,12 @@ function BMHCobj(){
         return (name in assemblies);
     }
     function addAssembly(name,mb){ //mb 00:neither 10:Mennonnite 01:Brethren 11:both
-        if (!assemblyExists(name)) assembly[name] = new assemblyData(mb);
+        if (!assemblyExists(name)) assemblies[name] = new assemblyData(mb);
+        assemblies = sortObj(assemblies);
     }
     function deleteAssembly(name){
         //tosses assembly and its assemblyData, including all events therein.
-        delete assembly[name]; //doesn't throw anything if it doesn't exist.
+        delete assemblies[name]; //doesn't throw anything if it doesn't exist.
         
         //.........still have to go through and delete all events having this name as object ?? Or just leave them as historical anomalies?
     }
@@ -142,6 +143,6 @@ function BMHCobj(){
             addAssembly:addAssembly,
             deleteAssembly:deleteAssembly,
             getEventStrings:getEventStrings,
-            checkDate:checkUIdate,
+            checkDate:checkDate,
            };
 }
