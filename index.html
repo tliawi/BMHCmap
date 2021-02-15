@@ -26,24 +26,22 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
         font-family:'Times New Roman', serif;
     }
     
-    
     .container {
-        padding:0px 20px 0px 20px;
+        padding:0px 20px;
     }
 
     .textButton {
-        padding: 0px 0px;
+        padding: 3px 0px;
         border: none;
         font-family: 'Times New Roman', serif;
         background-color:#fffaf0;
     }
-
-    
+/*
     .title {
         box-sizing: border-box;
         padding: 16px 0px;
     }
-    
+*/    
     #ss_elem_list, #inputAssemblyName {
         background-color:#d0efd0;
     }
@@ -63,7 +61,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
    <div class="container">
         <div class="title">
             Brethren Mennonite Heritage Center
-            <h1>Map data editor</h1>
+            <h3>Map data editor</h3>
         </div>
        
         <div id="midscreen">
@@ -81,18 +79,21 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
             </div>
 
             <div id="scanAssemblies">
-                <button id="newAssembly" class="textButton" onclick="initAssemblyEditing()">Click here to create a new assembly, </button>
-                <br> or shift+click on a listed assembly to edit it,
-                <br> or click on a listed assembly to go to the Event Editor.
+                <button id="newAssembly" class="textButton" onclick="launchAssemblyEditor()">Click here to create a new assembly.</button>
+                <br> Select a listed assembly
+                <br> and hit Enter to edit its events,
+                <br> or shift+Enter to change or delete it.
                 <br>
             </div> 
 
             <div id="editAssembly">
-                A unique assembly name: 
+                <scan id="assemblyNamePrompt">Enter a unique assembly name: </scan>
                 <br>
                 <input type="text" id="inputAssemblyName" size=70>
                 <br>
-                <button type="button" onclick="initAssemblyViewer()">cancel</button> <button type="button" onclick="saveAssembly()">save</button> <button type="button" onclick="deleteAssembly()">delete</button> 
+                <button type="button" onclick="initAssemblyViewer()">cancel</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" onclick="saveAssembly()">save</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" onclick="deleteAssembly()">delete</button> 
             </div>
             
             <div id="eventsConcerning">
@@ -155,7 +156,8 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
                 <ul id="ss_elem_list"
                     tabindex="0"
                     role="listbox"
-                    aria-labelledby="ss_elem" >
+                    aria-labelledby="ss_elem"
+                    onKeyPress="listKeyPress(this,event)" >
             <!--    onclick ="whatever();"> <!--onselect, onchange don't work -->
                 </ul>
             </div>  
@@ -212,7 +214,8 @@ function makeLIsOfArray(arr){
     var result = "";
     
     function makeli(val) {
-      result+= "<li id=\""+val+"\" role=\"option\" onclick='goToEventsEditor(\""+val+"\")'>"+val+"</li>";
+      result+= "<li id=\""+val+"\" role=\"option\" >"+val+"</li>";
+        //onclick='handleListClick(event,\""+val+"\")'>"+val+"</li>";
     }
     
     arr.forEach(elem => makeli(elem));
@@ -240,13 +243,31 @@ function setAssemblyListboxInnerHTML(){
 function changeBrethrenCB(checked){
     if (checked) checkboxState = checkboxState | 1;
     else checkboxState = checkboxState & 0xfffffe;  //...11110
+    setAssemblyNamePrompt();
     setAssemblyListboxInnerHTML();
 }
     
 function changeMennoniteCB(checked){
     if (checked) checkboxState = checkboxState | 2;
     else checkboxState = checkboxState & 0xfffffd;  //...11101
+    setAssemblyNamePrompt();
     setAssemblyListboxInnerHTML();
+}
+
+function listKeyPress(that, event){
+    //console.log(event.shiftKey, event.altKey, event.ctrlKey, event.metaKey);
+    //console.log(that.getAttributeNode("aria-activedescendant").value); //the selected item
+    //console.log(that); //<ul id="ss_elem_list"...
+    //console.log(event); //if event.key == "Enter" or.charCode: 13 (what is it on pc?)
+    if (event.charCode == 13){
+        if (event.shiftKey) launchAssemblyEditor(that.getAttributeNode("aria-activedescendant").value);
+        else goToEventsEditor(that.getAttributeNode("aria-activedescendant").value);
+    }
+}
+    
+function handleListClick(event,val){
+    if (event.altKey) launchAssemblyEditor(val);
+    else goToEventsEditor(val);
 }
 
 //onclick only responds to mouse click, not to movement of selection through typing prefixen
@@ -257,21 +278,39 @@ function goToEventsEditor(val){
     document.getElementById("ss_elem_list").innerHTML = makeLIsOfArray(bmhc.getEventStrings(val));
     //console.log(ss_elem_list.getAttribute('aria-activedescendant')); //dom not updated yet, reflects previous value
 }
+    
 
 // Assembly editing, screenType 1
+// document.getElementById("ss_elem_list").getAttributeNode("aria-activedescendant").value
+    
+function setAssemblyNamePrompt(){
+    var denom;
+    if (!document.getElementById("assemblyNamePrompt"))return;
+    
+    switch (checkboxState){
+        case 0: denom = "denominationless"; break;
+        case 1: denom = "Brethren"; break;
+        case 2: denom = "Mennonite"; break;
+        case 3: denom = "both Mennonite and Brethren"; break;
+    }
+    document.getElementById("assemblyNamePrompt").innerHTML = "Enter a new assembly name ("+denom+"):";
+}
 
-function initAssemblyEditing(name){
+function launchAssemblyEditor(name){
     formatMidscreen(1);
-    document.getElementById("inputAssemblyName").value = (name && name.length)?name:"";
+    setAssemblyNamePrompt();
+    if (name && name.length)document.getElementById("inputAssemblyName").value = name;
 }
 
 function saveAssembly(){
-    var name = document.getElementById("inputAssemblyName").value;
-    if (bmhc.assemblyExists(name)) alert("This assembly already exists.")
-    else {
-        bmhc.addAssembly(name,checkboxState);
+    var assemblyName = document.getElementById("inputAssemblyName").value;
+    if (assemblyName == null) return;
+    assemblyName = assemblyName.trim();
+    if (assemblyName == "") return;
+    console.log(assemblyName);
+    if (bmhc.addAssembly(assemblyName,checkboxState)) {
         setAssemblyListboxInnerHTML();
-    }
+    } else alert("An assembly having that name already exists.");
 }
     
 function deleteAssembly(){

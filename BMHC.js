@@ -7,7 +7,7 @@ Copyright 2021 John R C Fairfield, see MIT License
 function BMHCobj(){
     
     function sortObj(obj) {
-      return Object.keys(obj).sort().reduce(function (result, key) {
+      return Object.keys(obj).sort(new Intl.Collator('en').compare).reduce(function (result, key) {
         result[key] = obj[key];
         return result;
       }, {});
@@ -84,14 +84,17 @@ function BMHCobj(){
         return getAllAssemblies().filter(name => assemblies[name].mb == 0);
     }
     
-    
     function assemblyExists(name){
         return (name in assemblies);
     }
+    
     function addAssembly(name,mb){ //mb 00:neither 10:Mennonnite 01:Brethren 11:both
-        if (!assemblyExists(name)) assemblies[name] = new assemblyData(mb);
+        if (assemblyExists(name))return false;
+        assemblies[name] = new assemblyData(mb);
         assemblies = sortObj(assemblies);
+        return true;
     }
+    
     function deleteAssembly(name){
         //tosses assembly and its assemblyData, including all events therein.
         delete assemblies[name]; //doesn't throw anything if it doesn't exist.
