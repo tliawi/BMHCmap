@@ -6,7 +6,6 @@ Copyright 2021 John R C Fairfield, see MIT License
 
 function BMHCobj(){
     
-    
     const brethren  = 1;
     const mennonite = 2;
     // 0 neither, 3 both
@@ -15,21 +14,23 @@ function BMHCobj(){
     // unfinished 
     // means to add labels (never remove them)
     // save db to storage somewhere
+    // which will manage concurrent access to getNextId
+    // and make addAssembly, addEvent atomic to external db.
+    // Implies all db writes will become asynch
     var db = {
         idSource:123, //source of unique assembly ids.
-        verbs:{"set-locale":1, "set-weight":1, "set-affiliation":1, "photo":1, "set-label":1, "see-note":1,}, //see checkObject()
-        labels:{"paid minister","flag in sanctuary",},
+        verbs:{"set-locale":true, "set-weight":true, "set-affiliation":true, "photo":true, "set-label":true, "see-note":true,}, //see checkObject()
+        labels:{"paid minister":true,"flag in sanctuary":true,},
         assemblies:{}, //a dictionary of assemblyData, the keys being assembly names
     }
     
-    var idToName = {}; //a dictionary of id:assemblyName pairs.
+    var idToName = {}; //a dictionary of numeric id:string assemblyName pairs, 
+    // not necessarily sorted if we merge concurrent access files...
     
-    //id's are references, "[d+]"
-    //the reason for references, and idToName, is so one can change the name of an assembly
-    //and all the stored object and note references do NOT have to change.
-    ---todo next: replace name refs with id refs in notes. Do assembly name change.
+    //the reason for ids, and idToName, is so one can change the name of an assembly
+    //and all the stored object and note ids do NOT have to change.
     function getNextId(){
-        return "["+(db.idSource++)+"]";
+        return db.idSource++;
     }
             
     function assemblyData(mb){
@@ -77,19 +78,16 @@ function BMHCobj(){
             "the National Cathedral":{id:22, mb:0,events:[],states:[]},
         };
         
-        const mockupBridgewaterEvents = [
-            new event("1878","set-locale","38.3771809888396,-79.03095281203701",""),
-            new event("1878","set-affiliation","[8]",""),
-            new event("1878/06/22","photo","https://photos.app.goo.gl/XCJtqEQEyVsfogGEA",""),
-            new event("1907","set-affiliation","[10]","[4] becomes independent from [8]"),
-            new event("1907","set-weight","201"),
-            new event("1915","set-label","paid minister"),
-        ];
-        
         //philosopy: maintain assemblies in sorted key order, is read more often than written.
         db.assemblies = sortObj(mockupAssemblies);
         
-        mockupBridgewaterEvents.forEach(event => addEvent(event)
+        addEvent("Bridgewater","1878","set-locale","38.3771809888396,-79.03095281203701","");
+        addEvent("Bridgewater","1878","set-affiliation","Cooks Creek","");
+        addEvent("Bridgewater","1878/06/22","photo","https://photos.app.goo.gl/XCJtqEQEyVsfogGEA","");
+        addEvent("Bridgewater","1907","set-affiliation","2nd District of Virginia","[Bridgewater] becomes independent from [Cooks Creek]");
+        addEvent("Bridgewater","1907","set-weight","201","");
+        addEvent("Bridgewater","1915","set-label","paid minister","");
+        
         buildIdToName();
     }
         
@@ -118,9 +116,12 @@ function BMHCobj(){
     }
     
     function addAssembly(name,mb){ //mb 00:neither 10:Mennonnite 01:Brethren 11:both
+        name = name.trim();
         if (assemblyExists(name))return false;
-        db.assemblies[name] = new assemblyData(mb);
+        var newAssy = new assemblyData(mb);
+        db.assemblies[name] = newAssy;
         db.assemblies = sortObj(db.assemblies);
+        idToName[newAssy.id] = name; //maintain idToName
         return true;
     }
     
@@ -128,7 +129,22 @@ function BMHCobj(){
         //tosses assembly and its assemblyData, including all events therein.
         delete db.assemblies[name]; //doesn't throw anything if it doesn't exist.
         
-        //.........still have to go through and delete all events having this name as object ?? Or just leave them as historical anomalies?
+        //.........still have to go through and delete all events having this name as object or note reference?? Or just //leave them as historical anomalies? Or never delete, always just mark as deleted? Is a mess that
+        //may never occur...
+    }
+    
+    //------ refs, whether idRefs [id], or namerefs [name]
+    
+    function stripOffBrackets(ref){ return ref.substr(1,ref.length-2); }
+    
+    function addBrackets(str) { return "[" + str + "]"; }
+    
+    function nameRefToIdRef(nameRef){
+        return addBrackets(db.assemblies[stripOffBrackets(nameRef)].id);
+    }
+    
+    function idRefToNameRef(idRef){
+        return addBrackets(idToName[stripOffBrackets(idRef)]);
     }
     
     //returns "ok" if it succeeds, else an error statement
@@ -141,13 +157,11 @@ function BMHCobj(){
             this.note = note;
         }
         
-        function placeEvent(subjectAssembly,date,verb,object,note){
+        function placeValidatedEvent(subjectAssembly,date,verb,object,note){
+            function compareDates(e1,e2){return (e1.date < e2.date)?-1:((e1.date > e2.date)?1:0);}
             var evs = db.assemblies[subjectAssembly].events;
-            evs[evs.length] = new event(date,verb,object,note)
-        }
-        
-        function compareDate(e1,e2){
-            return (e1.date < e2.date)?-1:((e1.date < e2.date)?1:0);
+            evs.push(new event(date,verb,object,note));
+            evs.sort(compareDates);
         }
         
         subjectAssembly = subjectAssembly.trim;
@@ -158,23 +172,18 @@ function BMHCobj(){
         if (!assemblyExists(subjectAssembly)) return "subject assembly doesn't exist";
         else if (!checkDate(date)) return "bad date";
         else {
-            const critique = okVerbObject(verb,object);
+            const critique = critiqueVerbObject(verb,object);
             if (critique != "ok") return critique;
-            if (verb == set-affiliation) object = db.assemblies[subjectAssembly].id; // !!!
-            //unfinished: replace [references] in notes---------
-            const evs = db.assemblies[subjectAssembly].events;
-            evs.push(new event(date,verb,object,note));
-            evs.sort((e1,e2)=>compareDate(e1,e2));
+            if (verb == set-affiliation) object = db.assemblies[object].id; // !!!
+            try{ note = nameRefsToIdRefs(note); } catch (e) {return e };
+            placeValidatedEvent(subjectAssembly,date,verb,object,note);
             return "ok";
         }
     }
+
     
-    function checkVerb(verb){
-        return (verb in db.verbs);
-    }
-    
-    function okVerbObject(verb, object){
-        if (checkVerb(verb)){
+    function critiqueVerbObject(verb, object){
+        if (verb in db.verbs){
             switch (verb){
                 case "set-locale":
                     if (object.length > 0) return "ok"; //------unfinished checkGPS(object as gpscoord)
@@ -184,16 +193,16 @@ function BMHCobj(){
                     else return "bad weight amount";
                 case "set-affiliation":
                     if (assemblyExists(object)) return "ok";
-                    else return "unrecognized assembly name";
+                    else return "unrecognized affiliation assembly name";
                 case "photo": 
                     if (object.length > 0) return "ok"; //---------------unfinished checkURL??? 
                     else return "bad URL";
                 case "set-label":
-                    if (object in db.labels) return "ok";
+                    if (db.labels[object]) return "ok";
                     else return "unrecognized label";
                 case "see-note":
-                    if (object.length > 0) return "ok";
-                    else return "nothing in note";
+                    if (object.length > 0) return "Object should be blank. Put info in note.";
+                    return "ok";
                 default: "verb not recognized";
             }
         } else return "unrecognized verb";
@@ -228,14 +237,30 @@ function BMHCobj(){
         if (candidate.substr(8,2)<"01" || candidate.substr(8,2) > "31") return false; //short months sneak through
         return true; //yyyy/mm/dd
     }
+
+    //returns modified str
+    //replacing each [id] reference with [name] reference
+    function idRefsToNameRefs(str){ 
+        var refs;
+        refs = str.match(/\[\d+\]/g) ; //returns an array of refs "[d+]" from the strings
+        refs = refs.map(ref=>stripOffBrackets(ref));
+        refs.forEach(ref => { if (!idToName[ref]) throw ref+" is an unknown assembly reference.";}) ;
+        refs.forEach(ref=> { str = str.replace(ref,addBrackets(idToName[ref]));});
+        return str;
+    }
     
+    //returns modified str
+    //replacing each [name] reference with [id] reference
+    function nameRefsToIdRefs(str){ //replace each [name] reference with [id] reference
+        const refs = str.match(/\[\.+?\]/g) ; //returns an array of refs "[xxx]" from the strings
+        refs = refs.map(ref=>stripOffBrackets(ref).trim());
+        refs.forEach(ref => { if (!db.assemblies[ref]) throw ref + " is not a known assembly."; });
+        refs.forEach(ref=> { str = str.replace(ref,addBrackets(db.assemblies[ref].id));});
+        return str;
+    }
+                         
     //returns an array of eventToStrings corresponding to the events of an assembly
     function getEventStrings(assembly){ 
-        
-        function renderIDs(str){ //replace each [id] reference with [name] reference
-            const refs = str.match(/\[\d+\]/g) ; //returns an array of refs "[d+]" from the strings
-            refs.forEach(ref=>str.replace(ref,idToName[ref]);
-        }
         
         //flesh out str with trailing blanks to be (at least) len chars long.
         function buff(str,len){ 
@@ -244,7 +269,7 @@ function BMHCobj(){
         }
         
         function eventToString(ev){
-            return buff(ev.date,10) + " " + ev.verb + " " + ((ev.verb == "set-affiliation")?idToName[ev.obj]:ev.obj) + " " + renderIDs(ev.note);
+            return buff(ev.date,10) + " " + ev.verb + " " + ((ev.verb == "set-affiliation")?idToName[ev.obj]:ev.obj) + " " + idRefsToNameRefs(ev.note); //unfinished, could throw if assembly deleted.
         }
         
         if (assemblyExists(assembly)) {
