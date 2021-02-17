@@ -15,7 +15,7 @@ function BMHCobj(){
     // means to add labels (never remove them)
     // save db to storage somewhere
     // which will manage concurrent access to getNextId
-    // and make addAssembly, addEvent atomic to external db.
+    // and make addAssembly, changeAssembly, addEvent etc atomic to external db.
     // Implies all db writes will become asynch
     var db = {
         idSource:123, //source of unique assembly ids.
@@ -104,32 +104,59 @@ function BMHCobj(){
     }
     
     function getJointAssemblies(){
-        return getAllAssemblies().filter(name => db.assemblies[name].mb); //i.e. mb != 0
+        return getAllAssemblies().filter(name => db.assemblies[name].mb == 3);
     }
     
     function getNeitherAssemblies(){
         return getAllAssemblies().filter(name => db.assemblies[name].mb == 0);
     }
     
+    
     function assemblyExists(name){
         return (name in db.assemblies);
     }
     
-    function addAssembly(name,mb){ //mb 00:neither 10:Mennonnite 01:Brethren 11:both
+    function legitAssembly(name, mb){
+        // check for null, undefined, "", unfortunately 0, false.
+        if (!Boolean(name)) return "blank names not allowed.";
+        //does the return if mb is "whatever", whereas (mb<0 || mb > 3) would not
+        if (!(mb >= 0 && mb <= 3)) return "this denomination not accepted.";
+        if (name.trim().length == 0) return "blank names not allowed.";
+        if (assemblyExists(name))return "this assembly already exists";
+        if (name.match(/\[/) || name.match(/\]/)) return "square brackets [ and ] not allowed in assembly names";
+        return "ok";
+    }
+    
+    
+    function addAssembly(name,mb){ //mb bx00:neither bx10:Mennonnite bx01:Brethren bx11:both
+        if (legitAssembly(name,mb)!="ok") return legitAssembly(name,mb);
         name = name.trim();
-        if (assemblyExists(name))return false;
         var newAssy = new assemblyData(mb);
         db.assemblies[name] = newAssy;
         db.assemblies = sortObj(db.assemblies);
         idToName[newAssy.id] = name; //maintain idToName
-        return true;
+        return "ok";
+    }
+    
+    function changeAssembly(oldName, newName, mb){
+        var data;
+        if (legitAssembly(newName,mb)!="ok") return legitAssembly(newName,mb);
+        newName= newName.trim();
+        if (!db.assemblies[oldName]) return "Target assembly doesn't exist.";
+        data = db.assemblies[oldName];
+        delete db.assemblies[oldName];
+        data.mb = mb; //keep id, events, and states
+        db.assemblies[newName] = data; //rename it keeping same id
+        return "ok";
     }
     
     function deleteAssembly(name){
         //tosses assembly and its assemblyData, including all events therein.
         delete db.assemblies[name]; //doesn't throw anything if it doesn't exist.
         
-        //.........still have to go through and delete all events having this name as object or note reference?? Or just //leave them as historical anomalies? Or never delete, always just mark as deleted? Is a mess that
+        //.........still have to go through and delete all events having this name 
+        //as object or note reference?? Or just 
+        //leave them as historical anomalies? Or never delete, always just mark as deleted? Is a mess that
         //may never occur...
     }
     
@@ -285,8 +312,10 @@ function BMHCobj(){
             getMennoniteAssemblies:getMennoniteAssemblies,
             getBrethrenAssemblies:getBrethrenAssemblies,
             getNeitherAssemblies:getNeitherAssemblies,
+            getJointAssemblies:getJointAssemblies,
             assemblyExists:assemblyExists,
             addAssembly:addAssembly,
+            changeAssembly:changeAssembly,
             deleteAssembly:deleteAssembly,
             getEventStrings:getEventStrings,
             checkDate:checkDate,
