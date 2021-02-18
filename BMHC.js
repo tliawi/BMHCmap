@@ -41,7 +41,7 @@ function BMHCobj(){
     }
     
     
-    function sortObj(obj) {
+    function sortObjByKeys(obj) {
       return Object.keys(obj).sort(new Intl.Collator('en').compare).reduce(function (result, key) {
         result[key] = obj[key];
         return result;
@@ -52,6 +52,7 @@ function BMHCobj(){
         Object.entries(db.assemblies).forEach(([name, assemblyData]) => idToName[assemblyData.id] = name);
     }
     
+
     function init(){
         const mockupAssemblies = {
             "2nd District of Virginia":{id:10, mb:1,events:[],states:[]},
@@ -74,21 +75,27 @@ function BMHCobj(){
             "Pleasant View":{id:25, mb:2,events:[],states:[]},
             "Virginia Conference":{id:27, mb:2,events:[],states:[]},
             "MCUSA":{id:5, mb:2,events:[],states:[]},
-            "Anne Arbor":{id:21, mb:3,events:[],states:[]},
+            "Shalom (Anne Arbor)":{id:21, mb:3,events:[],states:[]},
             "the National Cathedral":{id:22, mb:0,events:[],states:[]},
         };
         
         //philosopy: maintain assemblies in sorted key order, is read more often than written.
-        db.assemblies = sortObj(mockupAssemblies);
-        
-        addEvent("Bridgewater","1878","set-locale","38.3771809888396,-79.03095281203701","");
-        addEvent("Bridgewater","1878","set-affiliation","Cooks Creek","");
-        addEvent("Bridgewater","1878/06/22","photo","https://photos.app.goo.gl/XCJtqEQEyVsfogGEA","");
-        addEvent("Bridgewater","1907","set-affiliation","2nd District of Virginia","[Bridgewater] becomes independent from [Cooks Creek]");
-        addEvent("Bridgewater","1907","set-weight","201","");
-        addEvent("Bridgewater","1915","set-label","paid minister","");
-        
+        db.assemblies = sortObjByKeys(mockupAssemblies);
         buildIdToName();
+        
+        addMockupEvents();
+
+    }
+    
+    function addMockupEvents(){
+        results = [];
+        results.push(addEvent("Bridgewater","1878","set-locale","38.3771809888396,-79.03095281203701",""));
+        results.push(addEvent("Bridgewater","1878","set-affiliation","Cooks Creek",""));
+       
+        results.push(addEvent("Bridgewater","1907/11","set-weight","201","")); results.push(addEvent("Bridgewater","1878/06/22","photo","https://photos.app.goo.gl/XCJtqEQEyVsfogGEA",""));
+        results.push(addEvent("Bridgewater","1907","set-affiliation","2nd District of Virginia","[Bridgewater] becomes independent from [Cooks Creek]"));
+        results.push(addEvent("Bridgewater","1915","set-label","paid minister",""));
+        return results;
     }
         
     function getAllAssemblies(){
@@ -111,53 +118,65 @@ function BMHCobj(){
         return getAllAssemblies().filter(name => db.assemblies[name].mb == 0);
     }
     
+    function getDenomination(name){
+        if (assemblyExists(name)) return db.assemblies[name].mb;
+    }
     
     function assemblyExists(name){
         return (name in db.assemblies);
     }
     
-    function legitAssembly(name, mb){
+    function legitAssemblyParms(name, mb){
         // check for null, undefined, "", unfortunately 0, false.
         if (!Boolean(name)) return "blank names not allowed.";
         //does the return if mb is "whatever", whereas (mb<0 || mb > 3) would not
         if (!(mb >= 0 && mb <= 3)) return "this denomination not accepted.";
         if (name.trim().length == 0) return "blank names not allowed.";
-        if (assemblyExists(name))return "this assembly already exists";
         if (name.match(/\[/) || name.match(/\]/)) return "square brackets [ and ] not allowed in assembly names";
         return "ok";
     }
     
     
     function addAssembly(name,mb){ //mb bx00:neither bx10:Mennonnite bx01:Brethren bx11:both
-        if (legitAssembly(name,mb)!="ok") return legitAssembly(name,mb);
+        if (legitAssemblyParms(name,mb)!="ok") return legitAssemblyParms(name,mb); //defends against null, undefined etc.
         name = name.trim();
+        if (assemblyExists(name))return "an assembly of this name already exists";
+        
         var newAssy = new assemblyData(mb);
         db.assemblies[name] = newAssy;
-        db.assemblies = sortObj(db.assemblies);
+        db.assemblies = sortObjByKeys(db.assemblies);
         idToName[newAssy.id] = name; //maintain idToName
         return "ok";
     }
     
     function changeAssembly(oldName, newName, mb){
         var data;
-        if (legitAssembly(newName,mb)!="ok") return legitAssembly(newName,mb);
+        if (legitAssemblyParms(newName,mb)!="ok") return legitAssemblyParms(newName,mb); //defends against null
         newName= newName.trim();
-        if (!db.assemblies[oldName]) return "Target assembly doesn't exist.";
+        if (!assemblyExists(oldName)) return "Target assembly doesn't exist.";
+        if (newName != oldName && assemblyExists(newName)) return "an assembly of this name already exists."
+        
         data = db.assemblies[oldName];
         delete db.assemblies[oldName];
         data.mb = mb; //keep id, events, and states
         db.assemblies[newName] = data; //rename it keeping same id
+        db.assemblies = sortObjByKeys(db.assemblies);
+        idToName[data.id] = newName; //maintain idToName
         return "ok";
     }
     
     function deleteAssembly(name){
         //tosses assembly and its assemblyData, including all events therein.
+        const id = db.assemblies[name].id;
         delete db.assemblies[name]; //doesn't throw anything if it doesn't exist.
+        delete idToName[id]; //maintain idToName
         
         //.........still have to go through and delete all events having this name 
         //as object or note reference?? Or just 
         //leave them as historical anomalies? Or never delete, always just mark as deleted? Is a mess that
-        //may never occur...
+        //may never occur... how about 
+        //function scanEventsForReferences that returns number of references,
+        //return "ok" or a toString of all of the events referring to this thing. Alert them.
     }
     
     //------ refs, whether idRefs [id], or namerefs [name]
@@ -191,17 +210,16 @@ function BMHCobj(){
             evs.sort(compareDates);
         }
         
-        subjectAssembly = subjectAssembly.trim;
-        date = date.trim;
-        verb = verb.trim;
-        object = object.trim;
-        note = note.trim;
+        subjectAssembly = subjectAssembly.trim();
+        date = date.trim();
+        verb = verb.trim();
+        object = object.trim();
+        note = note.trim();
         if (!assemblyExists(subjectAssembly)) return "subject assembly doesn't exist";
-        else if (!checkDate(date)) return "bad date";
+        else if (checkDate(date)!="ok") return checkDate(date);
         else {
-            const critique = critiqueVerbObject(verb,object);
-            if (critique != "ok") return critique;
-            if (verb == set-affiliation) object = db.assemblies[object].id; // !!!
+            if (critiqueVerbObject(verb,object) != "ok") return critiqueVerbObject(verb,object);
+            if (verb == "set-affiliation") object = db.assemblies[object].id; // !!!
             try{ note = nameRefsToIdRefs(note); } catch (e) {return e };
             placeValidatedEvent(subjectAssembly,date,verb,object,note);
             return "ok";
@@ -216,7 +234,7 @@ function BMHCobj(){
                     if (object.length > 0) return "ok"; //------unfinished checkGPS(object as gpscoord)
                     else return "bad GPS coordinates";
                 case "set-weight":
-                    if (object.length && allDigits(0,object.length)) return "ok";
+                    if (object.length && allDigits(object,0,object.length)) return "ok";
                     else return "bad weight amount";
                 case "set-affiliation":
                     if (assemblyExists(object)) return "ok";
@@ -235,7 +253,7 @@ function BMHCobj(){
         } else return "unrecognized verb";
     }
     
-    function allDigits(start,len){
+    function allDigits(candidate,start,len){
         var snippet = candidate.substr(start,len);
         if ( snippet.length != len) return false;
         return /^\d+$/.test(snippet);
@@ -250,19 +268,20 @@ function BMHCobj(){
         
         function remainderBlank(i){ return candidate.substr(i).trim().length == 0;}
         
-        if (candidate.length != 10) return false;
+        candidate = candidate.trim();
+        if (candidate.length == 0) return "date is blank";
         
-        if (!allDigits(0,4)) return false
-        if (candidate.substr(0,4) < "1000" || candidate.substr(0,4) > "3000") return false; 
-        if (remainderBlank(4)) return true; // yyyy
-        if (yyyymmdd.charAt(4) != '/') return false;
-        if (!allDigits(5,2)) return false;
-        if (candidate.substr(5,2)<"01" || candidate.substr(5,2) > "12") return false; //months
-        if (remainderBlank(7)) return true; // yyyy/mm
-        if (candidate.charAt(7) != '/') return false;
-        if (!allDigits(8,2)) return false;
-        if (candidate.substr(8,2)<"01" || candidate.substr(8,2) > "31") return false; //short months sneak through
-        return true; //yyyy/mm/dd
+        if (!allDigits(candidate,0,4)) return "date year is weird. Needs four digits."
+        if (candidate.substr(0,4) < "1000" || candidate.substr(0,4) > "3000") return "date year out of range"; 
+        if (remainderBlank(4)) return "ok"; // yyyy
+        if (candidate.charAt(4) != '/') return "date must have slash between year and month. Think yyyy/mm/dd";
+        if (!allDigits(candidate,5,2)) return "date month is wierd";
+        if (candidate.substr(5,2)<"01" || candidate.substr(5,2) > "12") return "date format requires two-digit months, like April 1888 is 1888/04"; //months
+        if (remainderBlank(7)) return "ok"; // yyyy/mm
+        if (candidate.charAt(7) != '/') return "date must have a slash between month and day. Think yyyy/mm/dd ";
+        if (!allDigits(candidate,8,2)) return "date requires two-digit days, like 6th Dec 1888 is 1888/12/06";
+        if (candidate.substr(8,2)<"01" || candidate.substr(8,2) > "31") return "date day out of range"; //short months sneak through
+        return "ok"; //yyyy/mm/dd
     }
 
     //returns modified str
@@ -270,33 +289,38 @@ function BMHCobj(){
     function idRefsToNameRefs(str){ 
         var refs;
         refs = str.match(/\[\d+\]/g) ; //returns an array of refs "[d+]" from the strings
+        if (!refs) return str;
         refs = refs.map(ref=>stripOffBrackets(ref));
         refs.forEach(ref => { if (!idToName[ref]) throw ref+" is an unknown assembly reference.";}) ;
-        refs.forEach(ref=> { str = str.replace(ref,addBrackets(idToName[ref]));});
+        refs.forEach(ref=> { str = str.replace(ref,idToName[ref]);});
         return str;
     }
     
     //returns modified str
     //replacing each [name] reference with [id] reference
     function nameRefsToIdRefs(str){ //replace each [name] reference with [id] reference
-        const refs = str.match(/\[\.+?\]/g) ; //returns an array of refs "[xxx]" from the strings
+        var refs = str.match(/\[.+?\]/g) ; //returns an array of refs "[xxx]" from the strings
+        console.log(refs);
+        if (!refs) return str;
         refs = refs.map(ref=>stripOffBrackets(ref).trim());
+        console.log(refs);
         refs.forEach(ref => { if (!db.assemblies[ref]) throw ref + " is not a known assembly."; });
-        refs.forEach(ref=> { str = str.replace(ref,addBrackets(db.assemblies[ref].id));});
+        console.log(refs);
+        refs.forEach(ref=> { str = str.replace(ref,db.assemblies[ref].id);});
         return str;
     }
                          
     //returns an array of eventToStrings corresponding to the events of an assembly
     function getEventStrings(assembly){ 
         
-        //flesh out str with trailing blanks to be (at least) len chars long.
-        function buff(str,len){ 
-            if (len <= str.length) return str;
-            else return str + " ".repeat(len-str.length);
+        //flesh out date with trailing &nbsp;s to be (at least) len chars long.
+        function buff(date,len){ 
+            if (len <= date.length) return date;
+            else return date + "&nbsp;".repeat(len-date.length);
         }
         
         function eventToString(ev){
-            return buff(ev.date,10) + " " + ev.verb + " " + ((ev.verb == "set-affiliation")?idToName[ev.obj]:ev.obj) + " " + idRefsToNameRefs(ev.note); //unfinished, could throw if assembly deleted.
+            return buff(ev.date,10) + " " + ev.verb + " " + ((ev.verb == "set-affiliation")?idToName[ev.object]:ev.object) + " " + ((ev.note.length)?"note:"+idRefsToNameRefs(ev.note):""); //unfinished, could throw if assembly deleted.
         }
         
         if (assemblyExists(assembly)) {
@@ -313,12 +337,19 @@ function BMHCobj(){
             getBrethrenAssemblies:getBrethrenAssemblies,
             getNeitherAssemblies:getNeitherAssemblies,
             getJointAssemblies:getJointAssemblies,
+            getDenomination:getDenomination,
             assemblyExists:assemblyExists,
             addAssembly:addAssembly,
             changeAssembly:changeAssembly,
             deleteAssembly:deleteAssembly,
+            addEvent:addEvent,
             getEventStrings:getEventStrings,
             checkDate:checkDate,
+            
             idToName:idToName,
+            addMockupEvents:addMockupEvents,
+            idRefsToNameRefs:idRefsToNameRefs,
+            nameRefsToIdRefs:nameRefsToIdRefs,
+            db:db,
            };
 }
