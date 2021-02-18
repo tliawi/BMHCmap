@@ -65,7 +65,18 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
 <body>
    <div class="container">
         <div class="title">
-            Brethren Mennonite Heritage Center
+            <scan id="test" style="white-space: break-spaces;">Brethren Mennonite Heritage Center</scan>
+            
+<!-- strategy for making sure that for assembly names or in event objects or notes
+  whatever the user types (including accidental html-interpreted symbols) 
+  is what they see (save trimming blanks from the ends) 
+  and what is saved in the db:
+     use "white-space: break-spaces;", 
+     and get values from inputs, or innerText (not innerHTML) from divs and scans etc.,
+     and set innerText (not innerHTML) of divs and scans etc.
+     AND use a constant character width font, so that extra blanks are clearly perceptible.
+  The "test" field above was used from javascript console to try out this sort of thing.
+-->
             <h3>Map data editor</h3>
         </div>
        
@@ -93,7 +104,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
             <div id="newAssembly">
                 <scan id="assemblyNamePrompt">Enter a unique assembly name: </scan>
                 <br>
-                <input type="text" id="inputAssemblyName" size=70>
+                <input type="text" id="inputAssemblyName" style="white-space: break-spaces;" size=70>
                 <br>
                 <button type="button" onclick="initAssemblyViewer()">cancel</button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -103,7 +114,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
             <div id="changeAssembly">
                 <scan id="changeAssemblyPrompt">Change this denomination, or name, or delete it entirely: </scan>
                 <br>
-                <input type="text" id="changingAssemblyName" size=70>
+                <input type="text" id="changingAssemblyName" style="white-space: break-spaces;" size=70>
                 <br>
                 <button type="button" onclick="initAssemblyViewer()">cancel</button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -113,7 +124,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
             </div>
             
             <div id="eventsConcerning">
-               <b>Event Editor for:&nbsp;<span id="eventsAssemblyName"></span></b>
+               <b>Event Editor for:&nbsp;<span id="eventsAssemblyName" style="white-space: break-spaces;"></span></b>
                <br>
             </div>
             
@@ -173,7 +184,8 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
                     tabindex="0"
                     role="listbox"
                     aria-labelledby="ss_elem"
-                    onKeyPress="listKeyPress(this,event)" >
+                    onKeyPress="listKeyPress(this,event)" 
+                    style="white-space: break-spaces;">
             <!--    onclick ="whatever();"> <!--onselect, onchange don't work -->
                 </ul>
             </div>  
@@ -203,7 +215,7 @@ var midscreenTypes =
      ["checkboxen","changeAssembly"],     //5
     ]
 
-var checkboxState; // 0: assemblies that are neither B nor M, 1 B, 2 M, 3 all
+var checkboxState=1; // Don't leave it undefined. 0: assemblies that are neither B nor M, 1 B, 2 M, 3 both
 var bmhc; //for BMHC.js object
 
 // Of general utility:
@@ -229,19 +241,33 @@ function cacheDivs(){
         divCaches[key] = document.getElementById(key).innerHTML.slice();
     });
 }
-    
+
+/*
 function makeLIsOfArray(arr){
     var result = "";
     
     function makeli(val) {
-      //id == val because aria-activeDescendant is id, not innerHTML, of selected item.
-      // unfinished issue, what happens if name has quotes in it? or < and >? Answer: PROBLEMS. NEEDS FIXING! Need harmless unique identifier of value, and translate back from aria-activeDescendant. 
-        //xyzzy+Result.length not bad, could be used to parse out result.length...
-      result+= "<li id=\""+val+"\" role=\"option\" class=\"monotype\">"+val+"</li>";
+      result+= "<li id=\""+"xyzzy"+result.length+"\" role=\"option\" class=\"monotype\">"+val+"</li>";
     }
     
     arr.forEach(elem => makeli(elem));
     return result;
+}
+*/
+    
+function makeLIsOfArray(arr){
+    var result = ""; var i;
+    
+    function makeli(i) {
+      return "<li id=\"xyzzy"+i+"\" role=\"option\" class=\"monotype\"></li>";
+    }
+    
+    arr.forEach((item,i)=>{result+=makeli(i);});
+    
+    document.getElementById("ss_elem_list").innerHTML = result; //build them first, so you can innterText them.
+    
+    arr.forEach((item,i)=> {document.getElementById("xyzzy"+i).innerText = item;});
+    
 }
     
 //Assembly viewer, screenType 0:
@@ -254,12 +280,12 @@ function initAssemblyViewer(){
 function setAssemblyListboxInnerHTML(){
     var items = [];
     
-    if (checkboxState == 0) items = bmhc.getNeitherAssemblies();
-    else if (checkboxState == 1) items = bmhc.getBrethrenAssemblies();
-    else if (checkboxState == 2) items = bmhc.getMennoniteAssemblies();
-    else items = bmhc.getJointAssemblies();
+    if (checkboxState == 0) items = bmhc.getNeitherAssemblyNames();
+    else if (checkboxState == 1) items = bmhc.getBrethrenAssemblyNames();
+    else if (checkboxState == 2) items = bmhc.getMennoniteAssemblyNames();
+    else items = bmhc.getJointAssemblyNames();
     
-    document.getElementById("ss_elem_list").innerHTML = makeLIsOfArray(items);
+    makeLIsOfArray(items);
 }
 
 function changeBrethrenCB(checked){
@@ -278,12 +304,16 @@ function changeMennoniteCB(checked){
 
 function listKeyPress(that, event){
     //console.log(event.shiftKey, event.altKey, event.ctrlKey, event.metaKey);
-    //console.log(that.getAttributeNode("aria-activedescendant").value); //the selected item
+    //console.log(that.getAttributeNode("aria-activedescendant").value); //the id of selected item
     //console.log(that); //<ul id="ss_elem_list"...
     //console.log(event); //if event.key == "Enter" or.charCode: 13 (what is it on pc?)
     if (event.charCode == 13){
-        if (event.shiftKey) launchChangeAssembly(that.getAttributeNode("aria-activedescendant").value);
-        else goToEventsEditor(that.getAttributeNode("aria-activedescendant").value);
+        var lineId = that.getAttributeNode("aria-activedescendant").value;
+        var elementText = document.getElementById(lineId).innerText; //NOT innerHTML
+        if (event.shiftKey)launchChangeAssembly(elementText);
+        else goToEventsEditor(elementText);
+        //if (event.shiftKey) launchChangeAssembly(that.getAttributeNode("aria-activedescendant").value);
+        //else goToEventsEditor(that.getAttributeNode("aria-activedescendant").value);
     }
 }
 
@@ -292,8 +322,8 @@ function listKeyPress(that, event){
 function goToEventsEditor(assemblyName){
     
     formatMidscreen(2);
-    document.getElementById("eventsAssemblyName").innerHTML = assemblyName;
-    document.getElementById("ss_elem_list").innerHTML = makeLIsOfArray(bmhc.getEventStrings(assemblyName));
+    document.getElementById("eventsAssemblyName").innerText = assemblyName;
+    makeLIsOfArray(bmhc.getEventStrings(assemblyName));
     //console.log(ss_elem_list.getAttribute('aria-activedescendant')); //dom not updated yet, reflects previous value
 }
     
@@ -345,10 +375,13 @@ function changeAssembly(){
     
 function deleteAssembly(){
     const name = document.getElementById("changingAssemblyName").value;
+    let refCount = 0;
+    
     if (!bmhc.assemblyExists(name)) alert("This assembly doesn't exist.")
     else{
-        if (confirm("This will delete all events of this assembly, and invalidate all affiliations to this assembly, or note references to this assembly.")){
-            bmhc.deleteAssembly(name,checkboxState);
+        if (confirm("This will also delete all events of this assembly, and remove all references to this assembly in event affiliations or notes. OK?")){
+            refCount = bmhc.deleteAssembly(name);
+            if (refCount) alert(refCount+" references removed.");
             initAssemblyViewer();
         }
     }

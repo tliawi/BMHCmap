@@ -77,6 +77,11 @@ function BMHCobj(){
             "MCUSA":{id:5, mb:2,events:[],states:[]},
             "Shalom (Anne Arbor)":{id:21, mb:3,events:[],states:[]},
             "the National Cathedral":{id:22, mb:0,events:[],states:[]},
+            "Beaver Creek":{id:30, mb:1,events:[],states:[]},
+            "Montezuma":{id:31, mb:1,events:[],states:[]},
+            "Summit":{id:32, mb:1,events:[],states:[]},
+            "Stanton":{id:33, mb:1,events:[],states:[]},
+            "Mount Bethel":{id:34, mb:1,events:[],states:[]},
         };
         
         //philosopy: maintain assemblies in sorted key order, is read more often than written.
@@ -98,24 +103,24 @@ function BMHCobj(){
         return results;
     }
         
-    function getAllAssemblies(){
+    function getAllAssemblyNames(){
         return Object.keys(db.assemblies);
     }
     
-    function getMennoniteAssemblies(){
-        return getAllAssemblies().filter(name => db.assemblies[name].mb & mennonite);
+    function getMennoniteAssemblyNames(){
+        return Object.keys(db.assemblies).filter(name => db.assemblies[name].mb & mennonite);
     }
     
-    function getBrethrenAssemblies(){
-        return getAllAssemblies().filter(name => db.assemblies[name].mb & brethren);
+    function getBrethrenAssemblyNames(){
+        return Object.keys(db.assemblies).filter(name => db.assemblies[name].mb & brethren);
     }
     
-    function getJointAssemblies(){
-        return getAllAssemblies().filter(name => db.assemblies[name].mb == 3);
+    function getJointAssemblyNames(){
+        return Object.keys(db.assemblies).filter(name => db.assemblies[name].mb == 3);
     }
     
-    function getNeitherAssemblies(){
-        return getAllAssemblies().filter(name => db.assemblies[name].mb == 0);
+    function getNeitherAssemblyNames(){
+        return Object.keys(db.assemblies).filter(name => db.assemblies[name].mb == 0);
     }
     
     function getDenomination(name){
@@ -165,18 +170,41 @@ function BMHCobj(){
         return "ok";
     }
     
+    function removeInvalidEventReferences(id){
+        let count = 0;
+        const re = new RegExp('\['+id+'\]','g');
+        
+        function filterAffiliationEvents(assembly){
+            db.assemblies[assembly].events = db.assemblies[assembly].events.filter(event =>{
+                if (event.verb == "set-affiliation" && event.object == id ){count++; return false;} //filter it out
+                else return true;
+            });
+        }
+        
+        function clobberNoteReferences(assembly){
+            db.assemblies[assembly].events.forEach(event =>{ 
+                let c = (event.note.match(re) || []).length; //match can return null
+                if (c) event.note = event.note.replaceAll('['+id+']','???');
+                count += c;
+            });
+        }
+    
+        //scan and remove set-affiliation events whose objects == id, maintaining order of events
+        Object.keys(db.assemblies).forEach(assembly => { 
+            filterAffiliationEvents(assembly); 
+            clobberNoteReferences(assembly);
+        });
+        
+        return count;
+    }
+    
+    //returns the number of invalidated references that have been removed
     function deleteAssembly(name){
         //tosses assembly and its assemblyData, including all events therein.
         const id = db.assemblies[name].id;
         delete db.assemblies[name]; //doesn't throw anything if it doesn't exist.
         delete idToName[id]; //maintain idToName
-        
-        //.........still have to go through and delete all events having this name 
-        //as object or note reference?? Or just 
-        //leave them as historical anomalies? Or never delete, always just mark as deleted? Is a mess that
-        //may never occur... how about 
-        //function scanEventsForReferences that returns number of references,
-        //return "ok" or a toString of all of the events referring to this thing. Alert them.
+        return removeInvalidEventReferences(id);
     }
     
     //------ refs, whether idRefs [id], or namerefs [name]
@@ -300,12 +328,9 @@ function BMHCobj(){
     //replacing each [name] reference with [id] reference
     function nameRefsToIdRefs(str){ //replace each [name] reference with [id] reference
         var refs = str.match(/\[.+?\]/g) ; //returns an array of refs "[xxx]" from the strings
-        console.log(refs);
         if (!refs) return str;
         refs = refs.map(ref=>stripOffBrackets(ref).trim());
-        console.log(refs);
         refs.forEach(ref => { if (!db.assemblies[ref]) throw ref + " is not a known assembly."; });
-        console.log(refs);
         refs.forEach(ref=> { str = str.replace(ref,db.assemblies[ref].id);});
         return str;
     }
@@ -313,10 +338,10 @@ function BMHCobj(){
     //returns an array of eventToStrings corresponding to the events of an assembly
     function getEventStrings(assembly){ 
         
-        //flesh out date with trailing &nbsp;s to be (at least) len chars long.
+        //flesh out date with trailing blanks to be (at least) len chars long.
         function buff(date,len){ 
             if (len <= date.length) return date;
-            else return date + "&nbsp;".repeat(len-date.length);
+            else return date + " ".repeat(len-date.length);
         }
         
         function eventToString(ev){
@@ -332,11 +357,11 @@ function BMHCobj(){
     
     init();
     
-    return {getAllAssemblies:getAllAssemblies,
-            getMennoniteAssemblies:getMennoniteAssemblies,
-            getBrethrenAssemblies:getBrethrenAssemblies,
-            getNeitherAssemblies:getNeitherAssemblies,
-            getJointAssemblies:getJointAssemblies,
+    return {getAllAssemblyNames:getAllAssemblyNames,
+            getMennoniteAssemblyNames:getMennoniteAssemblyNames,
+            getBrethrenAssemblyNames:getBrethrenAssemblyNames,
+            getNeitherAssemblyNames:getNeitherAssemblyNames,
+            getJointAssemblyNames:getJointAssemblyNames,
             getDenomination:getDenomination,
             assemblyExists:assemblyExists,
             addAssembly:addAssembly,
