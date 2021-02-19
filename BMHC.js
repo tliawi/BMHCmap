@@ -32,6 +32,10 @@ function BMHCobj(){
     function getNextId(){
         return db.idSource++;
     }
+    
+    function getVerbs(){
+        return Object.keys(db.verbs);
+    }
             
     function assemblyData(mb){
         this.id = getNextId();
@@ -357,7 +361,8 @@ function BMHCobj(){
     
     init();
     
-    return {getAllAssemblyNames:getAllAssemblyNames,
+    return {getVerbs:getVerbs,
+            getAllAssemblyNames:getAllAssemblyNames,
             getMennoniteAssemblyNames:getMennoniteAssemblyNames,
             getBrethrenAssemblyNames:getBrethrenAssemblyNames,
             getNeitherAssemblyNames:getNeitherAssemblyNames,
@@ -371,6 +376,7 @@ function BMHCobj(){
             getEventStrings:getEventStrings,
             checkDate:checkDate,
             
+            //temporary, for testing only
             idToName:idToName,
             addMockupEvents:addMockupEvents,
             idRefsToNameRefs:idRefsToNameRefs,
