@@ -13,7 +13,19 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
 
 <head>
 <meta charset="utf8">
-    
+    <!--
+<link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/2016/base.css">
+<link rel="stylesheet" href="../css/core.css">
+<script src="../js/examples.js"></script>
+<script src="../js/highlight.pack.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/utils.js" type="text/javascript"></script>
+
+<link href="css/listbox.css" rel="stylesheet">
+<script src="js/listbox.js" type="text/javascript"></script>
+<script src="js/toolbar.js" type="text/javascript"></script>
+<script src="js/main.js" type="text/javascript"></script>
+    -->
 <style>
   
     body {
@@ -53,11 +65,13 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
 
   
 </style>
-
-<link rel="stylesheet" href="listbox/css/listbox.css"> 
+    
+<link rel="stylesheet" href="listbox/css/listbox.css">
 <script src="listbox/js/listbox.js" type="text/javascript"></script>
 <script src="listbox/js/listbox-scrollable.js" type="text/javascript"></script>   
 <script src="listbox/js/utils.js" type="text/javascript"></script>
+
+    
 <script src="BMHC.js"></script>
     
 </head>
@@ -82,10 +96,22 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
        
         <div id="midscreen">
             
-            <div id=assemblyViewer><b>View Assemblies</b></div>
-            <div id=assemblyCreator><b>Create an Assembly</b></div>
-            <div id=assemblyEditor><b>Edit an Assembly</b></div>
-
+            <div id=assemblyViewer><b>1. Assembly List</b></div>
+            
+            <div id=assemblyCreator><b>2. Create an Assembly</b></div>
+            
+            <div id=assemblyEditor><b>3. Edit an Assembly</b></div>
+            
+            <div id="eventViewer">
+                <b>4. Event list for:&nbsp;<span id="eventsAssemblyName" style="white-space: break-spaces;"></span></b>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" onclick="initAssemblyViewer()">back to Assembly List</button>
+            </div>
+            
+            <div id="eventEditor">
+                <b>5. Event Editor for:&nbsp;<span id="eventsAssemblyName" style="white-space: break-spaces;"></span></b>
+            </div>
+            
             <div id="checkboxen">
                 <input type="checkbox" id="BrethrenCB" name="Brethren" onchange='changeBrethrenCB(this.checked);'>
                 <label for="bro">Brethren</label>
@@ -98,8 +124,10 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
 
             <div id="assemblyInstructions">
                 <button id="createAssembly" class="textButton" onclick="launchNewAssembly()">Click here to create a new assembly.</button>
-                <br> Or select a listed assembly and hit Enter to edit its events,
-                <br> or shift+Enter to change or delete it.
+                <br> Or select an assembly (by clicking in the green, then use arrow keys or start typing its name)
+                <br> and hit <em>enter</em> (<em>return</em>) to view and edit its events,
+                <br> or <em>space</em> to change its name or denomination,
+                <br> or <em>delete</em> (or <em>backspace</em>) to delete it.
                 <br>
             </div> 
 
@@ -114,57 +142,47 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
             </div>
             
             <div id="changeAssembly">
-                <scan id="changeAssemblyPrompt">Change its denomination, or name, or delete it entirely: </scan>
+                <scan id="changeAssemblyPrompt">Change its denomination or name: </scan>
                 <br>
                 <input type="text" id="changingAssemblyName" style="white-space: break-spaces;" size=70>
                 <br>
                 <button type="button" onclick="initAssemblyViewer()">cancel</button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button type="button" onclick="changeAssembly()">change</button>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <button type="button" onclick="deleteAssembly()" style="color:red;">delete</button> 
             </div>
             
-            <div id="eventHeader">
-                <b>Event Editor for:&nbsp;<span id="eventsAssemblyName" style="white-space: break-spaces;"></span></b>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <button type="button" onclick="initAssemblyViewer()">back</button>
-               <br>
-            </div>
             
             <div id="eventInstructions">
                 <br>
-                <button class="textButton" onclick="launchNewEvent()">Click here to create a new event. </button>
-                <br> Or select a listed event and hit Enter to see the state of the assembly at that time,
-                <br> or shift+Enter to change or delete it.
+                <button class="textButton" onclick="launchEditEvent()">Click here to create a new event. </button>
+                <br> Or select a listed event 
+                <br> and hit <em>space</em> to change it,
+                <br> or <em>delete</em> (or <em>backspace</em>) to delete it.
                 <br>
             </div> 
             
-            <div id="newEvent">
-                
-                <form id="editEventForm" onsubmit="eventFormSubmit()">
-                    <br>
-                    <label for="eventDate">date (yyyy/mm/dd):</label>
-                      <input type="text" id="eventDate" size=8 oninput="checkEventDate(this.value)">
-                    <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <label for="eventVerb">verb:</label>
-                    <select name="eventVerb" id="eventVerb"  required="true">
-                    </select>
-                    <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <label>object:</label>
-                    <input type="text" id="assemblyName" size=107 oninput="checkObjectAssembly(this.value)">
-                    <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <label>note:</label>
-                    <textarea type="text" id="eventNote" rows=3 cols=92 oninput="checkEventSubject(this.value)"> </textarea>
-                    <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <input type="submit" value = "cancel"> <input type="submit" value="SAVE">
-                </form>
-            </div>
             
-            <div id="changeEvent"> unimplimented
+            <div id="eventForm">
+                <br>
+                <label for="eventDate">date (yyyy/mm/dd):</label>
+                  <input type="text" id="eventDate" size=8 >
+                <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <label for="eventVerb">verb:</label>
+                <select name="eventVerb" id="eventVerb"  required="true">
+                </select>
+                <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <label>object:</label>
+                <input type="text" id="eventObject" size=70 >
+                <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <label>note:</label>
+                <textarea type="text" id="eventNote" rows=3 cols=60> </textarea>
+                <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" onclick="initEventViewer()">cancel</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" onclick="checkAndSaveEvent()">save</button>
             </div>
-            
-            <div id="assemblyState">
+           
+            <div id="stateOfEvents">
                 <br>
                 date: 1925
                 <br>
@@ -184,7 +202,6 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
                     tabindex="0"
                     role="listbox"
                     aria-labelledby="ss_elem"
-                    onKeyPress="listKeyPress(this,event)" 
                     style="white-space: break-spaces;">
             <!--    onclick ="whatever();"> <!--onselect, onchange don't work -->
                 </ul>
@@ -201,43 +218,48 @@ const divCaches = {
     assemblyViewer:"",
     assemblyCreator:"",
     assemblyEditor:"",
+    eventViewer:"",
+    eventEditor:"",
     assemblyInstructions:"",
     checkboxen:"",
     newAssembly:"",
     changeAssembly:"",
-    eventHeader:"",
     eventInstructions:"",
-    newEvent:"",
-    changeEvent:"",
-    assemblyState:""
+    eventForm:"",
+    stateOfEvents:""
 }
-
 
 const midscreenTypes = {
     assemblyInstructions:["assemblyViewer","checkboxen","assemblyInstructions"], 
     newAssembly:["assemblyCreator","checkboxen","newAssembly"],
     changeAssembly:["assemblyEditor","checkboxen","changeAssembly"],
-    eventInstructions:["eventHeader","eventInstructions"],
-    newEvent:["eventHeader","newEvent"],
-    changeEvent:["eventHeader","changeEvent"], 
-    assemblyState:["eventHeader","assemblyState"],
+    eventInstructions:["eventViewer","eventInstructions"],
+    editEvent:["eventEditor","eventForm"], 
+    stateOfEvents:["eventViewer","stateOfEvents"],
 }
 
-let checkboxState=1; // Don't leave it undefined. 0: assemblies that are neither B nor M, 1 B, 2 M, 3 both
-let bmhc; //for BMHC.js object
+//state
+//   checkbox 0: assemblies that are neither B nor M, 1 B, 2 M, 3 both
+//   whichList "assemblies" or "events"
+//   priorAssemblyName target of event editing
+//   eventIndex index of event being edited or deleted, valid only after a getEventList
+//   hasn't been invalidated by a deleteEvent or addEvent (in which case, just need to redo getEventList).
 
+let state = {checkbox:1, whichList:"assemblies", priorAssemblyName:"", eventIndex:null };
+
+let bmhc =  BMHCobj();
+    
 // Of general utility:
     
+    
 function formatMidscreen(screenType){ //see midScreenTypes
-
+    
     function setCheckboxen() { //0: neither checked, 1 Brethren, 2 Mennonite, 3 both
-        if (document.getElementById("BrethrenCB"))
-            document.getElementById("BrethrenCB").checked  = (checkboxState == 1 || checkboxState == 3);
-        if (document.getElementById("MennonniteCB"))
-            document.getElementById("MennoniteCB").checked = (checkboxState == 2 || checkboxState == 3);
+        if (document.getElementById("BrethrenCB") != null) document.getElementById("BrethrenCB").checked =(state.checkbox == 1 || state.checkbox == 3);
+        if (document.getElementById("MennoniteCB") != null) document.getElementById("MennoniteCB").checked = (state.checkbox == 2 || state.checkbox == 3);
     }
-
-    var htmlStr = "";
+    
+    let htmlStr = "";
     midscreenTypes[screenType].forEach(item => htmlStr+=divCaches[item]);
     document.getElementById("midscreen").innerHTML = htmlStr;
     setCheckboxen(); 
@@ -253,7 +275,7 @@ function cacheDivs(){
 function setVerbHTML(){
     let str = "";
     bmhc.getVerbs().forEach(verb => {
-        str += "<option value=&quot;"+verb+"&quot;>"+verb+"</option>";
+        str += '<option value="'+verb+'">'+verb+'</option>';
     });
     document.getElementById("eventVerb").innerHTML = str;
 }
@@ -267,7 +289,7 @@ function makeLIsOfArray(arr){
     
     arr.forEach((item,i)=>{result+=makeli(i);});
     
-    document.getElementById("ss_elem_list").innerHTML = result; //build them first, so you can innterText them.
+    document.getElementById("ss_elem_list").innerHTML = result; //build them first, so you can innerText them.
     
     arr.forEach((item,i)=> {document.getElementById("xyzzy"+i).innerText = item;});
     
@@ -276,6 +298,7 @@ function makeLIsOfArray(arr){
 //Assembly viewer, screenType 0:
     
 function initAssemblyViewer(){ 
+    state.whichList = "assemblies";
     formatMidscreen("assemblyInstructions");
     setAssemblyListboxInnerHTML();
     document.getElementById("myListbox").style.visibility='visible';
@@ -284,28 +307,29 @@ function initAssemblyViewer(){
 function setAssemblyListboxInnerHTML(){
     var items = [];
     
-    if (checkboxState == 0) items = bmhc.getNeitherAssemblyNames();
-    else if (checkboxState == 1) items = bmhc.getBrethrenAssemblyNames();
-    else if (checkboxState == 2) items = bmhc.getMennoniteAssemblyNames();
+    if (state.checkbox == 0) items = bmhc.getNeitherAssemblyNames();
+    else if (state.checkbox == 1) items = bmhc.getBrethrenAssemblyNames();
+    else if (state.checkbox == 2) items = bmhc.getMennoniteAssemblyNames();
     else items = bmhc.getJointAssemblyNames();
     
     makeLIsOfArray(items);
 }
 
 function changeBrethrenCB(checked){
-    if (checked) checkboxState = checkboxState | 1;
-    else checkboxState = checkboxState & 0xfffffe;  //...11110
+    if (checked) state.checkbox = state.checkbox | 1;
+    else state.checkbox = state.checkbox & 0xfffffe;  //...11110
     setAssemblyNamePrompt();
     setAssemblyListboxInnerHTML();
 }
     
 function changeMennoniteCB(checked){
-    if (checked) checkboxState = checkboxState | 2;
-    else checkboxState = checkboxState & 0xfffffd;  //...11101
+    if (checked) state.checkbox = state.checkbox | 2;
+    else state.checkbox = state.checkbox & 0xfffffd;  //...11101
     setAssemblyNamePrompt();
     setAssemblyListboxInnerHTML();
 }
 
+    /*
 function listKeyPress(that, event){
     //console.log(event.shiftKey, event.altKey, event.ctrlKey, event.metaKey);
     //console.log(that.getAttributeNode("aria-activedescendant").value); //the id of selected item
@@ -314,23 +338,31 @@ function listKeyPress(that, event){
     if (event.charCode == 13){
         var lineId = that.getAttributeNode("aria-activedescendant").value;
         var elementText = document.getElementById(lineId).innerText; //NOT innerHTML
-        if (event.shiftKey)launchChangeAssembly(elementText);
-        else goToEventsEditor(elementText);
-        //if (event.shiftKey) launchChangeAssembly(that.getAttributeNode("aria-activedescendant").value);
-        //else goToEventsEditor(that.getAttributeNode("aria-activedescendant").value);
-    }
-}
+        initEventViewer(elementText);
+    } 
+}   */
+
 
 //onclick only responds to mouse click, not to movement of selection through typing prefixen
 //or arrowUp arrowDn. Perhaps can use "return" key event to drive selection after movement.
-function goToEventsEditor(assemblyName){
+function initEventViewer(assemblyName){
     
+    if (assemblyName == null) assemblyName = state.priorAssemblyName;
+    else state.priorAssemblyName = assemblyName;
+    
+    state.whichList = "events";
     formatMidscreen("eventInstructions");
     document.getElementById("eventsAssemblyName").innerText = assemblyName;
     makeLIsOfArray(bmhc.getEventStrings(assemblyName));
+    document.getElementById("myListbox").style.visibility='visible';
     //console.log(ss_elem_list.getAttribute('aria-activedescendant')); //dom not updated yet, reflects previous value
 }
-    
+function initAssemblyViewer(){ 
+    state.whichList = "assemblies";
+    formatMidscreen("assemblyInstructions");
+    setAssemblyListboxInnerHTML();
+    document.getElementById("myListbox").style.visibility='visible';
+}
 
 // Assembly editing, screenType 1
 // document.getElementById("ss_elem_list").getAttributeNode("aria-activedescendant").value
@@ -339,7 +371,7 @@ function setAssemblyNamePrompt(){
     var denom;
     if (!document.getElementById("assemblyNamePrompt"))return;
     
-    switch (checkboxState){
+    switch (state.checkbox){
         case 0: denom = "denominationless"; break;
         case 1: denom = "Brethren"; break;
         case 2: denom = "Mennonite"; break;
@@ -355,40 +387,31 @@ function launchNewAssembly(name){
     document.getElementById("myListbox").style.visibility='hidden';
 }
     
-function launchNewEvent(name){
-    formatMidscreen("newEvent");
-    setVerbHTML();
-    document.getElementById("myListbox").style.visibility='visible';
-}
-
 function saveAssembly(){
     const assemblyName = document.getElementById("inputAssemblyName").value;
-    const returnMsg = bmhc.addAssembly(assemblyName,checkboxState);
+    const returnMsg = bmhc.addAssembly(assemblyName,state.checkbox);
     if (returnMsg != "ok") alert(returnMsg);
     else initAssemblyViewer();
 }
 
-var globalPriorAssemblyName;
 function launchChangeAssembly(name){
-    globalPriorAssemblyName = name; //cache it for changeAssembly
-    checkboxState = bmhc.getDenomination(name);
+    state.priorAssemblyName = name; //cache it for changeAssembly
+    state.checkbox = bmhc.getDenomination(name);
     formatMidscreen("changeAssembly");
     document.getElementById("changingAssemblyName").value = name;
     document.getElementById("myListbox").style.visibility='hidden';
 }
     
 function changeAssembly(){
-    const assemblyName = document.getElementById("changingAssemblyName").value;
-    const returnMsg = bmhc.changeAssembly(globalPriorAssemblyName,assemblyName, checkboxState);
+    const assemblyName = document.getElementById("changingAssemblyName").value.trim();
+    const returnMsg = bmhc.changeAssembly(state.priorAssemblyName,assemblyName, state.checkbox);
     console.log(returnMsg);
     if (returnMsg != "ok") alert(returnMsg);
     else initAssemblyViewer();
 }
     
-function deleteAssembly(){
-    const name = document.getElementById("changingAssemblyName").value;
+function deleteAssembly(name){
     let refCount = 0;
-    
     if (!bmhc.assemblyExists(name)) alert("This assembly doesn't exist.")
     else{
         if (confirm("This will also delete all events of this assembly, and remove all references to this assembly in other event affiliations or notes. OK?")){
@@ -396,6 +419,76 @@ function deleteAssembly(){
             if (refCount) alert(refCount+" references removed.");
             initAssemblyViewer();
         }
+    }
+}
+
+//    ------------------------------------- event screens --------------------- 
+    
+// for installEventListener the word 'event' refers to window keydown events, not to assembly events!    
+function installEventListener(){
+    document.getElementById('ss_elem_list').addEventListener('keydown', function(event) { 
+        const itemId = document.getElementById('ss_elem_list').getAttributeNode("aria-activedescendant").value;
+        const item = document.getElementById(itemId).innerText; //NOT innerHTML
+
+        if(state.whichList === 'assemblies'){
+            //item is an assembly name
+            if (event.key === 'Backspace' || event.key === 'Delete') { 
+                event.preventDefault();
+                deleteAssembly(item);
+            } else if (event.key === ' ' || event.key === 'Spacebar'){
+                event.preventDefault();
+                launchChangeAssembly(item);
+            } else if (event.key === 'Enter'){
+                event.preventDefault();
+                initEventViewer(item);
+            }
+        } else if (state.whichList === 'events') { 
+            const index = parseInt(itemId.slice(5)); //remove the xyzzy
+            if (event.key === 'Backspace' || event.key === 'Delete') { 
+                event.preventDefault();
+                bmhc.deleteEvent(state.priorAssemblyName,index);
+                initEventViewer();
+            } else if (event.key === ' ' || event.key === 'Spacebar'){
+                event.preventDefault();
+                launchEditEvent(index);
+            }
+        }
+    })
+}
+
+   
+function launchEditEvent(eventIndex){
+    state.eventIndex = eventIndex; //if null means it's a new event to be added
+    formatMidscreen("editEvent");
+    setVerbHTML();
+    document.getElementById("myListbox").style.visibility='visible';
+    
+    if (eventIndex == null) setEventFields("","","","");
+    else {
+        let ev = bmhc.getEvent(state.priorAssemblyName,eventIndex);
+        setEventFields(ev.date, ev.verb, ev.object, ev.note);
+    }
+}
+    
+function setEventFields(date,verb,obj,note){
+    document.getElementById("eventDate").value = date;
+    document.getElementById("eventVerb").value = verb;
+    document.getElementById("eventObject").value = obj;
+    document.getElementById("eventNote").value = note;
+}
+    
+function checkAndSaveEvent(){
+    const date = document.getElementById("eventDate").value;
+    const verb = document.getElementById("eventVerb").value;
+    const obj  = document.getElementById("eventObject").value;
+    const note = document.getElementById("eventNote").value;
+    
+    const result = bmhc.addEvent(state.priorAssemblyName,date,verb,obj,note,false); //just checking, won't add
+    if (result != 'ok') { alert(result);} //and do nothing, stay put
+    else {
+        bmhc.deleteEvent(state.priorAssemblyName,state.eventIndex); // if eventIndex is null, does nothing
+        bmhc.addEvent(state.priorAssemblyName,date,verb,obj,note,true); //do it this time
+        setEventFields('','','',''); //and stay put, ready to add another
     }
 }
 
@@ -407,8 +500,7 @@ function ultest(){
 }
     
 cacheDivs();
-bmhc = BMHCobj();
-checkboxState = 1;
+installEventListener();                     
 initAssemblyViewer();
     
 </script>
