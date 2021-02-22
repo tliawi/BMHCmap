@@ -58,6 +58,11 @@ function BMHCobj(){
         Object.entries(db.assemblies).forEach(([name, assemblyData]) => idToName[assemblyData.id] = name);
     }
     
+    //only works with a valid date!!
+    function yearLater(date){
+        let yr = parseInt(date);
+        return (yr+1).toString() + date.substr(4);
+    }
 
     function init(){
         const mockupAssemblies = {
@@ -232,23 +237,23 @@ function BMHCobj(){
     // can be used to delete that event.
     // There is no changeEvent: you have to first delete the old event and then add a new one.
     
+    function naiveEvent(date,verb,object,note){
+        this.date = date;
+        this.verb = verb;
+        this.object = object;
+        this.note = note;
+    }
+    
     //returns "ok" if it succeeds, else an error statement
     //if justChecking is true, do not do final add, just do all the checks
     function addEvent(subjectAssembly,date,verb,object,note, doIt){ 
         
         function placeValidatedEvent(){
             
-            function event(MIdate,verb,object,note){
-                this.date = date;
-                this.verb = verb;
-                this.object = object;
-                this.note = note;
-            }
-            
             function compareDates(e1,e2){return (e1.date < e2.date)?-1:((e1.date > e2.date)?1:0);}
             
             const evs = db.assemblies[subjectAssembly].events;
-            evs.push(new event(date,verb,object,note));
+            evs.push(new naiveEvent(date,verb,object,note));
             evs.sort(compareDates);
         }
         
@@ -287,10 +292,9 @@ function BMHCobj(){
                 if (db.labels[object]) return "ok";
                 else return "unrecognized label";
             case "see-note":
-                if (object.length > 0) return "Object should be blank. Put info in note.";
+                if (object.length > 0) return "see-note bject should be blank. Put info in note.";
                 else return "ok";
             default: 
-                console.log("verb = "+verb);
                 return "verb not recognized";
 
         }
@@ -307,6 +311,7 @@ function BMHCobj(){
     //or "yyyy/mm   "
     //or "yyyy/mm/dd"
     //boolean
+    //unfinished: but 30 days hath sept,apr,jun and nov. And feb
     function checkDate(candidate){
         
         function remainderBlank(i){ return candidate.substr(i).trim().length == 0;}
@@ -323,7 +328,12 @@ function BMHCobj(){
         if (remainderBlank(7)) return "ok"; // yyyy/mm
         if (candidate.charAt(7) != '/') return "date must have a slash between month and day. Think yyyy/mm/dd ";
         if (!allDigits(candidate,8,2)) return "date requires two-digit days, like 6th Dec 1888 is 1888/12/06";
-        if (candidate.substr(8,2)<"01" || candidate.substr(8,2) > "31") return "date day out of range"; //short months sneak through
+        //check for 30 days hath september, etc...
+        let mm = parseInt(candidate.substr(5,2),10)-1; //Date requires 0 based months
+        let d = new Date( parseInt(candidate.substr(0,4),10), mm, parseInt(candidate.substr(8,2),10));
+        //Given too many days, like the 29th feb in a non-leap-year month, Date constructor wraps it into the following month...
+        if (d.getMonth() != mm) return "That month doesn't have that many days." 
+//      if (candidate.substr(8,2)<"01" || candidate.substr(8,2) > "31") return "date day out of range"; //short months sneak through
         return "ok"; //yyyy/mm/dd
     }
 
@@ -348,6 +358,11 @@ function BMHCobj(){
         refs.forEach(ref=> { str = str.replace(ref,db.assemblies[ref].id);});
         return str;
     }
+    
+    //returns naiveEvent of dereferenced strings
+    function stringEvent(ev){
+        return new naiveEvent( ev.date, ev.verb, (ev.verb == "set-affiliation")?idToName[ev.object]:ev.object, idRefsToNameRefs(ev.note));
+    }
                          
     //returns an array of eventToStrings corresponding to the events of an assembly
     //the indices of events in this array are valid to use in deleteEvent IFF there have been no addEvents or
@@ -362,18 +377,18 @@ function BMHCobj(){
         }
         
         function eventToString(ev){
-            return buff(ev.date,10) + " " + ev.verb + " " + ((ev.verb == "set-affiliation")?idToName[ev.object]:ev.object) + " " + ((ev.note.length)?"note:"+idRefsToNameRefs(ev.note):""); //unfinished, could throw if assembly deleted.
+            let sev = stringEvent(ev);
+            return buff(sev.date,10) + ' ' + sev.verb + (sev.object.length?(' '+sev.object):'') + (sev.note.length?(" note:"+ sev.note):"");
         }
         
         if (assemblyExists(assemblyName)) {
-            const evs = db.assemblies[assemblyName].events;
             return db.assemblies[assemblyName].events.map(ev => eventToString(ev));
         }
         else return [];
     }
     
-    function getEvent(assemblyName,index){
-        if (index && assemblyExists(assemblyName)) return {...db.assemblies[assemblyName].events[index]}; //shallow clone
+    function getStringEvent(assemblyName,index){
+        if (assemblyExists(assemblyName) && index >=0 && index < db.assemblies[assemblyName].events.length) return stringEvent(db.assemblies[assemblyName].events[index]);
         else return null;
     }
         
@@ -385,6 +400,7 @@ function BMHCobj(){
     
     return {getVerbs:getVerbs,
             cutOffEnds:cutOffEnds,
+            yearLater:yearLater,
             getAllAssemblyNames:getAllAssemblyNames,
             getMennoniteAssemblyNames:getMennoniteAssemblyNames,
             getBrethrenAssemblyNames:getBrethrenAssemblyNames,
@@ -397,7 +413,7 @@ function BMHCobj(){
             deleteAssembly:deleteAssembly,
             
             addEvent:addEvent,
-            getEvent:getEvent,
+            getStringEvent:getStringEvent,
             getEventStrings:getEventStrings,
             deleteEvent:deleteEvent,
             

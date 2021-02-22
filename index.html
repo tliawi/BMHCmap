@@ -109,7 +109,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
             </div>
             
             <div id="eventEditor">
-                <b>5. Event Editor for:&nbsp;<span id="eventsAssemblyName" style="white-space: break-spaces;"></span></b>
+                <b>5. Event Editor for:&nbsp;<span id="eventAssemblyName" style="white-space: break-spaces;"></span></b>
             </div>
             
             <div id="checkboxen">
@@ -357,12 +357,6 @@ function initEventViewer(assemblyName){
     document.getElementById("myListbox").style.visibility='visible';
     //console.log(ss_elem_list.getAttribute('aria-activedescendant')); //dom not updated yet, reflects previous value
 }
-function initAssemblyViewer(){ 
-    state.whichList = "assemblies";
-    formatMidscreen("assemblyInstructions");
-    setAssemblyListboxInnerHTML();
-    document.getElementById("myListbox").style.visibility='visible';
-}
 
 // Assembly editing, screenType 1
 // document.getElementById("ss_elem_list").getAttributeNode("aria-activedescendant").value
@@ -460,12 +454,13 @@ function installEventListener(){
 function launchEditEvent(eventIndex){
     state.eventIndex = eventIndex; //if null means it's a new event to be added
     formatMidscreen("editEvent");
+    document.getElementById("eventAssemblyName").innerText = state.priorAssemblyName;
     setVerbHTML();
     document.getElementById("myListbox").style.visibility='visible';
     
     if (eventIndex == null) setEventFields("","","","");
     else {
-        let ev = bmhc.getEvent(state.priorAssemblyName,eventIndex);
+        let ev = bmhc.getStringEvent(state.priorAssemblyName,eventIndex);
         setEventFields(ev.date, ev.verb, ev.object, ev.note);
     }
 }
@@ -478,17 +473,21 @@ function setEventFields(date,verb,obj,note){
 }
     
 function checkAndSaveEvent(){
-    const date = document.getElementById("eventDate").value;
-    const verb = document.getElementById("eventVerb").value;
-    const obj  = document.getElementById("eventObject").value;
-    const note = document.getElementById("eventNote").value;
+    let date = document.getElementById("eventDate").value.trim();
+    let verb = document.getElementById("eventVerb").value.trim();
+    let obj  = document.getElementById("eventObject").value.trim();
+    let note = document.getElementById("eventNote").value.trim();
     
     const result = bmhc.addEvent(state.priorAssemblyName,date,verb,obj,note,false); //just checking, won't add
     if (result != 'ok') { alert(result);} //and do nothing, stay put
     else {
         bmhc.deleteEvent(state.priorAssemblyName,state.eventIndex); // if eventIndex is null, does nothing
         bmhc.addEvent(state.priorAssemblyName,date,verb,obj,note,true); //do it this time
-        setEventFields('','','',''); //and stay put, ready to add another
+        makeLIsOfArray(bmhc.getEventStrings(state.priorAssemblyName)); //so listBox reflects changes
+        if (verb == 'set-weight') date = bmhc.yearLater(date); 
+        else {date = ''; verb = '';};
+        setEventFields(date, verb,'',''); //and stay put, ready to add another of same verb (helps for set-weight)
+        
     }
 }
 
