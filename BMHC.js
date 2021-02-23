@@ -26,7 +26,7 @@ function BMHCobj(){
     
     const db = new bmhcDatabase();
     
-    var idToName = {}; //a dictionary of numeric id:string assemblyName pairs, 
+    let idToName = {}; //a dictionary of numeric id:string assemblyName pairs, 
     // not necessarily sorted if we merge concurrent access files...
     
     //the reason for ids, and idToName, is so one can change the name of an assembly
@@ -55,6 +55,7 @@ function BMHCobj(){
     }
     
     function buildIdToName(){
+        idToName={};
         Object.entries(db.assemblies).forEach(([name, assemblyData]) => idToName[assemblyData.id] = name);
     }
     
@@ -396,11 +397,26 @@ function BMHCobj(){
         if (index && assemblyExists(assemblyName)) db.assemblies[assemblyName].events.splice(index,1); //remove the indexed event
     }
     
+    function setData(jsnTxt){
+        db.assemblies = JSON.parse(jsnTxt);
+        buildIdToName();
+    }
+    
+    function getData(){
+        let jsn = JSON.stringify(db.asssemblies);
+        console.log(jsn);
+        return jsn;
+    }
+    
     init();
     
     return {getVerbs:getVerbs,
             cutOffEnds:cutOffEnds,
             yearLater:yearLater,
+            
+            getData:getData,
+            setData:setData,
+            
             getAllAssemblyNames:getAllAssemblyNames,
             getMennoniteAssemblyNames:getMennoniteAssemblyNames,
             getBrethrenAssemblyNames:getBrethrenAssemblyNames,
@@ -420,8 +436,6 @@ function BMHCobj(){
             //temporary, for testing only
             idToName:idToName,
             addMockupEvents:addMockupEvents,
-            idRefsToNameRefs:idRefsToNameRefs,
-            nameRefsToIdRefs:nameRefsToIdRefs,
             db:db,
            };
 }

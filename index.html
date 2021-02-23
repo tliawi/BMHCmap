@@ -86,6 +86,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
 <script src="listbox/js/listbox-scrollable.js" type="text/javascript"></script>   
 <script src="listbox/js/utils.js" type="text/javascript"></script>
 
+<script src="BMHCData.js"></script>
 <script src="BMHC.js"></script>
     
 </head>
@@ -102,7 +103,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
                     <br><br>
                     <span STYLE="font-size:x-large"><b>Map data editor</b></span>
                 </p>
-                <div class="d-table-cell tar" >
+                <div class="d-table-cell tar" > where does it put this text
                     <button type="button" class='load-save' onclick='loadDB()'>Load</button> <br>
                     <br>
                     <button type="button" class='load-save' onclick='saveDB()'>Save</button> <br>
@@ -531,22 +532,26 @@ function loadDB(){
     initAssemblyViewer();
 }
 
-    function makeTextFile(text) {
-        let data = new Blob([text], {type: 'text/plain'});
+function makeTextFile(text) {
+    let data = new Blob([text], {type: 'text/plain'});
 
-        // If we are replacing a previously generated file we need to
-        // manually revoke the object URL to avoid memory leaks.
-        if (state.textFile !== null) window.URL.revokeObjectURL(state.textFile);
+    // If we are replacing a previously generated file we need to
+    // manually revoke the object URL to avoid memory leaks.
+    if (state.textFile !== null) window.URL.revokeObjectURL(state.textFile);
 
-        state.textFile = window.URL.createObjectURL(data);
+    state.textFile = window.URL.createObjectURL(data);
 
-        return state.textFile;
-    };
+    return state.textFile;
+};
+
+   
+function wrapBmhcDataInJS(){
+    return "function bmhcData(){ return "+bmhc.getData()+"; }" ;
+}
     
 function saveDB(){
-    
     let link = document.getElementById('downloadlink');
-    link.href = makeTextFile('the rain is wet') //bmhc.renderDB();
+    link.href = makeTextFile(wrapBmhcDataInJS()) 
     link.style.visibility = 'visible'; //turn it on so user can accept/reject download to HD.
 }
 
@@ -561,6 +566,7 @@ function ultest(){
         alert(event.target.innerText);
     };
 }
+ 
     
 cacheDivs();
 installEventListener();                     
