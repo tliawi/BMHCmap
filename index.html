@@ -53,12 +53,27 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
         font-family:'Monaco';
         font-size:12px;
     }
-/*
-    .title {
-        box-sizing: border-box;
-        padding: 16px 0px;
+    
+    .d-table {
+      display:table;
     }
-*/    
+
+    .d-table-cell {
+      display:table-cell;
+    }
+
+    .w-100 {
+      width: 100%;
+    }
+
+    .tar {
+      text-align: right;
+    }
+    
+    .load-save{
+        font-size: 14px;
+    }
+    
     #ss_elem_list, #inputAssemblyName, #changingAssemblyName {
         background-color:#d0efd0;
     }
@@ -71,30 +86,37 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
 <script src="listbox/js/listbox-scrollable.js" type="text/javascript"></script>   
 <script src="listbox/js/utils.js" type="text/javascript"></script>
 
-    
 <script src="BMHC.js"></script>
     
 </head>
     
 <body>
+    
    <div class="container">
-        <div class="title">
-            <scan id="test" style="white-space: break-spaces;">Brethren Mennonite Heritage Center</scan>
-            
-<!-- strategy for making sure that for assembly names or in event objects or notes
-  whatever the user types (including accidental html-interpreted symbols) 
-  is what they see (save trimming blanks from the ends) 
-  and what is saved in the db:
-     use "white-space: break-spaces;", 
-     and get values from inputs, or innerText (not innerHTML) from divs and scans etc.,
-     and set innerText (not innerHTML) of divs and scans etc.
-     AND use a constant character width font, so that extra blanks are clearly perceptible.
-  The "test" field above was used from javascript console to try out this sort of thing.
--->
-            <h3>Map data editor</h3>
-        </div>
        
         <div id="midscreen">
+            
+            <div id="assemblyHeader" class="d-table w-100" >
+                <p class="d-table-cell">
+                    Brethren Mennonite Heritage Center
+                    <br><br>
+                    <span STYLE="font-size:x-large"><b>Map data editor</b></span>
+                </p>
+                <div class="d-table-cell tar" >
+                    <button type="button" class='load-save' onclick='loadDB()'>Load</button> <br>
+                    <br>
+                    <button type="button" class='load-save' onclick='saveDB()'>Save</button> <br>
+                    <a download="bmhcDB.txt" id="downloadlink" style="visibility: hidden" onclick='makeMeDisappear(this)'>download</a>
+                </div>
+           </div>
+       
+            <div id="header" class="d-table w-100" >
+                <p class='d-table-cell'>
+                    Brethren Mennonite Heritage Center
+                    <br>
+                    <span STYLE="font-size:large"><b>Map data editor</b></span>
+                </p>
+           </div>
             
             <div id=assemblyViewer><b>1. Assembly List</b></div>
             
@@ -129,7 +151,17 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
                 <br> or <em>space</em> to change its name or denomination,
                 <br> or <em>delete</em> (or <em>backspace</em>) to delete it.
                 <br>
-            </div> 
+            </div>
+            
+<!-- strategy for making sure that for assembly names or in event objects or notes
+  whatever the user types (including accidental html-interpreted symbols) 
+  is what they see (save trimming blanks from the ends) 
+  and what is saved in the db:
+     use "white-space: break-spaces;", 
+     and get values from inputs, or innerText (not innerHTML) from divs and scans etc.,
+     and set innerText (not innerHTML) of divs and scans etc.
+     AND use a constant character width font, so that extra blanks are clearly perceptible.
+-->
 
             <div id="newAssembly">
                 <scan id="assemblyNamePrompt">Enter a unique assembly name: </scan>
@@ -215,6 +247,8 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
 //globals
     
 const divCaches = {
+    assemblyHeader:'',
+    header:'',
     assemblyViewer:"",
     assemblyCreator:"",
     assemblyEditor:"",
@@ -230,12 +264,12 @@ const divCaches = {
 }
 
 const midscreenTypes = {
-    assemblyInstructions:["assemblyViewer","checkboxen","assemblyInstructions"], 
-    newAssembly:["assemblyCreator","checkboxen","newAssembly"],
-    changeAssembly:["assemblyEditor","checkboxen","changeAssembly"],
-    eventInstructions:["eventViewer","eventInstructions"],
-    editEvent:["eventEditor","eventForm"], 
-    stateOfEvents:["eventViewer","stateOfEvents"],
+    assemblyInstructions:["assemblyHeader","assemblyViewer","checkboxen","assemblyInstructions"], 
+    newAssembly:["header","assemblyCreator","checkboxen","newAssembly"],
+    changeAssembly:["header","assemblyEditor","checkboxen","changeAssembly"],
+    eventInstructions:["header","eventViewer","eventInstructions"],
+    editEvent:["header","eventEditor","eventForm"], 
+    stateOfEvents:["header","eventViewer","stateOfEvents"],
 }
 
 //state
@@ -245,7 +279,7 @@ const midscreenTypes = {
 //   eventIndex index of event being edited or deleted, valid only after a getEventList
 //   hasn't been invalidated by a deleteEvent or addEvent (in which case, just need to redo getEventList).
 
-let state = {checkbox:1, whichList:"assemblies", priorAssemblyName:"", eventIndex:null };
+let state = {checkbox:1, whichList:"assemblies", priorAssemblyName:"", eventIndex:null, textFile:null };
 
 let bmhc =  BMHCobj();
     
@@ -491,6 +525,36 @@ function checkAndSaveEvent(){
     }
 }
 
+
+function loadDB(){
+    //bmhc.loadDB();
+    initAssemblyViewer();
+}
+
+    function makeTextFile(text) {
+        let data = new Blob([text], {type: 'text/plain'});
+
+        // If we are replacing a previously generated file we need to
+        // manually revoke the object URL to avoid memory leaks.
+        if (state.textFile !== null) window.URL.revokeObjectURL(state.textFile);
+
+        state.textFile = window.URL.createObjectURL(data);
+
+        return state.textFile;
+    };
+    
+function saveDB(){
+    
+    let link = document.getElementById('downloadlink');
+    link.href = makeTextFile('the rain is wet') //bmhc.renderDB();
+    link.style.visibility = 'visible'; //turn it on so user can accept/reject download to HD.
+}
+
+function makeMeDisappear(that){
+    that.style.visibility = 'hidden';
+    return true; //so that default behavior, saveing the file, is done.
+}
+    
 function ultest(){
     var ul = document.getElementById('ss_elem_list');
     ul.onclick = function(event) {
