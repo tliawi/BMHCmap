@@ -64,44 +64,42 @@ function BMHCobj(){
         let yr = parseInt(date);
         return (yr+1).toString() + date.substr(4);
     }
-
+/*
     function init(){
         const mockupAssemblies = {
-            "2nd District of Virginia":{id:10, mb:1,events:[],states:[]},
-            "Brethren Woods Camp and Retreat Center":{id:2, mb:1,events:[],states:[]},
-            "Bridgewater":{id:4, mb:1,events:[],states:[]},
-            "Church of the Brethren":{id:3, mb:1,events:[],states:[]},
-            "Cooks Creek":{id:8, mb:1,events:[],states:[]},
-            "Dayton":{id:7, mb:1,events:[],states:[]},
-            "Garber's":{id:6, mb:1,events:[],states:[]},
-            "German Baptist Brethren":{id:1, mb:1,events:[],states:[]},
-            "Harrisonburg First":{id:20, mb:1,events:[],states:[]},
-            "Meeting at Solomon Garber home":{id:18, mb:1,events:[],states:[]},
-            "Park View":{id:19, mb:2,events:[],states:[]},
-            "Community (Harrisonburg)":{id:17, mb:2,events:[],states:[]},
-            "Dayton Mennonite":{id:16, mb:1,events:[],states:[]},
-            "Pike":{id:15, mb:2,events:[],states:[]}, 
-            "Bank":{id:14, mb:2,events:[],states:[]},
-            "Weaver's":{id:12, mb:2,events:[],states:[]},
-            "Harrisonburg":{id:13, mb:2,events:[],states:[]},
-            "Pleasant View":{id:25, mb:2,events:[],states:[]},
-            "Virginia Conference":{id:27, mb:2,events:[],states:[]},
-            "MCUSA":{id:5, mb:2,events:[],states:[]},
-            "Shalom (Anne Arbor)":{id:21, mb:3,events:[],states:[]},
-            "the National Cathedral":{id:22, mb:0,events:[],states:[]},
-            "Beaver Creek":{id:30, mb:1,events:[],states:[]},
-            "Montezuma":{id:31, mb:1,events:[],states:[]},
-            "Summit":{id:32, mb:1,events:[],states:[]},
-            "Stanton":{id:33, mb:1,events:[],states:[]},
-            "Mount Bethel":{id:34, mb:1,events:[],states:[]},
+            "2nd District of Virginia":{id:10, mb:1,events:[]},
+            "Brethren Woods Camp and Retreat Center":{id:2, mb:1,events:[]},
+            "Bridgewater":{id:4, mb:1,events:[]},
+            "Church of the Brethren":{id:3, mb:1,events:[]},
+            "Cooks Creek":{id:8, mb:1,events:[]},
+            "Dayton":{id:7, mb:1,events:[]},
+            "Garber's":{id:6, mb:1,events:[]},
+            "German Baptist Brethren":{id:1, mb:1,events:[]},
+            "Harrisonburg First":{id:20, mb:1,events:[]},
+            "Meeting at Solomon Garber home":{id:18, mb:1,events:[]},
+            "Park View":{id:19, mb:2,events:[]},
+            "Community (Harrisonburg)":{id:17, mb:2,events:[]},
+            "Dayton Mennonite":{id:16, mb:1,events:[]},
+            "Pike":{id:15, mb:2,events:[]}, 
+            "Bank":{id:14, mb:2,events:[]},
+            "Weaver's":{id:12, mb:2,events:[]},
+            "Harrisonburg":{id:13, mb:2,events:[]},
+            "Pleasant View":{id:25, mb:2,events:[]},
+            "Virginia Conference":{id:27, mb:2,events:[]},
+            "MCUSA":{id:5, mb:2,events:[]},
+            "Shalom (Anne Arbor)":{id:21, mb:3,events:[]},
+            "the National Cathedral":{id:22, mb:0,events:[]},
+            "Beaver Creek":{id:30, mb:1,events:[]},
+            "Montezuma":{id:31, mb:1,events:[]},
+            "Summit":{id:32, mb:1,events:[]},
+            "Stanton":{id:33, mb:1,events:[]},
+            "Mount Bethel":{id:34, mb:1,events:[]}
         };
         
         //philosopy: maintain assemblies in sorted key order, is read more often than written.
         db.assemblies = sortObjByKeys(mockupAssemblies);
         buildIdToName();
-        
         addMockupEvents();
-
     }
     
     function addMockupEvents(){
@@ -111,7 +109,9 @@ function BMHCobj(){
         addEvent("Bridgewater","1907","set-affiliation","2nd District of Virginia","[Bridgewater] becomes independent from [Cooks Creek]",1);
         addEvent("Bridgewater","1915","set-label","paid minister","",1);
     }
-        
+    */
+    
+    
     function getAllAssemblyNames(){
         return Object.keys(db.assemblies);
     }
@@ -397,18 +397,18 @@ function BMHCobj(){
         if (index && assemblyExists(assemblyName)) db.assemblies[assemblyName].events.splice(index,1); //remove the indexed event
     }
     
-    function setData(jsnTxt){
-        db.assemblies = JSON.parse(jsnTxt);
+    //used to initialize db.assemblies from file
+    function setData(data){
+        db.assemblies = data;
         buildIdToName();
     }
     
+    //used to create a file copy of db.assemblies
     function getData(){
-        let jsn = JSON.stringify(db.asssemblies);
-        console.log(jsn);
-        return jsn;
+        return JSON.stringify(db.assemblies);
     }
     
-    init();
+    //init();
     
     return {getVerbs:getVerbs,
             cutOffEnds:cutOffEnds,
@@ -434,8 +434,6 @@ function BMHCobj(){
             deleteEvent:deleteEvent,
             
             //temporary, for testing only
-            idToName:idToName,
-            addMockupEvents:addMockupEvents,
-            db:db,
+            db:db
            };
 }

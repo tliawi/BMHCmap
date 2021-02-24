@@ -13,19 +13,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
 
 <head>
 <meta charset="utf8">
-    <!--
-<link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/2016/base.css">
-<link rel="stylesheet" href="../css/core.css">
-<script src="../js/examples.js"></script>
-<script src="../js/highlight.pack.js"></script>
-<script src="../js/app.js"></script>
-<script src="../js/utils.js" type="text/javascript"></script>
-
-<link href="css/listbox.css" rel="stylesheet">
-<script src="js/listbox.js" type="text/javascript"></script>
-<script src="js/toolbar.js" type="text/javascript"></script>
-<script src="js/main.js" type="text/javascript"></script>
-    -->
+  
 <style>
   
     body {
@@ -86,8 +74,8 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
 <script src="listbox/js/listbox-scrollable.js" type="text/javascript"></script>   
 <script src="listbox/js/utils.js" type="text/javascript"></script>
 
-<script src="BMHCData.js"></script>
-<script src="BMHC.js"></script>
+<script src="bmhcData.js"></script>
+<script src="bmhc.js"></script>
     
 </head>
     
@@ -104,10 +92,10 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
                     <span STYLE="font-size:x-large"><b>Map data editor</b></span>
                 </p>
                 <div class="d-table-cell tar" > where does it put this text
-                    <button type="button" class='load-save' onclick='loadDB()'>Load</button> <br>
+                    <button type="button" class='load-save' onclick='loadData()'>Load</button> <br>
                     <br>
-                    <button type="button" class='load-save' onclick='saveDB()'>Save</button> <br>
-                    <a download="bmhcDB.txt" id="downloadlink" style="visibility: hidden" onclick='makeMeDisappear(this)'>download</a>
+                    <button type="button" class='load-save' onclick='saveData()'>Save</button> <br>
+                    <a download="bmhcData.js" id="downloadlink" style="visibility: hidden" onclick='makeMeDisappear(this)'>download</a>
                 </div>
            </div>
        
@@ -282,7 +270,7 @@ const midscreenTypes = {
 
 let state = {checkbox:1, whichList:"assemblies", priorAssemblyName:"", eventIndex:null, textFile:null };
 
-let bmhc =  BMHCobj();
+let bmhc =  BMHCobj(); bmhc.setData(bmhcData());
     
 // Of general utility:
     
@@ -527,7 +515,7 @@ function checkAndSaveEvent(){
 }
 
 
-function loadDB(){
+function loadData(){
     //bmhc.loadDB();
     initAssemblyViewer();
 }
@@ -549,7 +537,7 @@ function wrapBmhcDataInJS(){
     return "function bmhcData(){ return "+bmhc.getData()+"; }" ;
 }
     
-function saveDB(){
+function saveData(){
     let link = document.getElementById('downloadlink');
     link.href = makeTextFile(wrapBmhcDataInJS()) 
     link.style.visibility = 'visible'; //turn it on so user can accept/reject download to HD.
@@ -567,7 +555,7 @@ function ultest(){
     };
 }
  
-    
+
 cacheDivs();
 installEventListener();                     
 initAssemblyViewer();
