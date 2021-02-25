@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML 5>
 <html lang="en" dir="ltr">
     
 <!--
@@ -31,7 +31,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
     }
 
     .textButton {
-        padding: 4px 0px;
+        padding: 4px 1px;
         border: none;
         font-family: 'Times New Roman', serif;
         background-color:#fffaf0;
@@ -43,15 +43,11 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
     }
     
     .d-table {
-      display:table;
+      display:flex;
     }
 
-    .d-table-cell {
-      display:table-cell;
-    }
-
-    .w-100 {
-      width: 100%;
+    .d-table div {
+      flex: 1;
     }
 
     .tar {
@@ -80,55 +76,53 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
 </head>
     
 <body>
-    
+
    <div class="container">
        
-        <div id="midscreen">
-            
-            <div id="assemblyHeader" class="d-table w-100" >
-                <p class="d-table-cell">
-                    Brethren Mennonite Heritage Center
-                    <br><br>
-                    <span STYLE="font-size:x-large"><b>Map data editor</b></span>
-                </p>
-                <div class="d-table-cell tar" > where does it put this text
-                    <button type="button" class='load-save' onclick='loadData()'>Load</button> <br>
-                    <br>
-                    <button type="button" class='load-save' onclick='saveData()'>Save</button> <br>
-                    <a download="bmhcData.js" id="downloadlink" style="visibility: hidden" onclick='makeMeDisappear(this)'>download</a>
+       <div id="header">
+                <div class="d-table" >
+                    <div>
+                        Brethren Mennonite Heritage Center
+                        <br>
+                        <p> <span STYLE="font-size:x-large"><b>Map data editor</b></span></p>
+                    </div>
+                    <div class="tar">
+                        <button type="button" class='load-save' onclick='saveData()'>Save database</button> <br>
+                        <a download="bmhcData.js" id="downloadlink" style="visibility: hidden" onclick='makeMeDisappear(this)'>OK to download?</a>
+                    </div>
                 </div>
+                <hr>
            </div>
        
-            <div id="header" class="d-table w-100" >
-                <p class='d-table-cell'>
-                    Brethren Mennonite Heritage Center
-                    <br>
-                    <span STYLE="font-size:large"><b>Map data editor</b></span>
-                </p>
-           </div>
+        <div id="midscreen">
+
+            <div id="assemblyViewer" ><b>1. Assembly List</b><br></div>
             
-            <div id=assemblyViewer><b>1. Assembly List</b></div>
+            <div id="assemblyCreator" ><b>1.a Create an Assembly</b><br></div>
             
-            <div id=assemblyCreator><b>2. Create an Assembly</b></div>
-            
-            <div id=assemblyEditor><b>3. Edit an Assembly</b></div>
+            <div id="assemblyEditor" ><b>1.b Edit an Assembly</b><br></div>
             
             <div id="eventViewer">
-                <b>4. Event list for:&nbsp;<span id="eventsAssemblyName" style="white-space: break-spaces;"></span></b>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <button type="button" onclick="initAssemblyViewer()">back to Assembly List</button>
+                <div class="d-table">
+                    <div>
+                        <b>2. Event list for:&nbsp;<span id="eventsAssemblyName" style="white-space: break-spaces;"></span><br></b>
+                    </div>
+                    <div class="tar">
+                        <button type="button" class="load-save" onclick="initAssemblyViewer()">back to Assembly List</button>
+                    </div>
+                </div>
             </div>
             
             <div id="eventEditor">
-                <b>5. Event Editor for:&nbsp;<span id="eventAssemblyName" style="white-space: break-spaces;"></span></b>
+                <b>2.b Event Editor for:&nbsp;<span id="eventAssemblyName" style="white-space: break-spaces;"></span></b>
             </div>
             
             <div id="checkboxen">
                 <input type="checkbox" id="BrethrenCB" name="Brethren" onchange='changeBrethrenCB(this.checked);'>
-                <label for="bro">Brethren</label>
+                Brethren
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <input type="checkbox" id="MennoniteCB" name="Mennonite" onchange='changeMennoniteCB(this.checked);'>
-                <label for="menno">Mennonite</label>
+                Mennonite
                 <br>
                 <br>
             </div>
@@ -163,7 +157,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
             </div>
             
             <div id="changeAssembly">
-                <scan id="changeAssemblyPrompt">Change its denomination or name: </scan>
+                <scan id="changeAssemblyPrompt">Change its denomination (above) or name (below): </scan>
                 <br>
                 <input type="text" id="changingAssemblyName" style="white-space: break-spaces;" size=70>
                 <br>
@@ -189,11 +183,12 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
                   <input type="text" id="eventDate" size=8 >
                 <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <label for="eventVerb">verb:</label>
-                <select name="eventVerb" id="eventVerb"  required="true">
+                <select name="eventVerb" id="eventVerb"  required="true" onchange="handleVerbChange(this.value)">
                 </select>
                 <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <label>object:</label>
-                <input type="text" id="eventObject" size=70 >
+                <input type="text" id="eventObject" size=50 >
+                <select name="eventTagObject" id="eventTagObject" required="true"></select>
                 <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <label>note:</label>
                 <textarea type="text" id="eventNote" rows=3 cols=60> </textarea>
@@ -212,8 +207,9 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
                 weight: 521 1925
                 <br>
                 affiliation: 2nd District of Virginia 1907 note: "Bridgewater" becomes independent from "Cooks Creek".
-                labels: salaried pastor, sunday school
+                tags: salaried pastor, sunday school
             </div>
+            
        </div> <!-- end of midscreen -->
        
         <!--<div class="listbox-area" > -->
@@ -235,30 +231,28 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
 
 //globals
     
-const divCaches = {
-    assemblyHeader:'',
-    header:'',
-    assemblyViewer:"",
-    assemblyCreator:"",
-    assemblyEditor:"",
-    eventViewer:"",
-    eventEditor:"",
-    assemblyInstructions:"",
-    checkboxen:"",
-    newAssembly:"",
-    changeAssembly:"",
-    eventInstructions:"",
-    eventForm:"",
-    stateOfEvents:""
-}
+const switchDivs = [
+    'assemblyViewer',
+    'assemblyCreator',
+    'assemblyEditor',
+    'eventViewer',
+    'eventEditor',
+    'assemblyInstructions',
+    'checkboxen',
+    'newAssembly',
+    'changeAssembly',
+    'eventInstructions',
+    'eventForm',
+    'stateOfEvents'
+]
 
 const midscreenTypes = {
-    assemblyInstructions:["assemblyHeader","assemblyViewer","checkboxen","assemblyInstructions"], 
-    newAssembly:["header","assemblyCreator","checkboxen","newAssembly"],
-    changeAssembly:["header","assemblyEditor","checkboxen","changeAssembly"],
-    eventInstructions:["header","eventViewer","eventInstructions"],
-    editEvent:["header","eventEditor","eventForm"], 
-    stateOfEvents:["header","eventViewer","stateOfEvents"],
+    assemblyInstructions:["assemblyViewer","checkboxen","assemblyInstructions"], 
+    newAssembly:["assemblyCreator","checkboxen","newAssembly"],
+    changeAssembly:["assemblyEditor","checkboxen","changeAssembly"],
+    eventInstructions:["eventViewer","eventInstructions"],
+    editEvent:["eventEditor","eventForm"], 
+    stateOfEvents:["eventViewer","stateOfEvents"],
 }
 
 //state
@@ -274,7 +268,7 @@ let bmhc =  BMHCobj(); bmhc.setData(bmhcData());
     
 // Of general utility:
     
-    
+/*
 function formatMidscreen(screenType){ //see midScreenTypes
     
     function setCheckboxen() { //0: neither checked, 1 Brethren, 2 Mennonite, 3 both
@@ -287,14 +281,28 @@ function formatMidscreen(screenType){ //see midScreenTypes
     document.getElementById("midscreen").innerHTML = htmlStr;
     setCheckboxen(); 
 }
+*/
+    
+    function formatMidscreen(screenType){ //see midScreenTypes
+    
+        function setCheckboxen() { //0: neither checked, 1 Brethren, 2 Mennonite, 3 both
+            if (document.getElementById("BrethrenCB") != null) document.getElementById("BrethrenCB").checked =(state.checkbox == 1 || state.checkbox == 3);
+            if (document.getElementById("MennoniteCB") != null) document.getElementById("MennoniteCB").checked = (state.checkbox == 2 || state.checkbox == 3);
+        }
+    
+    switchDivs.forEach(div => document.getElementById(div).style.display='none'); //clear them all
+    midscreenTypes[screenType].forEach(div => document.getElementById(div).style.display='block');
+    setCheckboxen(); 
+}
 
-
+/*
 function cacheDivs(){
     Object.keys(divCaches).forEach(key => {
         divCaches[key] = document.getElementById(key).innerHTML.slice();
     });
 }
-
+*/
+    
 function setVerbHTML(){
     let str = "";
     bmhc.getVerbs().forEach(verb => {
@@ -302,6 +310,25 @@ function setVerbHTML(){
     });
     document.getElementById("eventVerb").innerHTML = str;
 }
+    
+function setObjTagsHTML() {
+    let str = "";
+    bmhc.getTags().forEach(tag => {
+        str += '<option value="'+tag+'">'+tag+'</option>';
+    });
+    document.getElementById("eventTagObject").innerHTML = str;
+}
+
+function handleVerbChange(value) {
+    if(value == 'set-tag'){
+        document.getElementById("eventTagObject").style.display = 'inline';
+        document.getElementById("eventObject").style.display = 'none';
+    } else {
+        document.getElementById("eventTagObject").style.display = 'none';
+        document.getElementById("eventObject").style.display = 'inline';
+    }
+}
+
     
 function makeLIsOfArray(arr){
     let result = "";
@@ -478,7 +505,6 @@ function launchEditEvent(eventIndex){
     state.eventIndex = eventIndex; //if null means it's a new event to be added
     formatMidscreen("editEvent");
     document.getElementById("eventAssemblyName").innerText = state.priorAssemblyName;
-    setVerbHTML();
     document.getElementById("myListbox").style.visibility='visible';
     
     if (eventIndex == null) setEventFields("","","","");
@@ -487,7 +513,7 @@ function launchEditEvent(eventIndex){
         setEventFields(ev.date, ev.verb, ev.object, ev.note);
     }
 }
-    
+
 function setEventFields(date,verb,obj,note){
     document.getElementById("eventDate").value = date;
     document.getElementById("eventVerb").value = verb;
@@ -556,8 +582,9 @@ function ultest(){
 }
  
 
-cacheDivs();
-installEventListener();                     
+//cacheDivs();
+installEventListener();
+setObjTagsHTML(); setVerbHTML();
 initAssemblyViewer();
     
 </script>

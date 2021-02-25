@@ -12,15 +12,15 @@ function BMHCobj(){
     // name:val pairs, in names no double quotes, no ampersand. Blanks, Apostrophe are OK
     
     // unfinished 
-    // means to add labels (never remove them)
+    // means to add tags (never remove them)
     // save db to storage somewhere
     // which will manage concurrent access to getNextId
     // and make addAssembly, changeAssembly, addEvent etc atomic to external db.
     // Implies all db writes will become asynch
     function bmhcDatabase(){
         this.idSource = 13; //source of unique ids for both assemblies and events
-        this.verbs = ["set-locale", "set-weight", "set-affiliation", "photo", "set-label", "see-note"]; //maintain parallel to critiqueVerbObject()
-        this.labels = {"paid minister":true,"flag in sanctuary":true,};
+        this.verbs = ["set-locale", "set-weight", "set-affiliation", "photo", "set-tag", "see-note"]; //maintain parallel to critiqueVerbObject()
+        this.tags = ["paid minister","flag in sanctuary"];
         this.assemblies = {}; //a dictionary of assemblyData, the keys being assembly names
     }
     
@@ -37,7 +37,11 @@ function BMHCobj(){
     }
     
     function getVerbs(){
-        return [...db.verbs]; //shallow clone
+        return [...db.verbs];
+    }
+    
+    function getTags(){
+        return [...db.tags];
     }
             
     function assemblyData(mb){
@@ -107,7 +111,7 @@ function BMHCobj(){
         addEvent("Bridgewater","1878","set-affiliation","Cooks Creek","",1);
         addEvent("Bridgewater","1907/11","set-weight","201","",1); addEvent("Bridgewater","1878/06/22","photo","https://photos.app.goo.gl/XCJtqEQEyVsfogGEA","",1);
         addEvent("Bridgewater","1907","set-affiliation","2nd District of Virginia","[Bridgewater] becomes independent from [Cooks Creek]",1);
-        addEvent("Bridgewater","1915","set-label","paid minister","",1);
+        addEvent("Bridgewater","1915","set-tag","paid minister","",1);
     }
     */
     
@@ -289,11 +293,11 @@ function BMHCobj(){
             case "photo": 
                 if (object.length > 0) return "ok"; //---------------unfinished checkURL??? 
                 else return "bad URL";
-            case "set-label":
-                if (db.labels[object]) return "ok";
-                else return "unrecognized label";
+            case "set-tag":
+                if (db.tags[object]) return "ok";
+                else return "unrecognized tag";
             case "see-note":
-                if (object.length > 0) return "see-note bject should be blank. Put info in note.";
+                if (object.length > 0) return "see-note object should be blank. Put info in note.";
                 else return "ok";
             default: 
                 return "verb not recognized";
@@ -411,6 +415,8 @@ function BMHCobj(){
     //init();
     
     return {getVerbs:getVerbs,
+            getTags:getTags,
+            getTags:getTags,
             cutOffEnds:cutOffEnds,
             yearLater:yearLater,
             
