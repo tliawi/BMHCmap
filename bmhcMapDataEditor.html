@@ -71,6 +71,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
 <script src="listbox/js/utils.js" type="text/javascript"></script>
 
 <script src="bmhcData.js"></script>
+<script src="bmhcTags.js"></script>
 <script src="bmhc.js"></script>
     
 </head>
@@ -81,10 +82,11 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
        
        <div id="header">
                 <div class="d-table" >
-                    <div>
+                    <div style="height:80px;" >
                         Brethren Mennonite Heritage Center
                         <br>
-                        <p> <span STYLE="font-size:x-large"><b>Map data editor</b></span></p>
+                        <br> <span STYLE="font-size:x-large"><b>Map data editor</b></span>
+                        <br><span STYLE="font-size:x-small; color:#bbbbbb;">version 0.1 2021 John Fairfield</span>
                     </div>
                     <div class="tar">
                         <button type="button" class='load-save' onclick='saveData()'>Save database</button> <br>
@@ -108,7 +110,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
                         <b>2. Event list for:&nbsp;<span id="eventsAssemblyName" style="white-space: break-spaces;"></span><br></b>
                     </div>
                     <div class="tar">
-                        <button type="button" class="load-save" onclick="initAssemblyViewer()">back to Assembly List</button>
+                        <button type="button" class="load-save" onclick="initAssemblyViewer()">back to 1. Assembly List</button>
                     </div>
                 </div>
             </div>
@@ -187,11 +189,11 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
                 </select>
                 <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <label>object:</label>
-                <input type="text" id="eventObject" size=50 >
-                <select name="eventTagObject" id="eventTagObject" required="true"></select>
+                <input type="text" id="eventObject" size="58" >
+                <select name="eventTagObject" id="eventTagObject" required="true" onchange=handleTagSelection(this.value)></select>
                 <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <label>note:</label>
-                <textarea type="text" id="eventNote" rows=3 cols=60> </textarea>
+                <textarea type="text" id="eventNote" rows=3 cols=50> </textarea>
                 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button type="button" onclick="initEventViewer()">cancel</button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -255,35 +257,10 @@ const midscreenTypes = {
     stateOfEvents:["eventViewer","stateOfEvents"],
 }
 
-//state
-//   checkbox 0: assemblies that are neither B nor M, 1 B, 2 M, 3 both
-//   whichList "assemblies" or "events"
-//   priorAssemblyName target of event editing
-//   eventIndex index of event being edited or deleted, valid only after a getEventList
-//   hasn't been invalidated by a deleteEvent or addEvent (in which case, just need to redo getEventList).
-
-let state = {checkbox:1, whichList:"assemblies", priorAssemblyName:"", eventIndex:null, textFile:null };
-
-let bmhc =  BMHCobj(); bmhc.setData(bmhcData());
-    
+ 
 // Of general utility:
     
-/*
 function formatMidscreen(screenType){ //see midScreenTypes
-    
-    function setCheckboxen() { //0: neither checked, 1 Brethren, 2 Mennonite, 3 both
-        if (document.getElementById("BrethrenCB") != null) document.getElementById("BrethrenCB").checked =(state.checkbox == 1 || state.checkbox == 3);
-        if (document.getElementById("MennoniteCB") != null) document.getElementById("MennoniteCB").checked = (state.checkbox == 2 || state.checkbox == 3);
-    }
-    
-    let htmlStr = "";
-    midscreenTypes[screenType].forEach(item => htmlStr+=divCaches[item]);
-    document.getElementById("midscreen").innerHTML = htmlStr;
-    setCheckboxen(); 
-}
-*/
-    
-    function formatMidscreen(screenType){ //see midScreenTypes
     
         function setCheckboxen() { //0: neither checked, 1 Brethren, 2 Mennonite, 3 both
             if (document.getElementById("BrethrenCB") != null) document.getElementById("BrethrenCB").checked =(state.checkbox == 1 || state.checkbox == 3);
@@ -303,7 +280,7 @@ function cacheDivs(){
 }
 */
     
-function setVerbHTML(){
+function initVerbHTML(){
     let str = "";
     bmhc.getVerbs().forEach(verb => {
         str += '<option value="'+verb+'">'+verb+'</option>';
@@ -311,7 +288,7 @@ function setVerbHTML(){
     document.getElementById("eventVerb").innerHTML = str;
 }
     
-function setObjTagsHTML() {
+function initEventTagObjectHTML() {
     let str = "";
     bmhc.getTags().forEach(tag => {
         str += '<option value="'+tag+'">'+tag+'</option>';
@@ -319,14 +296,18 @@ function setObjTagsHTML() {
     document.getElementById("eventTagObject").innerHTML = str;
 }
 
-function handleVerbChange(value) {
-    if(value == 'set-tag'){
+function handleVerbChange(verb) {
+    if(verb == 'set-tag'){
         document.getElementById("eventTagObject").style.display = 'inline';
         document.getElementById("eventObject").style.display = 'none';
     } else {
         document.getElementById("eventTagObject").style.display = 'none';
         document.getElementById("eventObject").style.display = 'inline';
     }
+}
+    
+function handleTagSelection(tag){
+    document.getElementById('eventObject').value = tag; //eventObject is what is passed to db
 }
 
     
@@ -519,6 +500,7 @@ function setEventFields(date,verb,obj,note){
     document.getElementById("eventVerb").value = verb;
     document.getElementById("eventObject").value = obj;
     document.getElementById("eventNote").value = note;
+    handleVerbChange(verb);
 }
     
 function checkAndSaveEvent(){
@@ -581,10 +563,20 @@ function ultest(){
     };
 }
  
+//state
+//   checkbox 0: assemblies that are neither B nor M, 1 B, 2 M, 3 both
+//   whichList "assemblies" or "events"
+//   priorAssemblyName target of event editing
+//   eventIndex index of event being edited or deleted, valid only after a getEventList
+//   hasn't been invalidated by a deleteEvent or addEvent (in which case, just need to redo getEventList).
+let state = {checkbox:1, whichList:"assemblies", priorAssemblyName:"", eventIndex:null, textFile:null };
 
-//cacheDivs();
+let bmhc =  BMHCobj(); 
+bmhc.setData(bmhcData());
+bmhc.setTags(bmhcTags());
+    
 installEventListener();
-setObjTagsHTML(); setVerbHTML();
+initEventTagObjectHTML(); initVerbHTML();
 initAssemblyViewer();
     
 </script>

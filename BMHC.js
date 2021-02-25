@@ -19,7 +19,7 @@ function BMHCobj(){
     function bmhcDatabase(){
         this.idSource = 13; //source of unique ids for both assemblies and events
         this.verbs = ["set-locale", "set-weight", "set-affiliation", "photo", "set-tag", "see-note"]; //maintain parallel to critiqueVerbObject()
-        this.tags = ["paid minister","flag in sanctuary"];
+        this.tags = [];
         this.assemblies = {}; //a dictionary of assemblyData, the keys being assembly names
     }
     
@@ -42,7 +42,11 @@ function BMHCobj(){
     function getTags(){
         return [...db.tags];
     }
-            
+    
+    function setTags(tags){
+        db.tags = tags;
+    }
+    
     function assemblyData(mb){
         this.id = getNextId();
         this.mb = mb;
@@ -67,53 +71,6 @@ function BMHCobj(){
         let yr = parseInt(date);
         return (yr+1).toString() + date.substr(4);
     }
-/*
-    function init(){
-        const mockupAssemblies = {
-            "2nd District of Virginia":{id:10, mb:1,events:[]},
-            "Brethren Woods Camp and Retreat Center":{id:2, mb:1,events:[]},
-            "Bridgewater":{id:4, mb:1,events:[]},
-            "Church of the Brethren":{id:3, mb:1,events:[]},
-            "Cooks Creek":{id:8, mb:1,events:[]},
-            "Dayton":{id:7, mb:1,events:[]},
-            "Garber's":{id:6, mb:1,events:[]},
-            "German Baptist Brethren":{id:1, mb:1,events:[]},
-            "Harrisonburg First":{id:20, mb:1,events:[]},
-            "Meeting at Solomon Garber home":{id:18, mb:1,events:[]},
-            "Park View":{id:19, mb:2,events:[]},
-            "Community (Harrisonburg)":{id:17, mb:2,events:[]},
-            "Dayton Mennonite":{id:16, mb:1,events:[]},
-            "Pike":{id:15, mb:2,events:[]}, 
-            "Bank":{id:14, mb:2,events:[]},
-            "Weaver's":{id:12, mb:2,events:[]},
-            "Harrisonburg":{id:13, mb:2,events:[]},
-            "Pleasant View":{id:25, mb:2,events:[]},
-            "Virginia Conference":{id:27, mb:2,events:[]},
-            "MCUSA":{id:5, mb:2,events:[]},
-            "Shalom (Anne Arbor)":{id:21, mb:3,events:[]},
-            "the National Cathedral":{id:22, mb:0,events:[]},
-            "Beaver Creek":{id:30, mb:1,events:[]},
-            "Montezuma":{id:31, mb:1,events:[]},
-            "Summit":{id:32, mb:1,events:[]},
-            "Stanton":{id:33, mb:1,events:[]},
-            "Mount Bethel":{id:34, mb:1,events:[]}
-        };
-        
-        //philosopy: maintain assemblies in sorted key order, is read more often than written.
-        db.assemblies = sortObjByKeys(mockupAssemblies);
-        buildIdToName();
-        addMockupEvents();
-    }
-    
-    function addMockupEvents(){
-        addEvent("Bridgewater","1878","set-locale","38.3771809888396,-79.03095281203701","",1);
-        addEvent("Bridgewater","1878","set-affiliation","Cooks Creek","",1);
-        addEvent("Bridgewater","1907/11","set-weight","201","",1); addEvent("Bridgewater","1878/06/22","photo","https://photos.app.goo.gl/XCJtqEQEyVsfogGEA","",1);
-        addEvent("Bridgewater","1907","set-affiliation","2nd District of Virginia","[Bridgewater] becomes independent from [Cooks Creek]",1);
-        addEvent("Bridgewater","1915","set-tag","paid minister","",1);
-    }
-    */
-    
     
     function getAllAssemblyNames(){
         return Object.keys(db.assemblies);
@@ -293,7 +250,8 @@ function BMHCobj(){
                 if (object.length > 0) return "ok"; //---------------unfinished checkURL??? 
                 else return "bad URL";
             case "set-tag":
-                if (db.tags[object]) return "ok";
+                console.log("st-tg "+object+ "tags are "+db.tags);
+                if (db.tags.includes(object)) return "ok";
                 else return "unrecognized tag";
             case "see-note":
                 if (object.length > 0) return "see-note object should be blank. Put info in note.";
@@ -413,14 +371,16 @@ function BMHCobj(){
     
     //init();
     
-    return {getVerbs:getVerbs,
-            getTags:getTags,
-            getTags:getTags,
-            cutOffEnds:cutOffEnds,
+    return {cutOffEnds:cutOffEnds,
             yearLater:yearLater,
-            
+        
+            getVerbs:getVerbs,
+        
             getData:getData,
             setData:setData,
+            
+            getTags:getTags,
+            setTags:setTags,
             
             getAllAssemblyNames:getAllAssemblyNames,
             getMennoniteAssemblyNames:getMennoniteAssemblyNames,
