@@ -12,7 +12,6 @@ function BMHCobj(){
     // name:val pairs, in names no double quotes, no ampersand. Blanks, Apostrophe are OK
     
     // unfinished 
-    // means to add tags (never remove them)
     // save db to storage somewhere
     // which will manage concurrent access to getNextId
     // and make addAssembly, changeAssembly, addEvent etc atomic to external db.
@@ -316,7 +315,6 @@ function BMHCobj(){
     //or "yyyy/mm   "
     //or "yyyy/mm/dd"
     //boolean
-    //unfinished: but 30 days hath sept,apr,jun and nov. And feb
     function checkDate(candidate){
         
         function remainderBlank(i){ return candidate.substr(i).trim().length == 0;}
@@ -338,7 +336,6 @@ function BMHCobj(){
         let d = new Date( parseInt(candidate.substr(0,4),10), mm, parseInt(candidate.substr(8,2),10));
         //Given too many days, like the 29th feb in a non-leap-year month, Date constructor wraps it into the following month...
         if (d.getMonth() != mm) return "That month doesn't have that many days." 
-//      if (candidate.substr(8,2)<"01" || candidate.substr(8,2) > "31") return "date day out of range"; //short months sneak through
         return "ok"; //yyyy/mm/dd
     }
 
@@ -405,6 +402,8 @@ function BMHCobj(){
     function setData(data){
         db.assemblies = data;
         buildIdToName();
+        
+        console.log("bmhcData "+bmhcData());
     }
     
     //used to create a file copy of db.assemblies
