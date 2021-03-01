@@ -18,7 +18,7 @@ function BMHCobj(){
     // Implies all db writes will become asynch
     function bmhcDatabase(){
         this.idSource = 13; //source of unique ids for both assemblies and events
-        this.verbs = ["set-locale", "set-weight", "set-affiliation", "photo", "set-tag", "see-note"]; //maintain parallel to critiqueVerbObject()
+        this.verbs = ["set-locale", "set-weight", "set-affiliation", "photo", "add-tag", "remove-tag", "see-note"]; //maintain parallel to critiqueVerbObject()
         this.tags = [];
         this.assemblies = {}; //a dictionary of assemblyData, the keys being assembly names
     }
@@ -235,11 +235,20 @@ function BMHCobj(){
         }
     }
     
+    function checkGPS(object){
+        let numStrArr = object.split(',');
+        if (numStrArr.length != 2) return "GPS coordinates are two numbers separated by a comma.";
+        let N=parseFloat(numStrArr[0]);
+        let E=parseFloat(numStrArr[1]);
+        if (isNaN(N) || isNaN(E)) return "GPS coordinates are two NUMBERS separated by a comma."
+        //if (N < 33 || N > 47 || E< -85 || E > -77> )"Those GPS coordinates are outside our study area."
+        else return "ok" ;
+    }
+    
     function critiqueVerbObject(verb, object){
         switch (verb){
             case "set-locale":
-                if (object.length > 0) return "ok"; //------unfinished checkGPS(object as gpscoord)
-                else return "bad GPS coordinates";
+                return checkGPS(object);
             case "set-weight":
                 if (object.length && allDigits(object,0,object.length)) return "ok";
                 else return "bad weight amount";
@@ -249,8 +258,12 @@ function BMHCobj(){
             case "photo": 
                 if (object.length > 0) return "ok"; //---------------unfinished checkURL??? 
                 else return "bad URL";
-            case "set-tag":
-                console.log("st-tg "+object+ "tags are "+db.tags);
+            case "add-tag":
+                console.log("add-tag "+object+ "tags are "+db.tags);
+                if (db.tags.includes(object)) return "ok";
+                else return "unrecognized tag";
+            case "remove-tag":
+                console.log("remove-tag "+object+ "tags are "+db.tags);
                 if (db.tags.includes(object)) return "ok";
                 else return "unrecognized tag";
             case "see-note":

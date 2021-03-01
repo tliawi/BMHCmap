@@ -116,7 +116,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
             </div>
             
             <div id="eventEditor">
-                <b>2.b Event Editor for:&nbsp;<span id="eventAssemblyName" style="white-space: break-spaces;"></span></b>
+                <b>2.a Event Editor for:&nbsp;<span id="eventAssemblyName" style="white-space: break-spaces;"></span></b>
             </div>
             
             <div id="checkboxen">
@@ -190,7 +190,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
                 <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <label>object:</label>
                 <input type="text" id="eventObject" size="58" >
-                <select name="eventTagObject" id="eventTagObject" required="true" onchange=handleTagSelection(this.value)></select>
+                <select name="eventTagObject" id="eventTagObject" required="true" onchange="handleTagSelection(this.value)"></select>
                 <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <label>note:</label>
                 <textarea type="text" id="eventNote" rows=3 cols=50> </textarea>
@@ -297,9 +297,10 @@ function initEventTagObjectHTML() {
 }
 
 function handleVerbChange(verb) {
-    if(verb == 'set-tag'){
+    if(verb == 'add-tag' || verb == 'remove-tag'){
         document.getElementById("eventTagObject").style.display = 'inline';
         document.getElementById("eventObject").style.display = 'none';
+        handleTagSelection(document.getElementById('eventTagObject').value);
     } else {
         document.getElementById("eventTagObject").style.display = 'none';
         document.getElementById("eventObject").style.display = 'inline';
@@ -307,7 +308,7 @@ function handleVerbChange(verb) {
 }
     
 function handleTagSelection(tag){
-    document.getElementById('eventObject').value = tag; //eventObject is what is passed to db
+    document.getElementById('eventObject').value = tag; //because eventObject is what is passed to db, not eventTagObject.
 }
 
     
@@ -430,7 +431,6 @@ function launchChangeAssembly(name){
 function changeAssembly(){
     const assemblyName = document.getElementById("changingAssemblyName").value.trim();
     const returnMsg = bmhc.changeAssembly(state.priorAssemblyName,assemblyName, state.checkbox);
-    console.log(returnMsg);
     if (returnMsg != "ok") alert(returnMsg);
     else initAssemblyViewer();
 }
