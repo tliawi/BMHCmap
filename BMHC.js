@@ -180,6 +180,10 @@ function BMHCobj(){
     
     function cutOffEnds(ref){ return ref.substr(1,ref.length-2); }
     
+    function isNumeric(input){
+        return (input - 0) == input && (''+input).trim().length > 0;
+    }
+    
     function addBrackets(str) { return "[" + str + "]"; }
     
     function nameRefToIdRef(nameRef){
@@ -240,9 +244,9 @@ function BMHCobj(){
         if (numStrArr.length != 2) return "GPS coordinates are two numbers separated by a comma.";
         let N=parseFloat(numStrArr[0]);
         let E=parseFloat(numStrArr[1]);
-        if (isNaN(N) || isNaN(E)) return "GPS coordinates are two NUMBERS separated by a comma."
-        //if (N < 33 || N > 47 || E< -85 || E > -77> )"Those GPS coordinates are outside our study area."
-        else return "ok" ;
+        if (!isNumeric(N) || !isNumeric(E)) return "GPS coordinates are two NUMBERS separated by a comma."
+        if (N < 33 || N > 47 || E< -85 || E > -77 ) return "Those GPS coordinates are outside our study area. First is Latitude, second is Longitude specified as Easting. In our area, first must be between 33 and 47, and second betweeen -77 and -85.";
+        return "ok" ;
     }
     
     function critiqueVerbObject(verb, object){
@@ -259,11 +263,9 @@ function BMHCobj(){
                 if (object.length > 0) return "ok"; //---------------unfinished checkURL??? 
                 else return "bad URL";
             case "add-tag":
-                console.log("add-tag "+object+ "tags are "+db.tags);
                 if (db.tags.includes(object)) return "ok";
                 else return "unrecognized tag";
             case "remove-tag":
-                console.log("remove-tag "+object+ "tags are "+db.tags);
                 if (db.tags.includes(object)) return "ok";
                 else return "unrecognized tag";
             case "see-note":
@@ -366,15 +368,13 @@ function BMHCobj(){
     }
         
     function deleteEvent(assemblyName,index){
-        if (index && assemblyExists(assemblyName)) db.assemblies[assemblyName].events.splice(index,1); //remove the indexed event
+        if (isNumeric(index) && assemblyExists(assemblyName)) db.assemblies[assemblyName].events.splice(index,1); //remove the indexed event
     }
     
     //used to initialize db.assemblies from file
     function setData(data){
         db.assemblies = data;
         buildIdToName();
-        
-        console.log("bmhcData "+bmhcData());
     }
     
     //used to create a file copy of db.assemblies

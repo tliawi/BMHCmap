@@ -387,6 +387,7 @@ function initEventViewer(assemblyName){
     document.getElementById("eventsAssemblyName").innerText = assemblyName;
     makeLIsOfArray(bmhc.getEventStrings(assemblyName));
     document.getElementById("myListbox").style.visibility='visible';
+    state.eventIndex = null; //clear it
     //console.log(ss_elem_list.getAttribute('aria-activedescendant')); //dom not updated yet, reflects previous value
 }
 
@@ -518,7 +519,7 @@ function checkAndSaveEvent(){
         if (verb == 'set-weight') date = bmhc.yearLater(date); 
         else {date = ''; verb = '';};
         setEventFields(date, verb,'',''); //and stay put, ready to add another of same verb (helps for set-weight)
-        
+        state.eventIndex = null; //clear eventIndex, so don't delete another one next time!
     }
 }
 
