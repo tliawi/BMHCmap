@@ -82,8 +82,21 @@
           width: 15%;
           display: inline-block;
           text-align: center;
+            
+        .tagClose {
+          cursor: pointer;
+          position: absolute;
+          top: 50%;
+          right: 0%;
+          padding: 12px 16px;
+          transform: translate(0%, -50%);
+        }
+            
         }
     </style>
+    
+    <script src="bmhcData.js"></script>
+    <script src="bmhcTags.js"></script>
     
 </head>
 
@@ -118,6 +131,15 @@
             </select>
         </div>
         
+        <div class='layer' >
+            <label for="addTag">add a tag:</label>
+            <select class="field" name="addTag" id="addTag"  required="true" onchange="handleAddTagChange(this.value)">
+            </select>
+        </div>
+        
+        <div class='layer' id="tagFilters" >
+        </div>
+        
     </div>
     
     <script> //my stuff
@@ -131,7 +153,26 @@
             document.getElementById("affiliation").innerHTML = str;
         }
         
+        
+        function initAddTagHTML() {
+            let str = '<option value="none">none</option>';
+            bmhcTags().forEach(tag => {
+                str += '<option value="'+tag+'">'+tag+'</option>';
+            });
+            document.getElementById("addTag").innerHTML = str;
+        }
+        
+        function handleAddTagChange(tag) {
+            if (tag == 'none') return;
+            let str = document.getElementById('tagFilters').innerHTML;
+            str += '<button type="button" class="tagFlag" onclick="negateTag(this.value)"> not</button><button type="button" class="tagFlag" onclick="dismissTag(this.value)">&nbsp;'+tag+'&nbsp;&nbsp;&nbsp;x</button><br>';
+            document.getElementById("tagFilters").innerHTML = str;
+        }
+        
+        
         initAffiliationHTML();
+        initAddTagHTML();
+        
         
     </script>
 
