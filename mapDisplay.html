@@ -62,7 +62,7 @@
           text-align: center;
         }
 
-        .layer {
+        .tranche {
           height: 12px;
           width: 100%;
           text-align: center;
@@ -82,7 +82,8 @@
           width: 15%;
           display: inline-block;
           text-align: center;
-            
+        }
+        
         .tagClose {
           cursor: pointer;
           position: absolute;
@@ -91,8 +92,12 @@
           padding: 12px 16px;
           transform: translate(0%, -50%);
         }
-            
+        
+        .mapboxgl-popup {
+            max-width: 400px;
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
         }
+        
     </style>
     
     <script src="bmhcData.js"></script>
@@ -106,18 +111,18 @@
     
     <div id='console'>
         <h2><div id='active-year' class='active-year'>1887</div></h2>
-        <div class='layer' id='sliderbar'>
-            <input id='slider' class='layer' type='range' min='1700' max='2050' step='1' value='1887' />
+        <div class='tranche' id='sliderbar'>
+            <input id='slider' class='tranche' type='range' min='1700' max='2050' step='1' value='1887' />
         </div>
         
-        <div class='layer' id='denomination'>
+        <div class='tranche' id='denomination'>
             <input type="checkbox" id="BrethrenCB" name="Brethren" value = 'brethren' onchange='changeBrethrenCB(this.checked);'>
             <label for='BrethrenCB'>Brethren</label>
             <input type="checkbox" id="MennoniteCB" name="Mennonite" value= 'mennonite' onchange='changeMennoniteCB(this.checked);'>
             <label for='MennoniteCB'>Mennonite</label>
         </div>
         
-        <div class='layer' id='membership'>
+        <div class='tranche' id='membership'>
             <span>
                 <input type="number" class="shortNumber" id="minMembership" name="minMembership" min='0' max='99999' dir='rtl' value=0>
                 &leq;&nbsp; membership &nbsp;&leq;
@@ -125,19 +130,19 @@
             </span>
         </div>
         
-        <div class='layer' >
+        <div class='tranche' >
             <label for="affiliation">affiliation:</label>
             <select class="field" name="affiliation" id="affiliation"  required="true" onchange="handleAffiliationChange(this.value)">
             </select>
         </div>
         
-        <div class='layer' >
+        <div class='tranche' >
             <label for="addTag">add a tag:</label>
             <select class="field" name="addTag" id="addTag"  required="true" onchange="handleAddTagChange(this.value)">
             </select>
         </div>
         
-        <div class='layer' id="tagFilters" >
+        <div class='tranche' id="tagFilters" >
         </div>
         
     </div>
@@ -173,7 +178,7 @@
         initAffiliationHTML();
         initAddTagHTML();
         
-        
+        //https://www.w3schools.com/howto/howto_js_close_list_items.asp nice formatting
     </script>
 
     <script>
@@ -186,64 +191,95 @@
           zoom: 6.9
         });
         
+        var activeYear = '1887/00/00';
+        var filterTime = ['all',['<=',['get','begin'],activeYear],['<',activeYear,['get','end']]];
+        var filterDenom =['any',['==',['get','denomination'],1],['==',['get','denomination'],2]];
+           
+        
         map.on('load', function() {
             
-          var filterHour = ['==', ['number', ['get', 'Hour']], 12];
-          var filterDay = ['!=', ['string', ['get', 'Day']], 'placeholder'];
+          map.addSource('assembliesSource', {
+            'type': 'geojson',
+            'data': './assemblies.geojson'
+          });
             
           map.addLayer({
-            id: 'collisions',
-            type: 'circle',
-            source: {
-              type: 'geojson',
-              data: './collisions1601.geojson' // replace this with the url of your own geojson
-            },
-            paint: {
-              'circle-radius': [
-                    'interpolate',
-                    ['linear'],
-                    ['number', ['get', 'Casualty']],
-                    0, 4,
-                    5, 24
-                  ],
-              'circle-color': [
-                    'interpolate',
-                    ['linear'],
-                    ['number', ['get', 'Casualty']],
-                    0, '#2DC4B2',
-                    1, '#3BB3C3',
-                    2, '#669EC4',
-                    3, '#8B88B6',
-                    4, '#A2719B',
-                    5, '#AA5E79'
-                  ],
-              'circle-opacity': 0.8
-            },
-            filter: ['all', filterHour, filterDay]
+              id: 'assemblyCircles',
+              type: 'circle',
+              source: 'assembliesSource',
+              paint: {
+                  'circle-radius': [
+                        'interpolate',
+                        ['linear'],
+                        ['number', ['get', 'weightRoot']],
+                        0, 3,
+                        500, 24
+                      ],
+                  'circle-color': '#118800',
+                  'circle-opacity': 0.5
+              },
+            filter: ['all', filterTime, filterDenom]
           });
         
+          map.addLayer({
+              id: 'assemblyNames',
+              type: 'symbol',
+              source: 'assembliesSource',
+              layout: {
+                    'text-field': ['get', 'name'],
+                    'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+                    'text-radial-offset': 0.5,
+                    'text-justify': 'auto'
+              },
+            filter: ['all', filterTime, filterDenom]
+          });
+        
+        
+            
+          //in js console map.getStyle() will show you all the layers, so you can suppress what you don't want
+          map.setLayoutProperty('settlement-label', 'visibility', 'none');
+          map.setLayoutProperty('poi-label', 'visibility', 'none');
+          
+            
           document.getElementById('slider').max = String(new Date().getFullYear());
+          
             
           document.getElementById('slider').addEventListener('input', function(e) {
               document.getElementById('active-year').innerText = e.target.value;
+              activeYear = e.target.value + '/00/00';
+              filterTime = ['all',['<=',['get','begin'],activeYear],['<',activeYear,['get','end']]];
+              map.setFilter('assemblyCircles',['all',filterTime,filterDenom]);
+              map.setFilter('assemblyNames',['all',filterTime,filterDenom]);
           });
             
-          document.getElementById('denomination').addEventListener('change',   function(e) {
-              var day = e.target.value;
-              console.log(day + "  "+filterHour+"  "+filterDay);
-              if (day === 'all') {
-                // `null` would not work for combining filters
-                filterDay = ['!=', ['string', ['get', 'Day']], 'placeholder'];
-              } else if (day === 'weekday') {
-                filterDay = ['match', ['get', 'Day'], ['Sat', 'Sun'], false, true];
-              } else if (day === 'weekend') {
-                filterDay = ['match', ['get', 'Day'], ['Sat', 'Sun'], true, false];
-              } else {
-                console.log('error');
-              }
-              map.setFilter('collisions', ['all', filterHour, filterDay]);
+        var popup = new mapboxgl.Popup({
+            closeButton: false,
+            closeOnClick: false
+        });
+
+        map.on('mouseenter', 'assemblyCircles', function (e) {
+            // Change the cursor style as a UI indicator.
+            map.getCanvas().style.cursor = 'pointer';
+
+            var coordinates = e.features[0].geometry.coordinates.slice();
+            var name = e.features[0].properties.name;
+
+            // Ensure that if the map is zoomed out such that multiple
+            // copies of the feature are visible, the popup appears
+            // over the copy being pointed to.
+            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
             }
-          );
+
+            // Populate the popup and set its coordinates
+            // based on the feature found.
+            popup.setLngLat(coordinates).setHTML(name).addTo(map);
+        });
+
+        map.on('mouseleave', 'assemblyCircles', function () {
+            map.getCanvas().style.cursor = '';
+            popup.remove();
+        });
             
         });
 
