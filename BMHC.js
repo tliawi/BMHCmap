@@ -1,7 +1,8 @@
 /* 
 BMHC.js
 
-Copyright 2021 John R C Fairfield, see MIT License
+version 0.11 Copyright 2021 John R C Fairfield, see MIT License
+
 */
 
 function BMHCobj(){
@@ -51,6 +52,7 @@ function BMHCobj(){
         this.id = getNextId();
         this.mb = mb;
         this.events = []; //an array of events comprising the history of an assembly
+        //this.states is added when compiled
     }
     
     
@@ -132,7 +134,7 @@ function BMHCobj(){
         
         data = db.assemblies[oldName];
         delete db.assemblies[oldName];
-        data.mb = mb; //keep id, events, and states
+        data.mb = mb; //keep id, events
         db.assemblies[newName] = data; //rename it keeping same id
         db.assemblies = sortObjByKeys(db.assemblies);
         idToName[data.id] = newName; //maintain idToName
@@ -209,18 +211,18 @@ function BMHCobj(){
         this.note = note;
     }
     
+    function placeValidatedEvent(subjectAssembly,date, verb,object,note){
+            
+        function compareDates(e1,e2){return (e1.date < e2.date)?-1:((e1.date > e2.date)?1:0);}
+
+        const evs = db.assemblies[subjectAssembly].events;
+        evs.push(new naiveEvent(date,verb,object,note));
+        evs.sort(compareDates);
+    }
+
     //returns "ok" if it succeeds, else an error statement
-    //if justChecking is true, do not do final add, just do all the checks
+    //if doIt is false, do not do final add, just do all the checks
     function addEvent(subjectAssembly,date,verb,object,note, doIt){ 
-        
-        function placeValidatedEvent(){
-            
-            function compareDates(e1,e2){return (e1.date < e2.date)?-1:((e1.date > e2.date)?1:0);}
-            
-            const evs = db.assemblies[subjectAssembly].events;
-            evs.push(new naiveEvent(date,verb,object,note));
-            evs.sort(compareDates);
-        }
         
         subjectAssembly = subjectAssembly.trim();
         date = date.trim();
@@ -245,7 +247,7 @@ function BMHCobj(){
         let N=parseFloat(numStrArr[0]);
         let E=parseFloat(numStrArr[1]);
         if (!isNumeric(N) || !isNumeric(E)) return "GPS coordinates are two NUMBERS separated by a comma."
-        if (N < 33 || N > 47 || E< -85 || E > -77 ) return "Those GPS coordinates are outside our study area. First is Latitude, second is Longitude specified as Easting. In our area, first must be between 33 and 47, and second betweeen -77 and -85.";
+        if (N < 33 || N > 47 || E< -85 || E > -77 ) return "Those GPS coordinates are outside our study area. First is Latitude, second is Longitude specified as Easting. In our area, first must be between 33 and 47, and second betweeen -77 and -85. Please copy/paste coordinates from maps.google.com";
         return "ok" ;
     }
     
@@ -381,8 +383,149 @@ function BMHCobj(){
     function getData(){
         return JSON.stringify(db.assemblies);
     }
+
     
-    //init();
+    ////--------------------- compilation into states.
+    //// This 'batch' job is invalidated by any change to db.assemblies info, i.e. must be redone
+    //// The program must end, because events will be inserted artificially which might bother editors.
+    //// So alert user if they haven't saved db (dirty bit?), and terminate program
+    //// cease responding, kill the interface, redirect, whatever, make the user leave the window
+    //// like kill the db!
+    
+    //Need to add set-affiliation events to all underlings whenever overlord affiliation changes, and recur! That will cause affiliations list to be regenereated at that time.??
+    
+    /*
+    Assertions: 
+    mostRecentAffiliation(assemblyName,date) is computable, 
+    it scans all assemblyName's events whose date <= given date,
+    and returns object of most recent set-affiliation event, or "" if none.
+    Donc affiliateChainFromMe(myAssemblyName,date) is computable, is array [ mostRecentAffiliation(me,date), mostRecentAffiliation(mostRecentAffiliation(me,date),date)...]
+    until "" (top dog has no affiliation). May be [].
+    Donc affiliateChainThroughMe(myAssemblyName,targetAssemblyName, date) is computable, is array of assemblyNames by which there is an affiliation chain (of mostRecentAffiliations) from targetAssembly including me at the given date, or [] if no such chain exists.
+    Bzw I'm on affiliateChainFrom any other assembly at a given date is computable, so I can search through all assemblies and find those affiliated through me at that date.
+    Donc when I do a merge or a set-affiliation, I can update all my subordinates' affilaitionchains to go through they new guy to the top. I add a compile-time-only event to them, that updates their chain. Also happens when I'm at the bottom of the list, because I compute my own affiliateChainThroughMe, which goes all the way to the top.
+    
+    
+    
+    */
+    
+    
+    const minDate ='0000'; //least date with four digit yyyy
+    const maxDate = '9999/12/31';
+    
+    //given an array hasDates of events or states or any objects which have a 'date' field, 
+    //and i an index thereinto, 
+    //return the date of the following item,
+    //or maxDate if there is none.
+    //assumes 0 <= i < hasDates.length
+    function followingDate(hasDates,i){
+        if(hasDates.length) {
+            if (i>=hasDates.length-1) return maxDate;
+            else return hasDates[i+1].date;
+        } else return maxDate;
+    }
+    
+    //Used for insertion of a new event of given date into an array of objects ordered by their date field.
+    //Returns the index of the event of least date after (>) the given date.
+    //Returns events.length if there are no events after the given date, i.e. you can just push
+    // event of the given date onto the end of the array (this works when array is empty, too).
+    //(Note: if there are events (events.length>0) but all follow the given date,
+    //   it of course returns 0, i.e. you should put the new event at the beginning of the array.)
+    indexOfNextEvent(events,date){
+        var i=0;
+        for (i=0;i<events.length;i++){
+            if (events[i].date > date) break;
+        }
+        return i;
+    }
+    
+    //insert a compile-time-only update-affiliations event at the (end of) the given date.
+    //placeValidatedEvent(assemblyName,date,'update-affiliations','','');
+    
+    
+    
+    //In the following, the states are "unclosed", i.e. affiliation is not yet an array.
+    
+    function State( date,locale, weight, affiliation, photo, tags, notes) {
+        this.date = date;
+        this.locale = locale;
+        this.weight = weight;
+        this.affiliation = affiliation;
+        this.photo = photo;
+        this.tags = tags;
+        this.notes = notes;
+    }
+    
+    function virginState(){
+        return new State(minDate(),null,0,'','',[],[]); //affiliation starts as single string, later becomes an array
+    }
+    
+    function copyState(state){
+        return new State(state.date, state.locale, state.weight, state.affiliation, state.photo, [...state.tags], [...state.notes]);
+    }
+    
+    //edits the given state based on the given event
+    // note ([] == false) is true, as is ('' == false)
+    function editState(state,event){
+        switch(event.verb){
+            case 'set-locale':
+                state.locale = swapCoordinates(event.object); //replaces
+                break;
+            case 'set-weight':
+                state.weight = event.object; //replaces
+                break;
+            case 'set-affiliation':
+                state.affiliation = event.object; //replaces now, later becomes a list
+                break;
+            case 'photo':
+                state.photo = event.object; //replaces
+                break;
+            case 'add-tag':
+                //remove duplicates
+                state.tags = state.tags.filter(tag => tag != event.object); //a set of tags
+                state.tags.push(event.object);
+                break;
+            case 'remove-tag':
+                state.tags = state.tags.filter(tag => tag != event.object);
+                break;
+            case 'see-note':
+                state.note = event.note; //replaces
+                break;
+        }
+        if (event.note && event.note.length) state.notes.push(event.note);
+        state.date = event.date;
+        return state;
+    }
+    
+    function makeAllUnclosedStates(){
+        
+        function makeUnclosedStates(assemblyName){
+            let s =[]; 
+            let events = db.assemblies[assemblyName].events;
+            if (events.length) {
+                let state = virginState();
+                events.forEach((event,index) => {
+                    editState(state,event); //evolve the state
+                    if (index==events.length-1 || events[i+1].date != event.date) s.push(copyState(state)); //only push when done with identical dates
+                    //else, as long as date stays same, condinue editing same state. 
+                    //Can accumulate multiple notes, multiple tags,
+                    //but not multiple photos, affiliations, locales, or weights -- last one wins
+                });
+            }
+            db.assemblies[assemblyName].states=s; //add to assemblyData
+        }
+        
+        Object.keys(db.assemblies).forEach(assemblyName => makeUnclosedStates(assemblyName));
+    }
+    
+    
+    function makeStates(){
+        makeAllUnclosedStates();
+        // if you have subordinates when you set-affiliation, 
+        //insert a state at that date in each subordinate carrying
+        //...and recompact with those of same date... is horrible
+        
+    }
     
     return {cutOffEnds:cutOffEnds,
             yearLater:yearLater,
@@ -414,4 +557,5 @@ function BMHCobj(){
             //temporary, for testing only
             db:db
            };
+
 }
