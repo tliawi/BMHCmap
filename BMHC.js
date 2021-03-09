@@ -19,7 +19,7 @@ function BMHCobj(){
     // Implies all db writes will become asynch
     function bmhcDatabase(){
         this.idSource = 13; //source of unique ids for both assemblies and events
-        this.verbs = ["set-locale", "set-weight", "set-affiliation", "photo", "add-tag", "remove-tag", "see-note"]; //maintain parallel to critiqueVerbObject()
+        this.verbs = ["set-locale", "set-weight", "set-affiliation", "photo", "add-tag", "remove-tag", "see-note", "expire-into"]; //maintain parallel to critiqueVerbObject() and bmhcMapDisplay.html
         this.tags = [];
         this.assemblies = {}; //a dictionary of assemblyData, the keys being assembly names
     }
@@ -102,6 +102,32 @@ function BMHCobj(){
         return (name in db.assemblies);
     }
     
+    
+    function lifeSpan(events){
+        if (events.length){
+            let end = maxDate;
+            if (events[events.length-1].verb == 'expire-into') end = events[events.length-1].date;
+            return { begin: events[0].date, end: end };
+        }
+        else return null;
+    }
+    
+    function lastEvent(name){
+        if (assemblyExists(name)) {
+            let len = db.assemblies[name].events.length;
+            if (len) return db.assemblies[name].events[len-1];
+        }
+        return null; //doesn't exist, or has no events
+    }
+    
+    function expirationDate(name){
+        var lastEv = lastEvent(name);
+        if (lastEv && lastEv.verb == 'expire-into') return lastEv.date;
+        if (lastEv) return maxDate; //exists and hasn't expired
+        return ''; //doesn't exist, or has no events, i.e. has never existed in time. 
+        //Note both '0' and '0000' are true, '' is false.
+    }
+    
     function legitAssemblyParms(name, mb){
         // check for null, undefined, "", unfortunately 0, false.
         if (!Boolean(name)) return "blank names not allowed.";
@@ -147,7 +173,7 @@ function BMHCobj(){
         
         function filterAffiliationEvents(assembly){
             db.assemblies[assembly].events = db.assemblies[assembly].events.filter(event =>{
-                if (event.verb == "set-affiliation" && event.object == id ){count++; return false;} //filter it out
+                if (event.verb == "set-affiliation" && event.object == id ){count++; return false;}
                 else return true;
             });
         }
@@ -220,6 +246,34 @@ function BMHCobj(){
         evs.sort(compareDates);
     }
 
+    //does total scan of db searching for references to subjectAssembly outside the given lifeSpan.
+    function checkReferences(subjectAssembly, span){
+        
+        var myId = db.assemblies[subjectAssembly].id;
+        
+        //if in other assemblies there are set-affiliation or expire-into events outside my lifespan, complain!
+        //total scan of db! NOTE: can't 'return' (or break) a forEach, so I use old fashioned loops
+        
+        var kees = Object.keys(db.assemblies);
+        for (let i=0; i<kees.length; i++){ 
+            let name=kees[i]; 
+            let data = db.assemblies[name];
+            if (name!=subjectAssembly){ //skip myself
+                for (let j=0; j<data.events.length; j++) {
+                    let event = data.events[j];
+                    if (event.object == myId && (event.verb == 'set-affiliation' || event.verb == 'expire-into')){
+                        if (!span || event.date < span.begin) return name+" has a "+event.verb+" event referring to "+subjectAssembly+" that is dated ("+event.date+") before "+subjectAssembly+" will exist. Please fix.";
+                        
+                        if (event.date > span.end) return name+" has a "+event.verb+" event referring to "+subjectAssembly+" that is dated ("+event.date+") after "+subjectAssembly+" is supposed to expire ("+date+"). Please fix.";
+                    }
+                }
+            }
+        }
+        
+        return 'ok';
+    }
+    
+    
     //returns "ok" if it succeeds, else an error statement
     //if doIt is false, do not do final add, just do all the checks
     function addEvent(subjectAssembly,date,verb,object,note, doIt){ 
@@ -234,8 +288,40 @@ function BMHCobj(){
         else if (checkDate(date)!="ok") return checkDate(date);
         else {
             if (critiqueVerbObject(verb,object) != "ok") return critiqueVerbObject(verb,object);
-            if (verb == "set-affiliation") object = db.assemblies[object].id; // !!!
-            try{ note = nameRefsToIdRefs(note); } catch (e) {return e };
+            
+            if (verb == "set-affiliation"){
+                if (object.length) {
+                    if (object == subjectAssembly) return "can't affiliate with yourself";
+                    let lf = lifeSpan(db.asssemblies[object].events);
+                    if (!lf || lf.begin > date) return object+" doesn't exist yet. Give it some events before "+date+".";
+                    if (lf.end < date) return object+" has already expired by "+date+"."
+                    object = db.assemblies[object].id;
+                } //else object is blank, it's ok to disaffiliate from everything.
+            }
+            
+            if (verb == "expire-into" ){
+                
+                //first check my own event list
+                let le = lastEvent(subjectAssembly);
+                if (le && le.date > date) return "Expiration must be "+subjectAssembly+"'s last event, by date. There are events after "+date+", please fix."
+                
+                //total scan of db
+                let span = lifeSpan(db.assemblies[subjectAssembly].events);
+                if (span) span.end = date; //truncate span to what it would be if it expired at the given date.
+                let chekExp = checkReferences(subjectAssembly,span); 
+                if (chekExp!= 'ok') return chekExp;
+                
+                if (object.length) {
+                    if (object == subjectAssembly) return "can't expire into yourself";
+                    let lf = lifeSpan(db.asssemblies[object].events);
+                    if (!lf || lf.begin > date) return object+" doesn't exist yet. Give it some events before "+date+".";
+                    if (lf.end < date) return object+" has already expired by "+date+"."
+                    object = db.assemblies[object].id;
+                } //else object is blank, subjectAssembly is dying, that's ok.
+            }
+            
+            try{ note = nameRefsToIdRefs(note); } catch (e) {return e };  //---------***test this one***
+            
             if(doIt) placeValidatedEvent(subjectAssembly,date,verb,object,note);
             return "ok";
         }
@@ -259,6 +345,7 @@ function BMHCobj(){
                 if (object.length && allDigits(object,0,object.length)) return "ok";
                 else return "bad weight amount";
             case "set-affiliation":
+                if (object == '') return 'ok'; //become unaffiliated
                 if (assemblyExists(object)) return "ok";
                 else return "unrecognized affiliation assembly name";
             case "photo": 
@@ -273,6 +360,9 @@ function BMHCobj(){
             case "see-note":
                 if (object.length > 0) return "see-note object should be blank. Put info in note.";
                 else return "ok";
+            case 'expire-into': 
+                if (object.length && !assemblyExists(object)) return 'unrecognized expire-into assembly name';
+                else return 'ok'; //it's OK to expire into nothing.
             default: 
                 return "verb not recognized";
 
@@ -337,14 +427,14 @@ function BMHCobj(){
     }
     
     //returns naiveEvent of dereferenced strings
-    function stringEvent(ev){
+    function dereferencedEvent(ev){
         return new naiveEvent( ev.date, ev.verb, (ev.verb == "set-affiliation")?idToName[ev.object]:ev.object, idRefsToNameRefs(ev.note));
     }
                          
-    //returns an array of eventToStrings corresponding to the events of an assembly
-    //the indices of events in this array are valid to use in deleteEvent IFF there have been no addEvents or
-    //other deleteEvents in between. So every time you delete one, you have to getEventStrings again,
-    //so your indices are good.
+    //Used for display of list of events.
+    //Returns an array of formatted dereferencedEvents corresponding to the events of an assembly
+    //the indices of events in this array are valid to use in deleteEvent IFF there have been no addEvents or deleteEvents in between. 
+    //So every time you add or delete one, you have to getEventStrings again, so your indices are good.
     function getEventStrings(assemblyName){ 
         
         //flesh out date with trailing blanks to be (at least) len chars long.
@@ -354,7 +444,7 @@ function BMHCobj(){
         }
         
         function eventToString(ev){
-            let sev = stringEvent(ev);
+            let sev = dereferencedEvent(ev);
             return buff(sev.date,10) + ' ' + sev.verb + (sev.object.length?(' '+sev.object):'') + (sev.note.length?(" note:"+ sev.note):"");
         }
         
@@ -364,13 +454,25 @@ function BMHCobj(){
         else return [];
     }
     
-    function getStringEvent(assemblyName,index){
-        if (assemblyExists(assemblyName) && index >=0 && index < db.assemblies[assemblyName].events.length) return stringEvent(db.assemblies[assemblyName].events[index]);
+    function getDereferencedEvent(assemblyName,index){
+        if (assemblyExists(assemblyName) && index >=0 && index < db.assemblies[assemblyName].events.length) return dereferencedEvent(db.assemblies[assemblyName].events[index]);
         else return null;
     }
-        
+    
+    TODO: have data editor expect an ok back from deleteEvent, else popup refusal.
+    
+    // Deleting first event may change lifeSpan. Need to checkreferences to see if that invalidates any references...
+    // (Deleting a (necessarily final) expire-into event enlarges lifeSpan, so that's OK.)
     function deleteEvent(assemblyName,index){
-        if (isNumeric(index) && assemblyExists(assemblyName)) db.assemblies[assemblyName].events.splice(index,1); //remove the indexed event
+        if (isNumeric(index) && assemblyExists(assemblyName)) {
+            if (index == 0) {
+                let nuvents = [db.assemblies[assemblyName].events...].shift(); //all save first element
+                let chkRef = checkReferences(assemblyName,lifeSpan(nuvents));
+                if (chkRef != 'ok') return chkRef;
+            }
+            db.assemblies[assemblyName].events.splice(index,1); //remove the indexed event
+            return 'ok';
+        }
     }
     
     //used to initialize db.assemblies from file
@@ -385,6 +487,8 @@ function BMHCobj(){
     }
 
     
+    
+    
     ////--------------------- compilation into states.
     //// This 'batch' job is invalidated by any change to db.assemblies info, i.e. must be redone
     //// The program must end, because events will be inserted artificially which might bother editors.
@@ -392,7 +496,7 @@ function BMHCobj(){
     //// cease responding, kill the interface, redirect, whatever, make the user leave the window
     //// like kill the db!
     
-    //Need to add set-affiliation events to all underlings whenever overlord affiliation changes, and recur! That will cause affiliations list to be regenereated at that time.??
+    //Need to add pseudo set-affiliation events to all underlings whenever overlord affiliation changes (or expires), and recur! That will cause affiliations list to be regenereated at that time.??
     
     /*
     Assertions: 
@@ -401,17 +505,30 @@ function BMHCobj(){
     and returns object of most recent set-affiliation event, or "" if none.
     Donc affiliateChainFromMe(myAssemblyName,date) is computable, is array [ mostRecentAffiliation(me,date), mostRecentAffiliation(mostRecentAffiliation(me,date),date)...]
     until "" (top dog has no affiliation). May be [].
+    
     Donc affiliateChainThroughMe(myAssemblyName,targetAssemblyName, date) is computable, is array of assemblyNames by which there is an affiliation chain (of mostRecentAffiliations) from targetAssembly including me at the given date, or [] if no such chain exists.
     Bzw I'm on affiliateChainFrom any other assembly at a given date is computable, so I can search through all assemblies and find those affiliated through me at that date.
-    Donc when I do a merge or a set-affiliation, I can update all my subordinates' affilaitionchains to go through they new guy to the top. I add a compile-time-only event to them, that updates their chain. Also happens when I'm at the bottom of the list, because I compute my own affiliateChainThroughMe, which goes all the way to the top.
-    
-    
+    Donc when I do a expire-into or a set-affiliation, I can update all my subordinates' affilaitionchains to go through they new guy to the top. I add a compile-time-only event to them, that updates their chain. Also happens when I'm at the bottom of the list, because I compute my own affiliateChainThroughMe, which goes all the way to the top.
     
     */
     
     
     const minDate ='0000'; //least date with four digit yyyy
     const maxDate = '9999/12/31';
+    
+    /*
+    
+    //returns affiliation as of the given date, or '' if none.
+    function mostRecentAffiliation(events,date){
+        var currentAffiliation = '';
+        for (var i=0;i<events.length;i++) {
+            if (events[i].date > date) break;
+            if (events[i].verb == 'set-affiliation') currentAffiliation = events[i].object; //may be ''
+        }
+        return currentAffiliation;
+    }
+    
+    
     
     //given an array hasDates of events or states or any objects which have a 'date' field, 
     //and i an index thereinto, 
@@ -431,7 +548,7 @@ function BMHCobj(){
     // event of the given date onto the end of the array (this works when array is empty, too).
     //(Note: if there are events (events.length>0) but all follow the given date,
     //   it of course returns 0, i.e. you should put the new event at the beginning of the array.)
-    indexOfNextEvent(events,date){
+    function indexOfNextEvent(events,date){
         var i=0;
         for (i=0;i<events.length;i++){
             if (events[i].date > date) break;
@@ -439,10 +556,65 @@ function BMHCobj(){
         return i;
     }
     
+    //N.B.: I considered whenever a expirer or 
+    
     //insert a compile-time-only update-affiliations event at the (end of) the given date.
     //placeValidatedEvent(assemblyName,date,'update-affiliations','','');
     
-    
+   
+    function preCompile(){
+        
+        
+        
+        function countCoup(assyData){
+            assyData.events.forEach(event=> {
+                if (event.verb=='set-affiliation' && event.object.length) db.assemblies(idToName[event.object]).count++;
+            })
+        }
+        
+        function rememberSetAffiliations(assemblyName){
+            db.assemblies[assemblyName].events.forEach(event=>{
+                if (event.verb=='set-affiliation') pile.push([event.date,assemblyName]); //don't need objects, which may even be ''
+            })
+        }
+        
+        function compareFirsts(arr1,arr2){return (arr1[0] < arr2[0])?-1:((arr1[0] > arr2[0])?1:0);}
+        
+        //find all assemblies which have never been the targets of set-affiliates
+        //create and initialize counts
+        Object.values(db.assemblies).forEach(assyData=>assyData.count=0;); 
+        Object.values(db.assemblies).forEach(assyData=>countCoup(assyData));
+        //those whose counts are still 0 can be ignored, they have no sub-affiliates,
+        //so they won't cause any 'update-affiliation' insertions
+        
+        //make a pile of all set-affiliation events that might cause an update-affiliation
+        let pile = []; //of [date, assemblyName] pairs of set-affiliation events
+        Object.keys(db.assemblies).forEach(assemblyName=>{
+            if (db.assemblies[assemblyName].count) rememberSetAffiliations(assemblyName);
+        });
+        
+        pile.sort(compareFirsts); //pile sorted by date
+        
+        let keys = Object.keys(db.assemblies);
+        pile.forEach([date,superAssemblyName] =>{
+            keys.forEach(subAssemblyName => treatSubordinate(subAssemblyName,superAssemblyName,date);
+        });
+        
+        // go through the pile in order, calling treatSubordinate Assembly (total scan of db for each one!!!)
+            
+        //wait. If we took a greedy approach. If each assy knew the list of everyone it had ever been affiliated to... and all the upstack superassemblies they'd been affiliated too,
+        //so set of all possible superaffiliates.. then it could do an update-affiliation any time any of them changed affiliations. basta. Overkill is cheaper, because I never have to rescan whole db.
+    //think expirers too!!
+
+        function treatSubordinate(assembly, me ,date){
+            if (mostRecentAffiliationChain(assembly,date).includes(me)){ //must include prior precompiled update-affiliation events...
+                placeValidatedEvent(assembly,date,'update-affiliations','','');
+            }
+        }
+
+        
+        db.assemblies.keys.forEach(assembly=>treatSubordinate(assembly, me));
+    }
     
     //In the following, the states are "unclosed", i.e. affiliation is not yet an array.
     
@@ -475,7 +647,7 @@ function BMHCobj(){
                 state.weight = event.object; //replaces
                 break;
             case 'set-affiliation':
-                state.affiliation = event.object; //replaces now, later becomes a list
+                state.affiliation = event.object; //replaces, can be ''
                 break;
             case 'photo':
                 state.photo = event.object; //replaces
@@ -491,6 +663,7 @@ function BMHCobj(){
             case 'see-note':
                 state.note = event.note; //replaces
                 break;
+            case 'expire...
         }
         if (event.note && event.note.length) state.notes.push(event.note);
         state.date = event.date;
@@ -527,6 +700,8 @@ function BMHCobj(){
         
     }
     
+    */
+    
     return {cutOffEnds:cutOffEnds,
             yearLater:yearLater,
         
@@ -550,7 +725,7 @@ function BMHCobj(){
             deleteAssembly:deleteAssembly,
             
             addEvent:addEvent,
-            getStringEvent:getStringEvent,
+            getDereferencedEvent:getDereferencedEvent,
             getEventStrings:getEventStrings,
             deleteEvent:deleteEvent,
             
