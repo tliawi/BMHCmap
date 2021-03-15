@@ -13,24 +13,24 @@ function BMHCobj(){
     // name:val pairs, in names no double quotes, no ampersand. Blanks, Apostrophe are OK
     
     // unfinished 
-    // save db to storage somewhere
-    // which will manage concurrent access to getNextId
-    // and make addAssembly, changeAssembly, addEvent etc atomic to external db.
+    // save db to storage facility which can manage concurrent access to getNextId
+    // and make addAssembly, changeAssembly, setEvent, deleteEvent etc atomic to external db.
     // Implies all db writes will become asynch
+    
     function bmhcDatabase(){
         this.idSource = 13; //source of unique ids for both assemblies and events
-        this.verbs = ["set-locale", "set-weight", "set-affiliation", "photo", "add-tag", "remove-tag", "see-note", "expire-into"]; //maintain parallel to critiqueVerbObject() and bmhcMapDisplay.html
+        this.verbs = ["begin-history", "set-locale", "set-weight", "set-affiliation", "set-photo", "add-tag", "remove-tag", "just-comment", "expire-into"]; //maintain parallel to critiqueVerbObject() and bmhcMapDisplay.html
         this.tags = [];
         this.assemblies = {}; //a dictionary of assemblyData, the keys being assembly names
     }
     
-    const db = new bmhcDatabase();
+    const db = new bmhcDatabase(); //see setData
     
     let idToName = {}; //a dictionary of numeric id:string assemblyName pairs, 
     // not necessarily sorted if we merge concurrent access files...
     
     //the reason for ids, and idToName, is so one can change the name of an assembly
-    //and all the stored object and note ids do NOT have to change.
+    //and all the stored object and comment ids do NOT have to change.
     //this can generate on the order of 2^52 ids, so not to worry.
     function getNextId(){
         return db.idSource++;
@@ -98,17 +98,41 @@ function BMHCobj(){
         if (assemblyExists(name)) return db.assemblies[name].mb; else return 0;
     }
     
+    //returns false if name is null
     function assemblyExists(name){
         return (name in db.assemblies);
     }
     
+    //The lifeTime of an assembly is either null (has no events) or from the date of its first event to
+    //maxDate ee9i.e. the indefinite future because the DB has no evidence that the assembly has ever died so
+    //presumably it is still alive), 
+    //or from the date of its first event to its expire-into event, which denotes the death of the assembly
+    //and must be the assembly's final event--no subsequent events can be added.
     
-    function lifeSpan(events){
-        if (events.length){
-            let end = maxDate;
-            if (events[events.length-1].verb == 'expire-into') end = events[events.length-1].date;
-            return { begin: events[0].date, end: end };
-        }
+    //References to assembly A outside of A's lifeTime in set-affiliate or expire-into events, are forbidden. 
+    //Such a reference is called an "anachronism". If some assembly B were still affiliated to A when A expires, 
+    //that too would be an anachronism, and is not permitted.
+    
+    //In comments, anachronisitic references are permitted.
+    
+    //Deletion of A's first event, or addition of an expire-into event, may diminish A's lifeTime.
+    //This includes editing A's first event to change the date.
+    //(Which could be a delete-event followed by an add-Event,
+    //which would better be done as an add event followed by a delete-event, since the latter doesn't
+    //cause a one-event assembly to briefly have a null lifeTime. Even if the edit reduces the lifeTime
+    //(say from 1920-maxDate to 1922-maxDate), it's less likely to cause an anachonism.)
+    
+    ///xxxxxx use id's for deletion, so don't have to worry about index changes xxxxxxxxx
+    
+    //Such actions are problematic if other assemblies
+    //have affiliated with or expired-into A, of course during its prior lifeTime.
+    //Such an action might have them affiliating with or expiring-into A outside of its reduced lifeTime.
+    
+    //given an array of objects having a .date field
+    function lifeTime(events){
+        if (events.length)
+            return { begin: events[0].date, 
+                     end: (events[events.length-1].verb == 'expire-into')?events[events.length-1].date:maxDate };
         else return null;
     }
     
@@ -117,7 +141,7 @@ function BMHCobj(){
             let len = db.assemblies[name].events.length;
             if (len) return db.assemblies[name].events[len-1];
         }
-        return null; //doesn't exist, or has no events
+        return null; //assembly doesn't exist, or has no events
     }
     
     function expirationDate(name){
@@ -171,25 +195,25 @@ function BMHCobj(){
         let count = 0;
         const re = new RegExp('\['+id+'\]','g');
         
-        function filterAffiliationEvents(assembly){
+        function filterObjectReferences(assembly){
             db.assemblies[assembly].events = db.assemblies[assembly].events.filter(event =>{
-                if (event.verb == "set-affiliation" && event.object == id ){count++; return false;}
+                if ((event.verb == "set-affiliation" || event.verb == "expire-into") && event.object == id ){count++; return false;}
                 else return true;
             });
         }
         
-        function clobberNoteReferences(assembly){
+        function clobberCommentReferences(assembly){
             db.assemblies[assembly].events.forEach(event =>{ 
-                let c = (event.note.match(re) || []).length; //match can return null
-                if (c) event.note = event.note.replaceAll('['+id+']','???');
+                let c = (event.comment.match(re) || []).length; //match can return null
+                if (c) event.comment = event.comment.replaceAll('['+id+']',"???"); 
                 count += c;
             });
         }
     
         //scan and remove set-affiliation events whose objects == id, maintaining order of events
         Object.keys(db.assemblies).forEach(assembly => { 
-            filterAffiliationEvents(assembly); 
-            clobberNoteReferences(assembly);
+            filterObjectReferences(assembly); 
+            clobberCommentReferences(assembly);
         });
         
         return count;
@@ -224,75 +248,50 @@ function BMHCobj(){
     
     //------------------------ Events ------------------------------------
     // The events of an assembly are an array ordered by date.
-    // The array index number of a given event can be changed by addition or deletion of other event.
-    // But if there have been no intervening additions or deletions (beware concurrent access)
-    // then an event's indexed position within getEventStrings
-    // can be used to delete that event.
-    // There is no changeEvent: you have to first delete the old event and then add a new one.
+    // The array index number of a given event can be changed by addition or deletion of other events.
+    // So the index number of a given event can only identify the event in read operations, not in write operations.
+    // There is no changeEvent, you can only add and delete.
     
-    function naiveEvent(date,verb,object,note){
+    function naiveEvent(date,verb,object,comment){
         this.date = date;
         this.verb = verb;
         this.object = object;
-        this.note = note;
+        this.comment = comment;
     }
     
-    function placeValidatedEvent(subjectAssembly,date, verb,object,note){
-            
+    function sortEvents(events){
         function compareDates(e1,e2){return (e1.date < e2.date)?-1:((e1.date > e2.date)?1:0);}
-
-        const evs = db.assemblies[subjectAssembly].events;
-        evs.push(new naiveEvent(date,verb,object,note));
-        evs.sort(compareDates);
-    }
-
-    //does total scan of db searching for references to subjectAssembly outside the given lifeSpan.
-    function checkReferences(subjectAssembly, span){
-        
-        var myId = db.assemblies[subjectAssembly].id;
-        
-        //if in other assemblies there are set-affiliation or expire-into events outside my lifespan, complain!
-        //total scan of db! NOTE: can't 'return' (or break) a forEach, so I use old fashioned loops
-        
-        var kees = Object.keys(db.assemblies);
-        for (let i=0; i<kees.length; i++){ 
-            let name=kees[i]; 
-            let data = db.assemblies[name];
-            if (name!=subjectAssembly){ //skip myself
-                for (let j=0; j<data.events.length; j++) {
-                    let event = data.events[j];
-                    if (event.object == myId && (event.verb == 'set-affiliation' || event.verb == 'expire-into')){
-                        if (!span || event.date < span.begin) return name+" has a "+event.verb+" event referring to "+subjectAssembly+" that is dated ("+event.date+") before "+subjectAssembly+" will exist. Please fix.";
-                        
-                        if (event.date > span.end) return name+" has a "+event.verb+" event referring to "+subjectAssembly+" that is dated ("+event.date+") after "+subjectAssembly+" is supposed to expire ("+date+"). Please fix.";
-                    }
-                }
-            }
-        }
-        
-        return 'ok';
+        events.sort(compareDates);
     }
     
     
+    function placeEvent(events,date, verb,object,comment){
+        events.push(new naiveEvent(date,verb,object,comment));
+        sortEvents(events);
+    }
+
+    
+    
+    /*
     //returns "ok" if it succeeds, else an error statement
     //if doIt is false, do not do final add, just do all the checks
-    function addEvent(subjectAssembly,date,verb,object,note, doIt){ 
+    function addEvent(subjectAssembly,date,verb,object,comment, doIt){ 
         
         subjectAssembly = subjectAssembly.trim();
         date = date.trim();
         verb = verb.trim();
         object = object.trim();
-        note = note.trim();
+        comment = comment.trim();
         
         if (!assemblyExists(subjectAssembly)) return "subject assembly doesn't exist";
-        else if (checkDate(date)!="ok") return checkDate(date);
+        else if (checkDateFormat(date)!="ok") return checkDateFormat(date);
         else {
             if (critiqueVerbObject(verb,object) != "ok") return critiqueVerbObject(verb,object);
             
             if (verb == "set-affiliation"){
                 if (object.length) {
                     if (object == subjectAssembly) return "can't affiliate with yourself";
-                    let lf = lifeSpan(db.asssemblies[object].events);
+                    let lf = lifeTime(db.assemblies[object].events);
                     if (!lf || lf.begin > date) return object+" doesn't exist yet. Give it some events before "+date+".";
                     if (lf.end < date) return object+" has already expired by "+date+"."
                     object = db.assemblies[object].id;
@@ -306,87 +305,44 @@ function BMHCobj(){
                 if (le && le.date > date) return "Expiration must be "+subjectAssembly+"'s last event, by date. There are events after "+date+", please fix."
                 
                 //total scan of db
-                let span = lifeSpan(db.assemblies[subjectAssembly].events);
+                let span = lifeTime(db.assemblies[subjectAssembly].events);
                 if (span) span.end = date; //truncate span to what it would be if it expired at the given date.
                 let chekExp = checkReferences(subjectAssembly,span); 
                 if (chekExp!= 'ok') return chekExp;
                 
                 if (object.length) {
                     if (object == subjectAssembly) return "can't expire into yourself";
-                    let lf = lifeSpan(db.asssemblies[object].events);
+                    let lf = lifeTime(db.asssemblies[object].events);
                     if (!lf || lf.begin > date) return object+" doesn't exist yet. Give it some events before "+date+".";
                     if (lf.end < date) return object+" has already expired by "+date+"."
                     object = db.assemblies[object].id;
                 } //else object is blank, subjectAssembly is dying, that's ok.
             }
             
-            try{ note = nameRefsToIdRefs(note); } catch (e) {return e };  //---------***test this one***
+            try{ comment = nameRefsToIdRefs(comment); } catch (e) {return e };  //---------***test this one***
             
-            if(doIt) placeValidatedEvent(subjectAssembly,date,verb,object,note);
+            if(doIt) placeEvent(db.assemblies[subjectAssembly].events,date,verb,object,comment);
             return "ok";
         }
     }
+    */
     
-    function checkGPS(object){
-        let numStrArr = object.split(',');
-        if (numStrArr.length != 2) return "GPS coordinates are two numbers separated by a comma.";
-        let N=parseFloat(numStrArr[0]);
-        let E=parseFloat(numStrArr[1]);
-        if (!isNumeric(N) || !isNumeric(E)) return "GPS coordinates are two NUMBERS separated by a comma."
-        if (N < 33 || N > 47 || E< -85 || E > -77 ) return "Those GPS coordinates are outside our study area. First is Latitude, second is Longitude specified as Easting. In our area, first must be between 33 and 47, and second betweeen -77 and -85. Please copy/paste coordinates from maps.google.com";
-        return "ok" ;
-    }
-    
-    function critiqueVerbObject(verb, object){
-        switch (verb){
-            case "set-locale":
-                return checkGPS(object);
-            case "set-weight":
-                if (object.length && allDigits(object,0,object.length)) return "ok";
-                else return "bad weight amount";
-            case "set-affiliation":
-                if (object == '') return 'ok'; //become unaffiliated
-                if (assemblyExists(object)) return "ok";
-                else return "unrecognized affiliation assembly name";
-            case "photo": 
-                if (object.length > 0) return "ok"; //---------------unfinished checkURL??? 
-                else return "bad URL";
-            case "add-tag":
-                if (db.tags.includes(object)) return "ok";
-                else return "unrecognized tag";
-            case "remove-tag":
-                if (db.tags.includes(object)) return "ok";
-                else return "unrecognized tag";
-            case "see-note":
-                if (object.length > 0) return "see-note object should be blank. Put info in note.";
-                else return "ok";
-            case 'expire-into': 
-                if (object.length && !assemblyExists(object)) return 'unrecognized expire-into assembly name';
-                else return 'ok'; //it's OK to expire into nothing.
-            default: 
-                return "verb not recognized";
-
-        }
-    }
-    
-    function allDigits(candidate,start,len){
-        const snippet = candidate.substr(start,len);
-        if ( snippet.length != len) return false;
-        return /^\d+$/.test(snippet);
-    }
+    // ---------------  checkEvent functions  -------------------------
+    // I made them independent so that I know there are no extraneous references global to checkEvent,
+    // i.e. so I know what all their parameters really are
     
     //A date 
     //is "yyyy      "
     //or "yyyy/mm   "
     //or "yyyy/mm/dd"
     //boolean
-    function checkDate(candidate){
-        
+    function checkDateFormat(candidate){
+
         function remainderBlank(i){ return candidate.substr(i).trim().length == 0;}
-        
+
         candidate = candidate.trim();
         if (candidate.length == 0) return "date is blank";
-        
+
         if (!allDigits(candidate,0,4)) return "date year is weird. Needs four digits."
         if (candidate.substr(0,4) < "1000" || candidate.substr(0,4) > "3000") return "date year out of range"; 
         if (remainderBlank(4)) return "ok"; // yyyy
@@ -403,6 +359,217 @@ function BMHCobj(){
         if (d.getMonth() != mm) return "That month doesn't have that many days." 
         return "ok"; //yyyy/mm/dd
     }
+    
+    function checkGPS(coord){
+        let numStrArr = coord.split(',');
+        if (numStrArr.length != 2) return "GPS coordinates are two numbers separated by a comma.";
+        let N=parseFloat(numStrArr[0]);
+        let E=parseFloat(numStrArr[1]);
+        if (!isNumeric(N) || !isNumeric(E)) return "GPS coordinates are two NUMBERS separated by a comma."
+        if (N < -90 || N > 90 || E < -180 || E > 180 ) return "Those GPS coordinates are invalid. First should be Latitude (from -90 to +90), second is Longitude specified as Easting (from -180 to +180). In the eastern US, first should be between 25 and 48, and second betweeen -67 and -89. The simplest is to copy/paste coordinates from maps.google.com";
+        return "ok" ;
+    }
+    
+    function critiqueVerbObject(subject,date,verb,object){
+            
+        function checkObjectAnachronism(object,date){
+            if (!assemblyExists(object)) return "there is no assembly named "+object;
+            let lt = lifeTime(db.assemblies[object].events);
+            if (lt==null || (lt.begin > date || lt.end < date)) return "assembly "+object+" doesn't exist at this date ("+date+")";
+            return 'ok';
+        }
+        
+        switch (verb){
+            case "begin-history":
+                if (object.length > 0) return "begin-history object should be blank. Put info in comment."
+                return 'ok';
+            case "set-locale":
+                return checkGPS(object);
+            case "set-weight":
+                if (object.length && allDigits(object,0,object.length)) return "ok";
+                return "bad weight amount";
+            case "set-affiliation":
+                if (object.length) {
+                    if (object == subject) return "can't affiliate with yourself";
+                    return checkObjectAnachronism(object,date);
+                }
+                return 'ok'; //become unaffiliated
+            case "set-photo": 
+                if (object.length > 0) return "ok"; //---------------unfinished checkURL??? 
+                return "bad URL";
+            case "add-tag":
+                if (db.tags.includes(object)) return "ok";
+                return "unrecognized tag";
+            case "remove-tag":
+                if (db.tags.includes(object)) return "ok";
+                return "unrecognized tag";
+            case "see-comment":
+                if (object.length > 0) return "see-comment object should be blank. Put info in comment.";
+                return "ok";
+            case 'expire-into': 
+                if (object.length) {
+                    if (object == subject) return "can't expire into yourself";
+                    return checkObjectAnachronism(object,date);
+                }
+                return 'ok'; //it's OK to expire into nothing.
+            default: 
+                return "verb not recognized";
+
+        }
+    }
+    
+    //does total scan of db searching for references to subject outside the given lifeTime.
+    //If lifeTime is null, any reference to subject is illegit. 
+    function checkReferences(subject, lifeTime){
+
+        var subjectId = db.assemblies[subject].id;
+
+        //if in other assemblies there are set-affiliation or expire-into events outside my lifeTime, complain!
+        //total scan of db! NOTE: can't 'return' (or break) from a "forEach", so I use oldfashioned loops
+
+        var names = Object.keys(db.assemblies);
+
+        for (let i=0; i<names.length; i++){ 
+            let name = names[i]; 
+            if (name!=subject){ //skip myself
+                let events = db.assemblies[name].events;
+                for (let j=0; j<events.length; j++) {
+                    let event = events[j];
+                    if (event.object == subjectId && (event.verb == 'set-affiliation' || event.verb == 'expire-into')){
+                        if (!lifeTime || event.date < lifeTime.begin || event.date > lifeTime.end) return name+" has a "+event.verb+" event referring to "+subject+" that is dated "+event.date+". Please fix.";
+                    }
+                }
+            }
+        }
+
+        return 'ok';
+    }
+    
+    //total scan of db
+    //checks validity of an events array
+    function checkEvents(subject, events){
+            
+        for (let i=1;i<events.length;i++) if (events[i].date < events[i-1].date) return 'Error: events out of order, please notify administrator';
+        if (events.length && events[0].verb != 'begin-history') return 'first event must be begin-history';
+        for (let i=1;i<events.length;i++) if (events[i].verb == 'begin-history') return 'only the first event may be begin-history';
+        for (let i=1;i<events.length-1;i++) if (events[i].verb == 'expire-into') return 'there can only be one expire-into, which must be the last event';
+
+        //total scan of db
+        return checkReferences(subject,lifeTime(events)); 
+    }
+    
+    
+    // date, verb, object, comment must already be trimmed,
+    // references in comment must already be in [id] rather than [name], and
+    // if verb is set-afiliation or expire-into, object must already be in id, not in name.
+    function newEventsArray(events, eventIndex, date,verb,object,comment){
+        let nuvents = [ ...events];
+        if (eventIndex == null) { // Issue is events having the same date as begin-history and/or expire-into.
+            //Will be sorted by date before verification by checkEvents, 
+            //but sort preserves insertion order when dates are identical.
+            //So policy is to add to end, 
+            //unless end is already an expire-into
+            //in which case you want to add before the expire-into.
+            nuvents.push(new naiveEvent(date,verb,object,comment)); //on the end
+            if (nuvents.length >1 && nuvents[nuvents.length-1].verb == "expire-into") { //swap last two
+                let swap = nuvents[nuvents.length-1];
+                nuvents[nuvents.length-1] = nuvents[nuvents.length-2];
+                nuvents[nuvents.length-2] = swap;
+            }
+        } else { 
+            let ev = nuvents[eventIndex];
+            ev.date = date; 
+            ev.verb = verb; 
+            ev.object = object; 
+            ev.comment = comment;
+        }
+        sortEvents(nuvents);
+        return nuvents;
+    }
+    
+    //returns "ok" or an error statement
+    //date,verb,object,comment must already be trimmed.
+    //if eventIndex == null, check is for adding the event given in the remaining parameters.
+    //Otherwise, checks for replacing db.assemblies[subjectAssembly].events[eventIndex] with the given event.
+    function checkEvent(subjectAssembly,eventIndex,date,verb,object,comment){ 
+        
+        if (!assemblyExists(subjectAssembly)) return "subject assembly '"+subjectAssembly+"' doesn't exist";
+        
+        let events=db.assemblies[subjectAssembly].events;
+        
+        if (eventIndex != null && (!isNumeric(eventIndex) || eventIndex < 0 || eventIndex >= events.length)) return 'invalid event index '+eventIndex ;
+        if (checkDateFormat(date)!="ok") return checkDateFormat(date);
+        let nok = critiqueVerbObject(subjectAssembly,date,verb,object);
+        if (nok != "ok") return nok;
+        
+        try{ comment = nameRefsToIdRefs(comment); } catch (e) {return e };  //---------***test this one***
+        if (object.length && (verb=='set-affiliation' || verb=='expire-into')) object = db.assemblies[object].id; //critiqueVerbObject has already verified ok
+        return checkEvents(subjectAssembly,newEventsArray(events,eventIndex,date,verb,object,comment));
+    }
+    
+    
+    // ---------------------- adding, deleting, editing events ----------------------
+    
+    
+    //replaces db.assemblies[assemblyName].events[eventIndex] with the given event information.
+    //if eventIndex==null, adds the given event as a new event.
+    function setEvent(assemblyName, eventIndex, date, verb, object, comment){
+        
+        assemblyName = assemblyName.trim(); 
+        date = date.trim();
+        verb = verb.trim();
+        object = object.trim();
+        comment = comment.trim();
+        
+        let ce = checkEvent(assemblyName,eventIndex,date,verb,object,comment);
+        if (ce != 'ok') return ce;
+        
+        comment = nameRefsToIdRefs(comment); //already verified ok
+        if (object.length && (verb=='set-affiliation' || verb=='expire-into')) object = db.assemblies[object].id; //already verified ok
+        db.assemblies[assemblyName].events = newEventsArray(db.assemblies[assemblyName].events,eventIndex,date,verb,object,comment);
+        
+        return 'ok';
+    }
+    
+    
+    function deleteEvent(assemblyName,index){
+        if (!assemblyExists(assemblyName)) return "That assembly doesn't exist";
+        
+        if (isNumeric(index) && index >=0 && index < db.assemblies[assemblyName].events.length) {
+            
+            if (index == 0 && db.assemblies[assemblyName].events.length > 1) return "You can't DELETE the begin event until you've first deleted all other events. You could EDIT the begin event, if you want to shift its date or add a comment.";
+            
+            if (index==0) {
+                let chk = checkReferences(assemblyName, null); 
+                if (chk != 'ok') return chk;
+            } //deletion of any other event than begin-history does not contract the lifeTime, so no need to checkReferences
+            
+            db.assemblies[assemblyName].events.splice(index,1); //remove the indexed event
+            //has stayed sorted
+            return 'ok';
+            
+        } else return 'bad event index';
+    }
+    
+    
+    // ------------------------------- getEventStrings --------------------------
+    //returns modified str
+    //replacing each [name] reference with [id] reference
+    function nameRefsToIdRefs(str){ //replace each [name] reference with [id] reference
+        let refs = str.match(/\[.+?\]/g) ; //returns an array of refs "[xxx]" from the strings
+        if (!refs) return str;
+        refs = refs.map(ref=>cutOffEnds(ref).trim());
+        refs.forEach(ref => { if (!db.assemblies[ref]) throw ref + " is not a known assembly."; });
+        refs.forEach(ref=> { str = str.replace(ref,db.assemblies[ref].id);});
+        return str;
+    }
+    
+    
+    function allDigits(candidate,start,len){
+        const snippet = candidate.substr(start,len);
+        if ( snippet.length != len) return false;
+        return /^\d+$/.test(snippet);
+    }
 
     //returns modified str
     //replacing each [id] reference with [name] reference
@@ -415,25 +582,15 @@ function BMHCobj(){
         return str;
     }
     
-    //returns modified str
-    //replacing each [name] reference with [id] reference
-    function nameRefsToIdRefs(str){ //replace each [name] reference with [id] reference
-        let refs = str.match(/\[.+?\]/g) ; //returns an array of refs "[xxx]" from the strings
-        if (!refs) return str;
-        refs = refs.map(ref=>cutOffEnds(ref).trim());
-        refs.forEach(ref => { if (!db.assemblies[ref]) throw ref + " is not a known assembly."; });
-        refs.forEach(ref=> { str = str.replace(ref,db.assemblies[ref].id);});
-        return str;
-    }
     
     //returns naiveEvent of dereferenced strings
     function dereferencedEvent(ev){
-        return new naiveEvent( ev.date, ev.verb, (ev.verb == "set-affiliation")?idToName[ev.object]:ev.object, idRefsToNameRefs(ev.note));
+        return new naiveEvent( ev.date, ev.verb, (ev.verb == "set-affiliation")?idToName[ev.object]:ev.object, idRefsToNameRefs(ev.comment));
     }
                          
     //Used for display of list of events.
     //Returns an array of formatted dereferencedEvents corresponding to the events of an assembly
-    //the indices of events in this array are valid to use in deleteEvent IFF there have been no addEvents or deleteEvents in between. 
+    //the indices of events in this array are valid to use in deleteEvent IFF there have been no setEvents or deleteEvents in between. 
     //So every time you add or delete one, you have to getEventStrings again, so your indices are good.
     function getEventStrings(assemblyName){ 
         
@@ -445,7 +602,7 @@ function BMHCobj(){
         
         function eventToString(ev){
             let sev = dereferencedEvent(ev);
-            return buff(sev.date,10) + ' ' + sev.verb + (sev.object.length?(' '+sev.object):'') + (sev.note.length?(" note:"+ sev.note):"");
+            return buff(sev.date,10) + ' ' + sev.verb + (sev.object.length?(' '+sev.object):'') + (sev.comment.length?(" comment:"+ sev.comment):"");
         }
         
         if (assemblyExists(assemblyName)) {
@@ -459,31 +616,17 @@ function BMHCobj(){
         else return null;
     }
     
-    TODO: have data editor expect an ok back from deleteEvent, else popup refusal.
-    
-    // Deleting first event may change lifeSpan. Need to checkreferences to see if that invalidates any references...
-    // (Deleting a (necessarily final) expire-into event enlarges lifeSpan, so that's OK.)
-    function deleteEvent(assemblyName,index){
-        if (isNumeric(index) && assemblyExists(assemblyName)) {
-            if (index == 0) {
-                let nuvents = [db.assemblies[assemblyName].events...].shift(); //all save first element
-                let chkRef = checkReferences(assemblyName,lifeSpan(nuvents));
-                if (chkRef != 'ok') return chkRef;
-            }
-            db.assemblies[assemblyName].events.splice(index,1); //remove the indexed event
-            return 'ok';
-        }
-    }
     
     //used to initialize db.assemblies from file
     function setData(data){
-        db.assemblies = data;
+        db.idSource = data.idSource;
+        db.assemblies = data.assemblies;
         buildIdToName();
     }
     
     //used to create a file copy of db.assemblies
     function getData(){
-        return JSON.stringify(db.assemblies);
+        return '{"idSource":' + db.idSource + ',"assemblies":' + JSON.stringify(db.assemblies) + '}';
     }
 
     
@@ -516,19 +659,19 @@ function BMHCobj(){
     const minDate ='0000'; //least date with four digit yyyy
     const maxDate = '9999/12/31';
     
-    /*
     
     //returns affiliation as of the given date, or '' if none.
-    function mostRecentAffiliation(events,date){
-        var currentAffiliation = '';
+    function mostRecentAffiliationId(events,date){
+        var currentAffiliationId = '';
         for (var i=0;i<events.length;i++) {
             if (events[i].date > date) break;
-            if (events[i].verb == 'set-affiliation') currentAffiliation = events[i].object; //may be ''
+            if (events[i].verb == 'set-affiliation') currentAffiliationId = events[i].object; //may be ''.
         }
-        return currentAffiliation;
+        return currentAffiliationId;
     }
     
     
+    /*
     
     //given an array hasDates of events or states or any objects which have a 'date' field, 
     //and i an index thereinto, 
@@ -559,7 +702,7 @@ function BMHCobj(){
     //N.B.: I considered whenever a expirer or 
     
     //insert a compile-time-only update-affiliations event at the (end of) the given date.
-    //placeValidatedEvent(assemblyName,date,'update-affiliations','','');
+    //placeEvent(db.assemblies[assemblyName].events,date,'update-affiliations','','');
     
    
     function preCompile(){
@@ -608,7 +751,7 @@ function BMHCobj(){
 
         function treatSubordinate(assembly, me ,date){
             if (mostRecentAffiliationChain(assembly,date).includes(me)){ //must include prior precompiled update-affiliation events...
-                placeValidatedEvent(assembly,date,'update-affiliations','','');
+                placeEvent(db.assemblies[assembly].events,date,'update-affiliations','','');
             }
         }
 
@@ -618,14 +761,14 @@ function BMHCobj(){
     
     //In the following, the states are "unclosed", i.e. affiliation is not yet an array.
     
-    function State( date,locale, weight, affiliation, photo, tags, notes) {
+    function State( date,locale, weight, affiliation, photo, tags, comments) {
         this.date = date;
         this.locale = locale;
         this.weight = weight;
         this.affiliation = affiliation;
         this.photo = photo;
         this.tags = tags;
-        this.notes = notes;
+        this.comments = comments;
     }
     
     function virginState(){
@@ -633,11 +776,11 @@ function BMHCobj(){
     }
     
     function copyState(state){
-        return new State(state.date, state.locale, state.weight, state.affiliation, state.photo, [...state.tags], [...state.notes]);
+        return new State(state.date, state.locale, state.weight, state.affiliation, state.photo, [...state.tags], [...state.comments]);
     }
     
     //edits the given state based on the given event
-    // note ([] == false) is true, as is ('' == false)
+    // comment ([] == false) is true, as is ('' == false)
     function editState(state,event){
         switch(event.verb){
             case 'set-locale':
@@ -660,12 +803,12 @@ function BMHCobj(){
             case 'remove-tag':
                 state.tags = state.tags.filter(tag => tag != event.object);
                 break;
-            case 'see-note':
-                state.note = event.note; //replaces
+            case 'just-comment':
+                state.comment = event.comment; //replaces
                 break;
             case 'expire...
         }
-        if (event.note && event.note.length) state.notes.push(event.note);
+        if (event.comment && event.comment.length) state.comments.push(event.comment);
         state.date = event.date;
         return state;
     }
@@ -681,7 +824,7 @@ function BMHCobj(){
                     editState(state,event); //evolve the state
                     if (index==events.length-1 || events[i+1].date != event.date) s.push(copyState(state)); //only push when done with identical dates
                     //else, as long as date stays same, condinue editing same state. 
-                    //Can accumulate multiple notes, multiple tags,
+                    //Can accumulate multiple comments, multiple tags,
                     //but not multiple photos, affiliations, locales, or weights -- last one wins
                 });
             }
@@ -724,10 +867,10 @@ function BMHCobj(){
             changeAssembly:changeAssembly,
             deleteAssembly:deleteAssembly,
             
-            addEvent:addEvent,
+            setEvent:setEvent,
+            deleteEvent:deleteEvent,
             getDereferencedEvent:getDereferencedEvent,
             getEventStrings:getEventStrings,
-            deleteEvent:deleteEvent,
             
             //temporary, for testing only
             db:db

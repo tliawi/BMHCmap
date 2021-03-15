@@ -138,7 +138,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
                 <br>
             </div>
             
-<!-- strategy for making sure that for assembly names or in event objects or notes
+<!-- strategy for making sure that for assembly names or in event objects or comments
   whatever the user types (including accidental html-interpreted symbols) 
   is what they see (save trimming blanks from the ends) 
   and what is saved in the db:
@@ -171,7 +171,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
             
             <div id="eventInstructions">
                 <br>
-                <button class="textButton" onclick="launchEditEvent()">Click here to create a new event. </button>
+                <button class="textButton" onclick="launchEditEvent(null)">Click here to create a new event. </button>
                 <br> Or select a listed event 
                 <br> and hit <em>space</em> to change it,
                 <br> or <em>delete</em> (or <em>backspace</em>) to delete it.
@@ -191,9 +191,9 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
                 <label>object:</label>
                 <input type="text" id="eventObject" size="58" >
                 <select name="eventTagObject" id="eventTagObject" required="true" onchange="handleTagSelection(this.value)"></select>
-                <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <label>note:</label>
-                <textarea type="text" id="eventNote" rows=3 cols=50> </textarea>
+                <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <label>comment:</label>
+                <textarea type="text" id="eventComment" rows=3 cols=50> </textarea>
                 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button type="button" onclick="initEventViewer()">cancel</button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -432,7 +432,7 @@ function deleteAssembly(name){
     let refCount = 0;
     if (!bmhc.assemblyExists(name)) alert("This assembly doesn't exist.")
     else{
-        if (confirm("This will also delete all events of this assembly, and remove all references to this assembly in other event affiliations or notes. OK?")){
+        if (confirm("This will also delete all events of this assembly, and remove all references to this assembly in other event affiliations or comments. OK?")){
             refCount = bmhc.deleteAssembly(name);
             if (refCount) alert(refCount+" references removed.");
             initAssemblyViewer();
@@ -484,15 +484,15 @@ function launchEditEvent(eventIndex){
     if (eventIndex == null) setEventFields("","","","");
     else {
         let ev = bmhc.getDereferencedEvent(state.priorAssemblyName,eventIndex);
-        setEventFields(ev.date, ev.verb, ev.object, ev.note);
+        setEventFields(ev.date, ev.verb, ev.object, ev.comment);
     }
 }
 
-function setEventFields(date,verb,obj,note){
+function setEventFields(date,verb,obj,comment){
     document.getElementById("eventDate").value = date;
     document.getElementById("eventVerb").value = verb;
     document.getElementById("eventObject").value = obj;
-    document.getElementById("eventNote").value = note;
+    document.getElementById("eventComment").value = comment;
     handleVerbChange(verb);
 }
     
@@ -500,19 +500,18 @@ function checkAndSaveEvent(){
     let date = document.getElementById("eventDate").value.trim();
     let verb = document.getElementById("eventVerb").value.trim();
     let obj  = document.getElementById("eventObject").value.trim();
-    let note = document.getElementById("eventNote").value.trim();
+    let comment = document.getElementById("eventComment").value.trim();
     
-    const result = bmhc.addEvent(state.priorAssemblyName,date,verb,obj,note,false); //just checking, won't add
-    if (result != 'ok') { alert(result);} //and do nothing, stay put
-    else {
-        bmhc.deleteEvent(state.priorAssemblyName,state.eventIndex); // if eventIndex is null, does nothing
-        bmhc.addEvent(state.priorAssemblyName,date,verb,obj,note,true); //do it this time
+    const result = bmhc.setEvent(state.priorAssemblyName, state.eventIndex, date,verb,obj,comment);
+    if (result == 'ok') { 
+        
         makeLIsOfArray(bmhc.getEventStrings(state.priorAssemblyName)); //so listBox reflects changes
         if (verb == 'set-weight') date = bmhc.yearLater(date); 
         else {date = ''; verb = '';};
         setEventFields(date, verb,'',''); //and stay put, ready to add another of same verb (helps for set-weight)
         state.eventIndex = null; //clear eventIndex, so don't delete another one next time!
-    }
+        
+    } else  alert(result); //and do nothing, stay put
 }
 
 
@@ -561,7 +560,7 @@ function ultest(){
 //   whichList "assemblies" or "events"
 //   priorAssemblyName target of event editing
 //   eventIndex index of event being edited or deleted, valid only after a getEventList
-//   hasn't been invalidated by a deleteEvent or addEvent (in which case, just need to redo getEventList).
+//   hasn't been invalidated by a deleteEvent or setEvent (in which case, just need to redo getEventList).
 let state = {checkbox:1, whichList:"assemblies", priorAssemblyName:"", eventIndex:null, textFile:null };
 
 let bmhc =  BMHCobj(); 
