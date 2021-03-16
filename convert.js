@@ -8,7 +8,7 @@
 //columns having separated gps coordinates, so that full numeric value was visible.
 //Save-as csv, tab separated (there were commas elsewhere too).
 
-
+var datArray = [];
 function processLine(line){
 	var larray = line.split("\t");
 	var dat = {};
@@ -19,9 +19,13 @@ function processLine(line){
 		j++;
 	});
 	
-	console.log(dat.cong, dat.subgroup, dat.founded);
+	datArray.push(dat);
 }
 
+function postRead(){
+    console.log('postRead '+lCount);
+    console.log(datArray[5].cong)
+}
 
 const readline = require('readline');
 const fs = require('fs');
@@ -34,6 +38,9 @@ const readInterface = readline.createInterface({
 });
 
 console.log("hello froggin world");
+
+readInterface.on('close', postRead); //executes after all lines have been read
+
 var lCount = 0;
 readInterface.on('line', function(line) {
 	lCount++;
