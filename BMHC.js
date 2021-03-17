@@ -68,10 +68,19 @@ function BMHCobj(){
         Object.entries(db.assemblies).forEach(([name, assemblyData]) => idToName[assemblyData.id] = name);
     }
     
-    //only works with a valid date!!
-    function yearLater(date){
+    //only works with valid dates, though oldDate may be null (anything falsy)
+    function yearLater(oldDate, date){
         let yr = parseInt(date);
-        return (yr+1).toString() + date.substr(4);
+        let delta = 1;
+        
+        if (oldDate){
+            let oldYr = parseInt(oldDate);
+            delta = yr-oldYr;
+            if (delta > 50) delta = 1;
+            else if (delta < -50) delta = 1;
+        }
+        
+        return (yr+delta).toString() + date.substr(4);
     }
     
     function getAllAssemblyNames(){
@@ -136,6 +145,11 @@ function BMHCobj(){
         else return null;
     }
     
+    function assemblyLifeTime(name) { 
+        if (assemblyExists(name)) return lifeTime(db.assemblies[name].events);
+        else return null;
+    }
+    
     function lastEvent(name){
         if (assemblyExists(name)) {
             let len = db.assemblies[name].events.length;
@@ -193,7 +207,7 @@ function BMHCobj(){
     
     function removeInvalidEventReferences(id){
         let count = 0;
-        const re = new RegExp('\['+id+'\]','g');
+        //const re = new RegExp('\['+id+'\]','g');
         
         function filterObjectReferences(assembly){
             db.assemblies[assembly].events = db.assemblies[assembly].events.filter(event =>{
@@ -204,9 +218,10 @@ function BMHCobj(){
         
         function clobberCommentReferences(assembly){
             db.assemblies[assembly].events.forEach(event =>{ 
-                let c = (event.comment.match(re) || []).length; //match can return null
-                if (c) event.comment = event.comment.replaceAll('['+id+']',"???"); 
-                count += c;
+                //let c = (event.comment.match(re) || []).length; //match can return null
+                //if (c) event.comment = event.comment.replaceAll('['+id+']',"???"); 
+                let nuComment = event.comment.replaceAll('['+id+']',"???");
+                if (event.comment != nuComment){event.comment = nuComment; count++;} //undercounts if more than one, tant pis
             });
         }
     
@@ -221,9 +236,10 @@ function BMHCobj(){
     
     //returns the number of invalidated references that have been removed
     function deleteAssembly(name){
+        if (!assemblyExists(name)) return -1;
         //tosses assembly and its assemblyData, including all events therein.
         const id = db.assemblies[name].id;
-        delete db.assemblies[name]; //doesn't throw anything if it doesn't exist.
+        delete db.assemblies[name];
         delete idToName[id]; //maintain idToName
         return removeInvalidEventReferences(id);
     }
@@ -403,8 +419,8 @@ function BMHCobj(){
             case "remove-tag":
                 if (db.tags.includes(object)) return "ok";
                 return "unrecognized tag";
-            case "see-comment":
-                if (object.length > 0) return "see-comment object should be blank. Put info in comment.";
+            case "just-comment":
+                if (object.length > 0) return "just-comment object should be blank. Put info in comment.";
                 return "ok";
             case 'expire-into': 
                 if (object.length) {
@@ -629,6 +645,9 @@ function BMHCobj(){
         return '{"idSource":' + db.idSource + ',"assemblies":' + JSON.stringify(db.assemblies) + '}';
     }
 
+    function wrapDataInJS(){
+    return "function bmhcData(){ return "+getData()+"; }" ;
+}
     
     
     
@@ -845,11 +864,16 @@ function BMHCobj(){
     
     */
     
-    return {cutOffEnds:cutOffEnds,
+    return {
+            maxDate:maxDate,
+            minDate:minDate,
+        
+            cutOffEnds:cutOffEnds,
             yearLater:yearLater,
         
             getVerbs:getVerbs,
         
+            wrapDataInJS:wrapDataInJS,
             getData:getData,
             setData:setData,
             
@@ -871,6 +895,8 @@ function BMHCobj(){
             deleteEvent:deleteEvent,
             getDereferencedEvent:getDereferencedEvent,
             getEventStrings:getEventStrings,
+        
+            assemblyLifeTime:assemblyLifeTime,
             
             //temporary, for testing only
             db:db

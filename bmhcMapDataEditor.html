@@ -103,7 +103,8 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
             <div id="assemblyCreator" ><b>1.a Create an Assembly</b><br></div>
             
             <div id="assemblyEditor" ><b>1.b Edit an Assembly</b><br></div>
-            
+     
+    <!--
             <div id="eventViewer">
                 <div class="d-table">
                     <div>
@@ -113,6 +114,10 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
                         <button type="button" class="load-save" onclick="initAssemblyViewer()">back to 1. Assembly List</button>
                     </div>
                 </div>
+            </div>
+    -->        
+            <div id="eventViewer">
+                <b>2. Event list for:&nbsp;<span id="eventsAssemblyName" style="white-space: break-spaces;"></span><br></b>
             </div>
             
             <div id="eventEditor">
@@ -153,7 +158,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
                 <br>
                 <input type="text" id="inputAssemblyName" style="white-space: break-spaces;" size=70>
                 <br>
-                <button type="button" onclick="initAssemblyViewer()">cancel</button>
+                <button type="button" onclick="initAssemblyViewer()">&#10094; cancel</button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button type="button" onclick="saveAssembly()">save</button> 
             </div>
@@ -163,7 +168,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
                 <br>
                 <input type="text" id="changingAssemblyName" style="white-space: break-spaces;" size=70>
                 <br>
-                <button type="button" onclick="initAssemblyViewer()">cancel</button>
+                <button type="button" onclick="initAssemblyViewer()">&#10094; cancel</button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button type="button" onclick="changeAssembly()">change</button>
             </div>
@@ -175,6 +180,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
                 <br> Or select a listed event 
                 <br> and hit <em>space</em> to change it,
                 <br> or <em>delete</em> (or <em>backspace</em>) to delete it.
+                <br><button type="button" class="load-save" onclick="initAssemblyViewer()">&#10094; back to 1. Assembly List</button>
                 <br>
             </div> 
             
@@ -195,7 +201,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
                 <label>comment:</label>
                 <textarea type="text" id="eventComment" rows=3 cols=50> </textarea>
                 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <button type="button" onclick="initEventViewer()">cancel</button>
+                <button type="button" onclick="initEventViewer()">&#10094; cancel</button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button type="button" onclick="checkAndSaveEvent()">save</button>
             </div>
@@ -506,8 +512,12 @@ function checkAndSaveEvent(){
     if (result == 'ok') { 
         
         makeLIsOfArray(bmhc.getEventStrings(state.priorAssemblyName)); //so listBox reflects changes
-        if (verb == 'set-weight') date = bmhc.yearLater(date); 
-        else {date = ''; verb = '';};
+        if (verb == 'set-weight'){ 
+            let temp = date;
+            date = bmhc.yearLater(state.oldSetWeightDate,date);
+            state.oldSetWeightDate = temp;
+        }
+        else {date = ''; verb = ''; state.oldSetWeightDate = null;} 
         setEventFields(date, verb,'',''); //and stay put, ready to add another of same verb (helps for set-weight)
         state.eventIndex = null; //clear eventIndex, so don't delete another one next time!
         
@@ -532,14 +542,10 @@ function makeTextFile(text) {
     return state.textFile;
 };
 
-   
-function wrapBmhcDataInJS(){
-    return "function bmhcData(){ return "+bmhc.getData()+"; }" ;
-}
-    
+
 function saveData(){
     let link = document.getElementById('downloadlink');
-    link.href = makeTextFile(wrapBmhcDataInJS()) 
+    link.href = makeTextFile(bmhc.wrapDataInJS()); 
     link.style.visibility = 'visible'; //turn it on so user can accept/reject download to HD.
 }
 
@@ -561,7 +567,7 @@ function ultest(){
 //   priorAssemblyName target of event editing
 //   eventIndex index of event being edited or deleted, valid only after a getEventList
 //   hasn't been invalidated by a deleteEvent or setEvent (in which case, just need to redo getEventList).
-let state = {checkbox:1, whichList:"assemblies", priorAssemblyName:"", eventIndex:null, textFile:null };
+let state = {checkbox:1, whichList:"assemblies", priorAssemblyName:"", eventIndex:null, textFile:null, oldSetWeightDate:null};
 
 let bmhc =  BMHCobj(); 
 bmhc.setData(bmhcData());
