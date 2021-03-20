@@ -12,10 +12,8 @@ function BMHCobj(){
     // 0 neither, 3 both
     // name:val pairs, in names no double quotes, no ampersand. Blanks, Apostrophe are OK
     
-    // unfinished 
-    // save db to storage facility which can manage concurrent access to getNextId
-    // and make addAssembly, changeAssembly, setEvent, deleteEvent etc atomic to external db.
-    // Implies all db writes will become asynch
+    const minDate ='0001'; //least truthy date with four digit yyyy
+    const maxDate = '9999/12/31';
     
     function bmhcDatabase(){
         this.idSource = 13; //source of unique ids for both assemblies and events
@@ -596,42 +594,11 @@ function BMHCobj(){
     
     
     
-    ////--------------------- compilation into states.
-    //// This 'batch' job is invalidated by any change to db.assemblies info, i.e. must be redone
-    //// The program must end, because events will be inserted artificially which might bother editors.
-    //// So alert user if they haven't saved db (dirty bit?), and terminate program
-    //// cease responding, kill the interface, redirect, whatever, make the user leave the window
-    //// like kill the db!
+    //--------------------- compilation of accellerators -----------------------------
     
-    //Need to add pseudo set-affiliation events to all underlings whenever overlord affiliation changes (or expires), and recur! That will cause affiliations list to be regenereated at that time.??
+   //The state of an assembly at date D includes the current affiliationChain which is dynamically computed.
     
-    /*
-    Assertions: 
-    mostRecentAffiliation(assemblyName,date) is computable, 
-    it scans all assemblyName's events whose date <= given date,
-    and returns object of most recent set-affiliation event, or "" if none. 
-    difficulty: if pseudo set-affiliations havent' been injected first. So need to do all higher level assemblies first.
-    Donc affiliateChainFromMe(myAssemblyName,date) is computable, is array [ mostRecentAffiliation(me,date), mostRecentAffiliation(mostRecentAffiliation(me,date),date)...]
-    until "" (top dog has no affiliation). May be [].
-    
-    Donc affiliateChainThroughMe(myAssemblyName,targetAssemblyName, date) is computable, is array of assemblyNames by which there is an affiliation chain (of mostRecentAffiliations) from targetAssembly including me at the given date, or [] if no such chain exists.
-    Bzw I'm on affiliateChainFrom any other assembly at a given date is computable, so I can search through all assemblies and find those affiliated through me at that date.
-    Donc when I do a expire-into or a set-affiliation, I can update all my subordinates' affilaitionchains to go through they new guy to the top. I add a compile-time-only event to them, that updates their chain. Also happens when I'm at the bottom of the list, because I compute my own affiliateChainThroughMe, which goes all the way to the top.
-    
-    */
-    
-    const minDate ='0000'; //least date with four digit yyyy
-    const maxDate = '9999/12/31';
-    
-    
-    
-    var levels = {}; // assemblyName:level items
-    
-    function computeLevels(){
-        
-    }
-    
-    //returns affiliation name as of the given date, or '' if none.
+    //returns affiliation as of the given date, or '' if none.
     //note that if an assembly expires into another (for a renaming or merger)
     //then post-merger the new one's affiliation holds as the affiliation of the old.
     //The people moved into another institution, and we're tracking those peoples' affiliation.
@@ -642,7 +609,7 @@ function BMHCobj(){
             if (events[i].verb == 'set-affiliation') currentAffiliationId = events[i].object; //may be ''.
             if (events[i].verb == 'expire-into'){
                 if (events[i].object == '') return '';
-                else return mostRecentAffiliation(db.assemblies[idToName[events[i].object]].events, date+'.'); //you became the new identity. This would become an infinite loop if at the same date, A expires into B and B expires into A, save for the +'.' which breaks the date equality
+                else return mostRecentAffiliation(db.assemblies[idToName[events[i].object]].events, date); //you became the new identity. We fear no circularity, that was excluded during data entry.
             }
         }
         if (currentAffiliationId == '') return '';
@@ -655,11 +622,13 @@ function BMHCobj(){
         var mra = mostRecentAffiliation(db.assemblies[name].events,date);
         if (mra == '') return chain;
         else {
-            //check for circularity
-            if (chain.includes(mra)) return chain.push(-1); //indicate circularity
-            else return affiliationChain(mra,date,chain.push(mra));
+            chain.push(mra);
+            return affiliationChain(mra,date,chain); //no circularity possible, was excluded in data entry.
         }
     }
+    
+    //colors may depend on affiliationChain, size of display on weight (use sqrt?), position on most recent locale.
+    //first version will try to just compute all of those all the time, without any accellerator.
     
     /*
     
@@ -735,9 +704,9 @@ function BMHCobj(){
         
         // go through the pile in order, calling treatSubordinate Assembly (total scan of db for each one!!!)
             
-        //wait. If we took a greedy approach. If each assy knew the list of everyone it had ever been affiliated to... and all the upstack superassemblies they'd been affiliated too,
+        //wait. If we took a greedy approach. If each assy knew the list of everyone it had ever been affiliated to... and all the upstack superassemblies they'd been affiliated to,
         //so set of all possible superaffiliates.. then it could do an update-affiliation any time any of them changed affiliations. basta. Overkill is cheaper, because I never have to rescan whole db.
-    //think expirers too!!
+    //think expirers too
 
         function treatSubordinate(assembly, me ,date){
             if (mostRecentAffiliationChain(assembly,date).includes(me)){ //must include prior precompiled update-affiliation events...
@@ -770,7 +739,7 @@ function BMHCobj(){
     }
     
     //edits the given state based on the given event
-    // comment ([] == false) is true, as is ('' == false)
+    //Note ([] == false) is true, as is ('' == false)
     function editState(state,event){
         switch(event.verb){
             case 'set-locale':
@@ -779,9 +748,8 @@ function BMHCobj(){
             case 'set-weight':
                 state.weight = event.object; //replaces
                 break;
-            case 'set-affiliation':
-                state.affiliation = event.object; //replaces, can be ''
-                break;
+            //case 'set-affiliation': can't accellerate
+            //  break;
             case 'photo':
                 state.photo = event.object; //replaces
                 break;
@@ -793,10 +761,9 @@ function BMHCobj(){
             case 'remove-tag':
                 state.tags = state.tags.filter(tag => tag != event.object);
                 break;
-            case 'just-comment':
-                state.comment = event.comment; //replaces
-                break;
-            case 'expire...
+            //case 'just-comment':
+            //    break;
+            case 'expire-into':
         }
         if (event.comment && event.comment.length) state.comments.push(event.comment);
         state.date = event.date;

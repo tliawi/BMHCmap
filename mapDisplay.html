@@ -191,16 +191,21 @@
           zoom: 6.9
         });
         
+        var aTag = 'paid minister'; 
+        
         var activeYear = '1887/00/00';
         var filterTime = ['all',['<=',['get','begin'],activeYear],['<',activeYear,['get','end']]];
         var filterDenom =['any',['==',['get','denomination'],1],['==',['get','denomination'],2]];
-           
+        var filterTags = ['in',aTag,['get','tags']];
+        function filterSet(){ 
+            return ['all',filterTime,filterTags];
+        }
         
         map.on('load', function() {
             
           map.addSource('assembliesSource', {
             'type': 'geojson',
-            'data': './assemblies.geojson'
+            'data': './map.geojson'
           });
             
           map.addLayer({
@@ -213,12 +218,12 @@
                         ['linear'],
                         ['number', ['get', 'weightRoot']],
                         0, 3,
-                        500, 24
+                        40, 24
                       ],
                   'circle-color': '#118800',
                   'circle-opacity': 0.5
               },
-            filter: ['all', filterTime, filterDenom]
+            filter: filterSet()
           });
         
           map.addLayer({
@@ -231,7 +236,7 @@
                     'text-radial-offset': 0.5,
                     'text-justify': 'auto'
               },
-            filter: ['all', filterTime, filterDenom]
+            filter: filterSet()
           });
         
         
@@ -248,8 +253,8 @@
               document.getElementById('active-year').innerText = e.target.value;
               activeYear = e.target.value + '/00/00';
               filterTime = ['all',['<=',['get','begin'],activeYear],['<',activeYear,['get','end']]];
-              map.setFilter('assemblyCircles',['all',filterTime,filterDenom]);
-              map.setFilter('assemblyNames',['all',filterTime,filterDenom]);
+              map.setFilter('assemblyCircles',filterSet());
+              map.setFilter('assemblyNames',filterSet());
           });
             
         var popup = new mapboxgl.Popup({
