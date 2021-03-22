@@ -182,6 +182,56 @@
     </script>
 
     <script>
+        
+        function MyFilters(){
+            this.activeYear = '1887/00/00';
+            this.mb = 3;
+            this.tags = [];
+            this.affiliations = [];
+        }
+        
+        //activeYear must be absent (in which case it runs off of prior established this.activeYear)
+        //or a date in yyyy, or yyyy/mm, or yyyy/mm/dd
+        MyFilters.prototype.filterTime = function(activeYear){
+            if (activeYear != undefined) this.activeYear = activeYear+'';
+            return ['all',['<=',['get','begin'],this.activeYear],['<',this.activeYear,['get','end']]];
+        }
+        
+        //mb must be absentd (in which case it runs off of prior established this.mb),
+        //or element of {0,1,2,3}
+        MyFilters.prototype.filterDenom = function(mb){
+            let ds = [];
+            
+            if (mb!=undefined)this.mb = mb;
+            
+            if (this.mb==0) ds.push(['==',['get','denomination'],0]);
+            if (this.mb==1 || this.mb == 3) ds.push(['==',['get','denomination'],1]);
+            if (this.mb==2 || this.mb == 3) ds.push(['==',['get','denomination'],2]);
+            
+            return ['any',...ds];
+        }
+        
+        
+        MyFilters.prototype.filterSet = function(){
+            let fs = [this.filterTime(),this.filterDenom()];
+            //if (this.tags.length) fs.push(this.filterTags()); 
+            //if (this.affiliations.length) fs.push(this.filterAffiliations()); 
+            return ['all',...fs];
+        }
+       
+        /*
+        var mapG = {
+            activeYear: '1887/00/00',
+            filterTime: ['all',['<=',['get','begin'],activeYear],['<',activeYear,['get','end']]],
+            filterDenom: ['any',['==',['get','denomination'],1],['==',['get','denomination'],2]],
+            filterTags: ['in','paid minister',['get','tags']],
+            filterSet: ['all',filterTime,filterDenom]
+        }
+        */
+        
+        
+        var myFilters = new MyFilters();
+        
         mapboxgl.accessToken = 'pk.eyJ1IjoiamhuZnJmbGQiLCJhIjoiY2tsbGtvb256MDA2ZzJ2bXB4NXJreHh1YyJ9.m5CZfFB_wUxWs6HIOs3_cg';
 
         var map = new mapboxgl.Map({
@@ -190,17 +240,6 @@
           center: [-79.806421, 37.838214], // initial map center in [lon, lat]
           zoom: 6.9
         });
-        
-        var aTag = 'paid minister'; 
-        
-        var activeYear = '1887/00/00';
-        var filterTime = ['all',['<=',['get','begin'],activeYear],['<',activeYear,['get','end']]];
-        var filterDenom =['any',['==',['get','denomination'],1],['==',['get','denomination'],2]];
-        var filterTags = ['in',aTag,['get','tags']];
-        
-        function filterSet(){ 
-            return filterTime; //['all',filterTime,filterTags];
-        }
         
         map.on('load', function() {
             
@@ -224,7 +263,7 @@
                   'circle-color': '#118800',
                   'circle-opacity': 0.5
               },
-            filter: filterSet()
+            filter: myFilters.filterSet()
           });
         
           map.addLayer({
@@ -237,7 +276,7 @@
                     'text-radial-offset': 0.5,
                     'text-justify': 'auto'
               },
-            filter: filterSet()
+            filter: myFilters.filterSet()
           });
         
         
@@ -252,10 +291,11 @@
             
           document.getElementById('slider').addEventListener('input', function(e) {
               document.getElementById('active-year').innerText = e.target.value;
-              activeYear = e.target.value + '/00/00';
-              filterTime = ['all',['<=',['get','begin'],activeYear],['<',activeYear,['get','end']]];
-              map.setFilter('assemblyCircles',filterSet());
-              map.setFilter('assemblyNames',filterSet());
+              let activeYear = e.target.value + '/00/00';
+              myFilters.filterTime(activeYear);
+              //filterTime = ['all',['<=',['get','begin'],activeYear],['<',activeYear,['get','end']]];
+              map.setFilter('assemblyCircles',myFilters.filterSet());
+              map.setFilter('assemblyNames',myFilters.filterSet());
           });
             
         var popup = new mapboxgl.Popup({

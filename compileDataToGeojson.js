@@ -40,7 +40,7 @@ function birthNewFeature(name,year,state){
     let properties = new Properties(
         name, 
         year+'', 
-        compilationYear(), //may be changed by subsequent birth
+        compilationYear()+'', //may be changed by subsequent birth
         bmhc.getDenomination(name),
         Math.sqrt(state.membership),
         state.affiliations,
@@ -51,6 +51,7 @@ function birthNewFeature(name,year,state){
     return new Feature(properties,point);
 }
 
+//returns an integer, not a string
 function compilationYear(){ return (new Date()).getFullYear(); };
 
 //begin execution
