@@ -1,0 +1,49 @@
+{
+  "type": "FeatureCollection",
+  "features": [{
+    "type": "Feature",
+    "properties": {
+      "name": "Bridgewater",
+      "begin": "1880",
+      "end": "1910",
+      "denomination": 1,
+      "weight": 0,
+      "affiliations":[],
+      "tags": ["flag in sanctuary","2nd District"],
+      "photo": ""
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-78.96007145387333, 38.37852792976292]     }
+  },{
+    "type": "Feature",
+    "properties": {
+      "name": "Bridgewater",
+      "begin": "1910",
+      "end": "1931",
+      "denomination": 1,
+      "weight": 100,
+      "affiliations":["COB"],
+      "tags": ["paid minister","flag in sanctuary","2nd District"],
+      "photo": ""
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-78.96007145387333, 38.37852792976292]     }
+  },{
+    "type": "Feature",
+    "properties": {
+      "name": "Park View",
+      "begin": "1900",
+      "end": "1955",
+      "denomination": 2,
+      "weight": 420,
+      "affiliations":["Central District","Virginia Conference","MCUSA"],
+      "tags": ["paid minister"],
+      "photo": ""
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-78.87617499453077, 38.4787454367074]    }
+  }
+]}

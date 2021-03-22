@@ -512,13 +512,13 @@ function checkAndSaveEvent(){
     if (result == 'ok') { 
         
         makeLIsOfArray(bmhc.getEventStrings(state.priorAssemblyName)); //so listBox reflects changes
-        if (verb == 'set-weight'){ 
+        if (verb == 'set-membership'){ 
             let temp = date;
-            date = bmhc.yearLater(state.oldSetWeightDate,date);
-            state.oldSetWeightDate = temp;
+            date = bmhc.yearLater(state.oldSetmMembershipDate,date);
+            state.oldSetMembershipDate = temp;
         }
-        else {date = ''; verb = ''; state.oldSetWeightDate = null;} 
-        setEventFields(date, verb,'',''); //and stay put, ready to add another of same verb (helps for set-weight)
+        else {date = ''; verb = ''; state.oldSetMembershipDate = null;} 
+        setEventFields(date, verb,'',''); //and stay put, ready to add another of same verb (helps for set-membership)
         state.eventIndex = null; //clear eventIndex, so don't delete another one next time!
         
     } else  alert(result); //and do nothing, stay put
@@ -567,7 +567,7 @@ function ultest(){
 //   priorAssemblyName target of event editing
 //   eventIndex index of event being edited or deleted, valid only after a getEventList
 //   hasn't been invalidated by a deleteEvent or setEvent (in which case, just need to redo getEventList).
-let state = {checkbox:1, whichList:"assemblies", priorAssemblyName:"", eventIndex:null, textFile:null, oldSetWeightDate:null};
+let state = {checkbox:1, whichList:"assemblies", priorAssemblyName:"", eventIndex:null, textFile:null, oldSetMembershipDate:null};
 
 let bmhc =  BMHCobj(); 
 bmhc.setData(bmhcData());

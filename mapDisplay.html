@@ -197,8 +197,9 @@
         var filterTime = ['all',['<=',['get','begin'],activeYear],['<',activeYear,['get','end']]];
         var filterDenom =['any',['==',['get','denomination'],1],['==',['get','denomination'],2]];
         var filterTags = ['in',aTag,['get','tags']];
+        
         function filterSet(){ 
-            return ['all',filterTime,filterTags];
+            return filterTime; //['all',filterTime,filterTags];
         }
         
         map.on('load', function() {
@@ -216,9 +217,9 @@
                   'circle-radius': [
                         'interpolate',
                         ['linear'],
-                        ['number', ['get', 'weightRoot']],
+                        ['number', ['get', 'weight']],
                         0, 3,
-                        40, 24
+                        800, 24
                       ],
                   'circle-color': '#118800',
                   'circle-opacity': 0.5

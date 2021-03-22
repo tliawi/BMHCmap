@@ -1,4 +1,4 @@
-//convert.js
+//convertCSVtoData.js
 
 //in terminal, in the folder containing this file and MennoAndBrethrenCongs.csv, do
 //node convert.js
@@ -63,7 +63,7 @@ function beginHistory(){
         
         //console.log(events);
         //only add year1n as candidate for begin-history if it is earlier than any of the others,
-        //because it will also become a set-weight event
+        //because it will also become a set-membership event
         if (dat.year1n.length) {
             let earliest = '9999';
             events.forEach(pair => {if (pair[0]<earliest) earliest = pair[0];});
@@ -104,16 +104,16 @@ function membership(){
         
         
         if (dat.memborganize.length && dat.organizationdate.length) {
-            result = bmhc.setEvent(dat.cong,null,dat.organizationdate,'set-weight',dat.memborganize,'membership at organization');
-            if (result != 'ok')console.log('set-weight organization '+dat.cong+' '+dat.organizationdate+' '+dat.memberorganize+':'+result);
+            result = bmhc.setEvent(dat.cong,null,dat.organizationdate,'set-membership',dat.memborganize,'membership at organization');
+            if (result != 'ok')console.log('set-membership of '+dat.cong+' '+dat.organizationdate+' '+dat.memberorganize+':'+result);
             else count++;
         }
         for (let i=1;i<=8;i++){
             let date = dat['year'+i+'n'];
             let memb = dat['memb'+i];
             if (date.length && memb.length){
-                result = bmhc.setEvent(dat.cong,null,date,'set-weight',memb,'year'+i+'n');
-                if (result != 'ok')console.log('set-weight '+dat.cong+' '+date+' '+memb+' year'+i+'n'+':'+result);
+                result = bmhc.setEvent(dat.cong,null,date,'set-membership',memb,'year'+i+'n');
+                if (result != 'ok')console.log('set-membership '+dat.cong+' '+date+' '+memb+' year'+i+'n'+':'+result);
                 else count++;
             }
         }

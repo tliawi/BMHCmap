@@ -1,7 +1,7 @@
 /* 
 BMHC.js
 
-version 0.11 Copyright 2021 John R C Fairfield, see MIT License
+version 0.2 Copyright 2021 John R C Fairfield, see MIT License
 
 */
 
@@ -17,7 +17,7 @@ function BMHCobj(){
     
     function bmhcDatabase(){
         this.idSource = 13; //source of unique ids for both assemblies and events
-        this.verbs = ["begin-history", "set-locale", "set-weight", "set-affiliation", "set-photo", "add-tag", "remove-tag", "just-comment", "expire-into"]; //maintain parallel to critiqueVerbObject() and bmhcMapDisplay.html
+        this.verbs = ["begin-history", "set-locale", "set-membership", "set-affiliation", "set-photo", "add-tag", "remove-tag", "just-comment", "expire-into"]; //maintain parallel to critiqueVerbObject() and bmhcMapDisplay.html
         this.tags = [];
         this.assemblies = {}; //a dictionary of assemblyData, the keys being assembly names
     }
@@ -352,9 +352,9 @@ function BMHCobj(){
                 return 'ok';
             case "set-locale":
                 return checkGPS(object);
-            case "set-weight":
+            case "set-membership":
                 if (object.length && allDigits(object,0,object.length)) return "ok";
-                return "bad weight amount";
+                return "bad membership count";
             case "set-affiliation":
                 return checkRef(subject,verb,object);
             case "set-photo": 
@@ -585,7 +585,7 @@ function BMHCobj(){
     
     //used to create a file copy of db.assemblies
     function getData(){
-        return '{"idSource":' + db.idSource + ',"assemblies":' + JSON.stringify(db.assemblies) + '}';
+        return '{"idSource":' + db.idSource + ',"assemblies":' + JSON.stringify(db.assemblies,null,'\t') + '}';
     }
 
     function wrapDataInJS(){
@@ -594,9 +594,7 @@ function BMHCobj(){
     
     
     
-    //--------------------- compilation of accellerators -----------------------------
-    
-   //The state of an assembly at date D includes the current affiliationChain which is dynamically computed.
+    //--------------------- in support of compileGeojson ------------------
     
     //returns affiliation as of the given date, or '' if none.
     //note that if an assembly expires into another (for a renaming or merger)
@@ -616,20 +614,64 @@ function BMHCobj(){
         else return idToName[currentAffiliationId];
     }
     
-    //name and date must be validated beforehand, does not check. Normal top level call omits third parm.
+    //name and date must be validated beforehand, does not check.
     //returns an array of the ascending affiliations the named assembly, at the given date
-    function affiliationChain(name, date, chain=[]){
+    function getCurrentAffiliations(name, date){
         var mra = mostRecentAffiliation(db.assemblies[name].events,date);
-        if (mra == '') return chain;
-        else {
-            chain.push(mra);
-            return affiliationChain(mra,date,chain); //no circularity possible, was excluded in data entry.
-        }
+        if (mra == '') return [];
+        else return getCurrentAffiliations(mra,date).push(mra); //no circularity possible, was excluded in data entry.
     }
     
-    //colors may depend on affiliationChain, size of display on weight (use sqrt?), position on most recent locale.
-    //first version will try to just compute all of those all the time, without any accellerator.
+    //getCurrent coordinates, membership, and photo
+    //returns null, 0, '' if date out of lifetime
+    function getCurrentCMP(name,date){ 
+        let reps = { coordinates:null, membership:0, photo:'' };
+        let events = db.assemblies[name].events;
+        for (let i=0;i<events.length;i++) {
+            let event = events[i];
+            if (event.date > date) break;
+            if (event.verb == 'set-locale') reps.coordinates = event.object;
+            else if (event.verb == 'set-membership') reps.membership = event.object;
+            else if (event.verb == 'set-photo') reps.membership = event.object;
+            else if (event.verb == 'expire-into') return { coordinates:null, membership:0, photo:'' };
+        }
+        return reps;
+    }
     
+    //returns [] if date out of lifetime
+    function getCurrentTags(name,date){
+        let tags = [];
+        let events = db.assemblies[name].events;
+        for (let i=0;i<events.length;i++) {
+            let event = events[i];
+            if (event.date >= date) break;
+            if (event.verb == 'add-tag') if (!(tags.includes(tag))) tags.push(event.object);
+            else if (event.verb == 'remove-tag') tags = tags.filter(value => {return value != event.object });
+            else if (event.verb == 'expire-into') tags = [];
+        }
+        return tags;
+    }
+    
+
+//the state of an assembly at a given date
+function State(name,date){
+    date = date+''; //convert to string if neccessary
+    let cmp = getCurrentCMP(name,date);
+    this.coordinates = cmp.coordinates;
+    this.membership = cmp.membership;
+    this.photo = cmp.photo;
+    this.affiliations = getCurrentAffiliations(name,date);
+    this.tags = getCurrentTags(name,date);
+}
+
+//only include what is necessary to distinguish two states of the same assembly, regardless of date
+State.prototype.comparisonString = function() {
+    return this.coordinates +'::'+ this.membership +'::'+ this.affiliations.join(';;') +'::'+ this.tags.join(';;') +'::'+ this.photo;
+}
+
+function getState(name,date){
+    return new State(name,date);
+}
     /*
     
     //given an array hasDates of events or states or any objects which have a 'date' field, 
@@ -643,163 +685,6 @@ function BMHCobj(){
             else return hasDates[i+1].date;
         } else return maxDate;
     }
-    
-    //Used for insertion of a new event of given date into an array of objects ordered by their date field.
-    //Returns the index of the event of least date after (>) the given date.
-    //Returns events.length if there are no events after the given date, i.e. you can just push
-    // event of the given date onto the end of the array (this works when array is empty, too).
-    //(Note: if there are events (events.length>0) but all follow the given date,
-    //   it of course returns 0, i.e. you should put the new event at the beginning of the array.)
-    function indexOfNextEvent(events,date){
-        var i=0;
-        for (i=0;i<events.length;i++){
-            if (events[i].date > date) break;
-        }
-        return i;
-    }
-    
-    //N.B.: I considered whenever a expirer or 
-    
-    //insert a compile-time-only update-affiliations event at the (end of) the given date.
-    //placeEvent(db.assemblies[assemblyName].events,date,'update-affiliations','','');
-    
-   
-    function preCompile(){
-        
-        
-        
-        function countCoup(assyData){
-            assyData.events.forEach(event=> {
-                if (event.verb=='set-affiliation' && event.object.length) db.assemblies(idToName[event.object]).count++;
-            })
-        }
-        
-        function rememberSetAffiliations(assemblyName){
-            db.assemblies[assemblyName].events.forEach(event=>{
-                if (event.verb=='set-affiliation') pile.push([event.date,assemblyName]); //don't need objects, which may even be ''
-            })
-        }
-        
-        function compareFirsts(arr1,arr2){return (arr1[0] < arr2[0])?-1:((arr1[0] > arr2[0])?1:0);}
-        
-        //find all assemblies which have never been the targets of set-affiliates
-        //create and initialize counts
-        Object.values(db.assemblies).forEach(assyData=>assyData.count=0;); 
-        Object.values(db.assemblies).forEach(assyData=>countCoup(assyData));
-        //those whose counts are still 0 can be ignored, they have no sub-affiliates,
-        //so they won't cause any 'update-affiliation' insertions
-        
-        //make a pile of all set-affiliation events that might cause an update-affiliation
-        let pile = []; //of [date, assemblyName] pairs of set-affiliation events
-        Object.keys(db.assemblies).forEach(assemblyName=>{
-            if (db.assemblies[assemblyName].count) rememberSetAffiliations(assemblyName);
-        });
-        
-        pile.sort(compareFirsts); //pile sorted by date
-        
-        let keys = Object.keys(db.assemblies);
-        pile.forEach([date,superAssemblyName] =>{
-            keys.forEach(subAssemblyName => treatSubordinate(subAssemblyName,superAssemblyName,date);
-        });
-        
-        // go through the pile in order, calling treatSubordinate Assembly (total scan of db for each one!!!)
-            
-        //wait. If we took a greedy approach. If each assy knew the list of everyone it had ever been affiliated to... and all the upstack superassemblies they'd been affiliated to,
-        //so set of all possible superaffiliates.. then it could do an update-affiliation any time any of them changed affiliations. basta. Overkill is cheaper, because I never have to rescan whole db.
-    //think expirers too
-
-        function treatSubordinate(assembly, me ,date){
-            if (mostRecentAffiliationChain(assembly,date).includes(me)){ //must include prior precompiled update-affiliation events...
-                placeEvent(db.assemblies[assembly].events,date,'update-affiliations','','');
-            }
-        }
-
-        
-        db.assemblies.keys.forEach(assembly=>treatSubordinate(assembly, me));
-    }
-    
-    //In the following, the states are "unclosed", i.e. affiliation is not yet an array.
-    
-    function State( date,locale, weight, affiliation, photo, tags, comments) {
-        this.date = date;
-        this.locale = locale;
-        this.weight = weight;
-        this.affiliation = affiliation;
-        this.photo = photo;
-        this.tags = tags;
-        this.comments = comments;
-    }
-    
-    function virginState(){
-        return new State(minDate(),null,0,'','',[],[]); //affiliation starts as single string, later becomes an array
-    }
-    
-    function copyState(state){
-        return new State(state.date, state.locale, state.weight, state.affiliation, state.photo, [...state.tags], [...state.comments]);
-    }
-    
-    //edits the given state based on the given event
-    //Note ([] == false) is true, as is ('' == false)
-    function editState(state,event){
-        switch(event.verb){
-            case 'set-locale':
-                state.locale = swapCoordinates(event.object); //replaces
-                break;
-            case 'set-weight':
-                state.weight = event.object; //replaces
-                break;
-            //case 'set-affiliation': can't accellerate
-            //  break;
-            case 'photo':
-                state.photo = event.object; //replaces
-                break;
-            case 'add-tag':
-                //remove duplicates
-                state.tags = state.tags.filter(tag => tag != event.object); //a set of tags
-                state.tags.push(event.object);
-                break;
-            case 'remove-tag':
-                state.tags = state.tags.filter(tag => tag != event.object);
-                break;
-            //case 'just-comment':
-            //    break;
-            case 'expire-into':
-        }
-        if (event.comment && event.comment.length) state.comments.push(event.comment);
-        state.date = event.date;
-        return state;
-    }
-    
-    function makeAllUnclosedStates(){
-        
-        function makeUnclosedStates(assemblyName){
-            let s =[]; 
-            let events = db.assemblies[assemblyName].events;
-            if (events.length) {
-                let state = virginState();
-                events.forEach((event,index) => {
-                    editState(state,event); //evolve the state
-                    if (index==events.length-1 || events[i+1].date != event.date) s.push(copyState(state)); //only push when done with identical dates
-                    //else, as long as date stays same, condinue editing same state. 
-                    //Can accumulate multiple comments, multiple tags,
-                    //but not multiple photos, affiliations, locales, or weights -- last one wins
-                });
-            }
-            db.assemblies[assemblyName].states=s; //add to assemblyData
-        }
-        
-        Object.keys(db.assemblies).forEach(assemblyName => makeUnclosedStates(assemblyName));
-    }
-    
-    
-    function makeStates(){
-        makeAllUnclosedStates();
-        // if you have subordinates when you set-affiliation, 
-        //insert a state at that date in each subordinate carrying
-        //...and recompact with those of same date... is horrible
-        
-    }
-    
     */
     
     return {
@@ -835,10 +720,8 @@ function BMHCobj(){
             getEventStrings:getEventStrings,
         
             assemblyLifeTime:assemblyLifeTime,
+            getState:getState,
         
-            mostRecentAffiliation:mostRecentAffiliation,
-            affiliationChain:affiliationChain,
-
             //temporary, for testing only
             db:db
            };
