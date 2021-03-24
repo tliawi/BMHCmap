@@ -8,6 +8,7 @@
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet' />
+    <link href="nouislider.min.css" rel="stylesheet">
     
     <style>
 
@@ -98,6 +99,23 @@
             font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
         }
         
+        .noUi-target {
+          height: 3px;
+          border: 0;
+          box-shadow: unset;
+          background: #666666;
+          margin: 7px 50px; /* to fend of from membership numbers, and to make shorter than the yearSlider */
+        }
+        
+        .noUi-horizontal .noUi-handle {
+          width: 12px;
+          right: -6px;
+            
+          height: 18px;
+          top: -9px;
+        }
+
+
     </style>
     
     <script src="bmhcData.js"></script>
@@ -106,13 +124,14 @@
 </head>
 
 <body>
+    <script src="nouislider.min.js"></script>
     
     <div id='map'></div>
     
     <div id='console'>
         <h2><div id='active-year' class='active-year'>1887</div></h2>
         <div class='tranche' id='sliderbar'>
-            <input id='slider' class='tranche' type='range' min='1700' max='2050' step='1' value='1887' />
+            <input id='yearSlider' class='tranche' type='range' min='1700' max='2050' step='1' value='1887' />
         </div>
         
         <div class='tranche' id='denomination'>
@@ -123,13 +142,11 @@
         </div>
         
         <div class='tranche' id='membership'>
-            <span>
-                <input type="number" class="shortNumber" id="minMembership" name="minMembership" min='0' max='99999' dir='rtl' value=0>
-                &leq;&nbsp; membership &nbsp;&leq;
-                <input type="number" class="shortNumber" id="maxMembership" name="maxMembership"  min='0' max='99999' value=99000>
-            </span>
+            <span><span id='minMembership'>0</span> &leq;&nbsp; membership &nbsp;&leq;&nbsp;<span id='maxMembership'>99999</span></span>
+            <div id="maxMinSlider">
+            </div> 
         </div>
-        
+        <br>
         <div class='tranche' >
             <label for="affiliation">affiliation:</label>
             <select class="field" name="affiliation" id="affiliation"  required="true" onchange="handleAffiliationChange(this.value)">
@@ -174,9 +191,52 @@
             document.getElementById("tagFilters").innerHTML = str;
         }
         
+        //clobber rightmost bit
+        function changeBrethrenCB(checked){
+            if (checked) myFilters.mb = myFilters.mb | 1;
+            else myFilters.mb = myFilters.mb & 2;
+            setMapFilters();
+        }
+        
+        //clobber 2's bit
+        function changeMennoniteCB(checked){
+            if (checked) myFilters.mb = myFilters.mb | 2;
+            else myFilters.mb = myFilters.mb & 1;
+            setMapFilters();
+        }
+        
+        function setMapFilters(){
+            map.setFilter('assemblyCircles',myFilters.filterSet());
+            map.setFilter('assemblyNames',myFilters.filterSet());
+        }
+        
+        function initMaxMinSlider(){
+            var mmSlider = document.getElementById('maxMinSlider');
+            
+            noUiSlider.create(mmSlider, {
+                start: [0, 1000],
+                connect:true,
+                step: 1,
+                range: {
+                    'min': 0,
+                    'max': 1000
+                }
+            });
+            
+            var mmElements = [
+                document.getElementById('minMembership'),
+                document.getElementById('maxMembership')
+            ];
+
+            mmSlider.noUiSlider.on('update', function (values, handle) {
+                mmElements[handle].innerHTML = Math.round(values[handle]);
+            });
+        }
         
         initAffiliationHTML();
         initAddTagHTML();
+        initMaxMinSlider();
+        
         
         //https://www.w3schools.com/howto/howto_js_close_list_items.asp nice formatting
     </script>
@@ -197,7 +257,7 @@
             return ['all',['<=',['get','begin'],this.activeYear],['<',this.activeYear,['get','end']]];
         }
         
-        //mb must be absentd (in which case it runs off of prior established this.mb),
+        //mb must be absent (in which case it runs off of prior established this.mb),
         //or element of {0,1,2,3}
         MyFilters.prototype.filterDenom = function(mb){
             let ds = [];
@@ -258,9 +318,9 @@
                         ['linear'],
                         ['number', ['get', 'weight']],
                         0, 3,
-                        800, 24
+                        40, 24
                       ],
-                  'circle-color': '#118800',
+                  'circle-color': ['case',['to-boolean',['%',['get','denomination'],2]], '#ff0055', '#00ccff'],
                   'circle-opacity': 0.5
               },
             filter: myFilters.filterSet()
@@ -286,16 +346,21 @@
           map.setLayoutProperty('poi-label', 'visibility', 'none');
           
             
-          document.getElementById('slider').max = String(new Date().getFullYear());
+          document.getElementById('yearSlider').max = String(new Date().getFullYear());
           
             
-          document.getElementById('slider').addEventListener('input', function(e) {
+          document.getElementById('yearSlider').addEventListener('input', function(e) {
               document.getElementById('active-year').innerText = e.target.value;
               let activeYear = e.target.value + '/00/00';
               myFilters.filterTime(activeYear);
-              //filterTime = ['all',['<=',['get','begin'],activeYear],['<',activeYear,['get','end']]];
-              map.setFilter('assemblyCircles',myFilters.filterSet());
-              map.setFilter('assemblyNames',myFilters.filterSet());
+              setMapFilters();
+          });
+            
+          document.getElementById('yearSlider').addEventListener('input', function(e) {
+              document.getElementById('active-year').innerText = e.target.value;
+              let activeYear = e.target.value + '/00/00';
+              myFilters.filterTime(activeYear);
+              setMapFilters();
           });
             
         var popup = new mapboxgl.Popup({
@@ -326,6 +391,9 @@
             map.getCanvas().style.cursor = '';
             popup.remove();
         });
+            
+        document.getElementById("BrethrenCB").click();
+        document.getElementById("MennoniteCB").click();
             
         });
 
