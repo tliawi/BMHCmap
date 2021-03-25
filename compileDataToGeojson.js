@@ -42,7 +42,7 @@ function birthNewFeature(name,year,state){
         year+'', 
         compilationYear()+'', //may be changed by subsequent birth
         bmhc.getDenomination(name),
-        Math.sqrt(state.membership),
+        Math.sqrt(state.membership), //convert membership to weight, map circle size performance enhancement only
         state.affiliations,
         state.tags,
         state.photo
@@ -91,6 +91,9 @@ bmhc.getAllAssemblyNames().forEach(name=>{
             priorCompString = compString;
         }
     }
+    
+    //sort them by weight so larger congregation's names are given display precedence
+    features.sort((a,b)=>{return (a.properties.weight - b.properties.weight);});
 });
 
 function jsonFeatureCollection(){

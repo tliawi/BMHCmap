@@ -57,6 +57,7 @@
           padding: 10px 20px;
           background: rgba(230, 255, 250, 0.7);
           border-radius:15px;
+          border: 1px solid rgba(0, 0, 0, .1);
         }
         
         .active-year{
@@ -121,7 +122,10 @@
             content: unset;
         }
         
- */
+       #bmhcLogo{
+            width:50%;
+            margin: 0% 25%;
+        }
         
     </style>
     
@@ -136,9 +140,10 @@
     <div id='map'></div>
     
     <div id='console'>
-        <h2><div id='active-year' class='active-year'>1887</div></h2>
+        <img id='bmhcLogo' src="BMHC%20Logo%20-%20Color.png" >
+        <h2><div id='active-year' class='active-year'>1860</div></h2>
         <div class='tranche' id='sliderbar'>
-            <input id='yearSlider' class='tranche' type='range' min='1700' max='2050' step='1' value='1887' />
+            <input id='yearSlider' class='tranche' type='range' step='1' />
         </div>
         
         <div class='tranche' id='denomination'>
@@ -176,6 +181,8 @@
         var myFilters = new MyFilters();
         
         function maxMembership(){ return 1000;}
+        
+        function currentYear(){ return new Date().getFullYear();}
     
         function initAffiliationHTML(){
             let str = "";
@@ -238,7 +245,7 @@
         //https://www.w3schools.com/howto/howto_js_close_list_items.asp nice formatting
         
         function MyFilters(){
-            this.activeYear = '1887/00/00';
+            this.activeYear = Math.round((1700+currentYear())/2)+'/00/00';
             this.mb = 3;
             this.membershipSqrtRange = [ 0, Math.sqrt(maxMembership()) ];
             this.tags = [];
@@ -280,15 +287,6 @@
             return ['all',...fs];
         }
        
-        /*
-        var mapG = {
-            activeYear: '1887/00/00',
-            filterTime: ['all',['<=',['get','begin'],activeYear],['<',activeYear,['get','end']]],
-            filterDenom: ['any',['==',['get','denomination'],1],['==',['get','denomination'],2]],
-            filterTags: ['in','paid minister',['get','tags']],
-            filterSet: ['all',filterTime,filterDenom]
-        }
-        */
         
         mapboxgl.accessToken = 'pk.eyJ1IjoiamhuZnJmbGQiLCJhIjoiY2tsbGtvb256MDA2ZzJ2bXB4NXJreHh1YyJ9.m5CZfFB_wUxWs6HIOs3_cg';
 
@@ -343,8 +341,12 @@
           map.setLayoutProperty('settlement-label', 'visibility', 'none');
           map.setLayoutProperty('poi-label', 'visibility', 'none');
           
-            
-          document.getElementById('yearSlider').max = String(new Date().getFullYear());
+    
+          let ys = document.getElementById('yearSlider');
+          ys.min = 1700;
+          ys.max = currentYear();
+          ys.value = Math.round((ys.min+ys.max)/2);
+          document.getElementById('active-year').innerText = ys.value+'';
           
             
           document.getElementById('yearSlider').addEventListener('input', function(e) {
