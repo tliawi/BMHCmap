@@ -103,19 +103,26 @@
           height: 3px;
           border: 0;
           box-shadow: unset;
-          background: #666666;
+          background: #cccccc;
           margin: 7px 50px; /* to fend of from membership numbers, and to make shorter than the yearSlider */
         }
         
         .noUi-horizontal .noUi-handle {
           width: 12px;
-          right: -6px;
+          right: -6px; /* half of width */
             
           height: 18px;
-          top: -9px;
+          top: -9px;  /* half of height */
         }
-
-
+        
+        /* get rid of the pesky || filled shapes (they're not text) */
+        .noUi-handle:after,
+        .noUi-handle:before {
+            content: unset;
+        }
+        
+ */
+        
     </style>
     
     <script src="bmhcData.js"></script>
@@ -142,7 +149,7 @@
         </div>
         
         <div class='tranche' id='membership'>
-            <span><span id='minMembership'>0</span> &leq;&nbsp; membership &nbsp;&leq;&nbsp;<span id='maxMembership'>99999</span></span>
+            <span><span id='minMembership'>0</span> &leq;&nbsp; membership &nbsp;&leq;&nbsp;<span id='maxMembership'>1000</span></span>
             <div id="maxMinSlider">
             </div> 
         </div>
@@ -165,6 +172,10 @@
     </div>
     
     <script> //my stuff
+        
+        var myFilters = new MyFilters();
+        
+        function maxMembership(){ return 1000;}
     
         function initAffiliationHTML(){
             let str = "";
@@ -214,38 +225,22 @@
             var mmSlider = document.getElementById('maxMinSlider');
             
             noUiSlider.create(mmSlider, {
-                start: [0, 1000],
+                start: [0, maxMembership()],
                 connect:true,
                 step: 1,
                 range: {
                     'min': 0,
-                    'max': 1000
+                    'max': maxMembership()
                 }
-            });
-            
-            var mmElements = [
-                document.getElementById('minMembership'),
-                document.getElementById('maxMembership')
-            ];
-
-            mmSlider.noUiSlider.on('update', function (values, handle) {
-                mmElements[handle].innerHTML = Math.round(values[handle]);
             });
         }
         
-        initAffiliationHTML();
-        initAddTagHTML();
-        initMaxMinSlider();
-        
-        
         //https://www.w3schools.com/howto/howto_js_close_list_items.asp nice formatting
-    </script>
-
-    <script>
         
         function MyFilters(){
             this.activeYear = '1887/00/00';
             this.mb = 3;
+            this.membershipSqrtRange = [ 0, Math.sqrt(maxMembership()) ];
             this.tags = [];
             this.affiliations = [];
         }
@@ -271,9 +266,15 @@
             return ['any',...ds];
         }
         
+        MyFilters.prototype.filterMembership = function(){
+            return ['all',
+                    ['>=',['get','weight'],this.membershipSqrtRange[0]],
+                    ['<=',['get','weight'],this.membershipSqrtRange[1]]
+                   ]
+        }
         
         MyFilters.prototype.filterSet = function(){
-            let fs = [this.filterTime(),this.filterDenom()];
+            let fs = [this.filterTime(), this.filterDenom(),this.filterMembership()];
             //if (this.tags.length) fs.push(this.filterTags()); 
             //if (this.affiliations.length) fs.push(this.filterAffiliations()); 
             return ['all',...fs];
@@ -288,9 +289,6 @@
             filterSet: ['all',filterTime,filterDenom]
         }
         */
-        
-        
-        var myFilters = new MyFilters();
         
         mapboxgl.accessToken = 'pk.eyJ1IjoiamhuZnJmbGQiLCJhIjoiY2tsbGtvb256MDA2ZzJ2bXB4NXJreHh1YyJ9.m5CZfFB_wUxWs6HIOs3_cg';
 
@@ -356,12 +354,17 @@
               setMapFilters();
           });
             
-          document.getElementById('yearSlider').addEventListener('input', function(e) {
-              document.getElementById('active-year').innerText = e.target.value;
-              let activeYear = e.target.value + '/00/00';
-              myFilters.filterTime(activeYear);
-              setMapFilters();
-          });
+
+        document.getElementById('maxMinSlider').noUiSlider.on('update', function (values, handle) {
+            var mmElements = [
+                document.getElementById('minMembership'),
+                document.getElementById('maxMembership')
+            ];
+            mmElements[handle].innerHTML =  Math.round(values[handle]);
+            myFilters.membershipSqrtRange[handle] = Math.sqrt(values[handle]);
+            setMapFilters();
+        });
+
             
         var popup = new mapboxgl.Popup({
             closeButton: false,
@@ -396,6 +399,11 @@
         document.getElementById("MennoniteCB").click();
             
         });
+        
+        
+          initAffiliationHTML();
+          initAddTagHTML();
+          initMaxMinSlider();
 
     </script>
     
