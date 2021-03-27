@@ -245,7 +245,7 @@
         //https://www.w3schools.com/howto/howto_js_close_list_items.asp nice formatting
         
         function FilterBase(){
-            this.activeYear = Math.round((1700+currentYear())/2)+'/00/00';
+            this.activeYear = Math.round((1700+currentYear())/2)+'';
             this.mb = 3;
             this.membershipSqrtRange = [ 0, Math.sqrt(maxMembership()) ];
             this.tags = [];
@@ -278,7 +278,7 @@
         //or a date in yyyy, or yyyy/mm, or yyyy/mm/dd
         FilterBase.prototype.filterTime = function(activeYear){
             if (activeYear != undefined) this.activeYear = activeYear+'';
-            return ['all',['<=',['get','begin'],this.activeYear],['<',this.activeYear,['get','end']]];
+            return ['all',['<=',['get','begin'],this.activeYear],['<=',this.activeYear,['get','end']]];
         }
         
         FilterBase.prototype.filterSet = function(){
@@ -344,17 +344,15 @@
           
     
           let ys = document.getElementById('yearSlider');
-          //console.log('ys.value = '+ys.value+ (typeof ys.value) +' '+(typeof ys.min)+' '+(typeof ys.max));
           ys.min = 1700;
           ys.max = currentYear();
           //note can't use (ys.min + ys.max) because these have been magic changed to strings! Dunno how.
           ys.value = Math.round((1700+currentYear())/2); 
           document.getElementById('active-year').innerText = ys.value+'';
-          //console.log('  ys.value = '+ys.value+ (typeof ys.value) +' '+(typeof ys.min)+' '+(typeof ys.max));
             
           document.getElementById('yearSlider').addEventListener('input', function(e) {
               document.getElementById('active-year').innerText = e.target.value;
-              let activeYear = e.target.value + '/00/00';
+              let activeYear = e.target.value + '';
               filterBase.filterTime(activeYear);
               setMapFilters();
           });
