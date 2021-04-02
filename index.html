@@ -34,6 +34,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
         padding: 4px 1px;
         border: none;
         font-family: 'Times New Roman', serif;
+        font-size:medium;
         background-color:#fffaf0;
     }
     
@@ -58,17 +59,20 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
         font-size: 14px;
     }
     
-    #ss_elem_list, #inputAssemblyName, #changingAssemblyName {
+    #selectList, #inputAssemblyName, #changingAssemblyName, #eventsAssemblyName, #eventAssemblyName {
         background-color:#d0efd0;
+        white-space: break-spaces;
+    }
+    
+    #selectList {
+        margin:8px 0px 0px 0px;
+        padding:2px 4px;
+        width: 100%;
+        height: 23em;
     }
 
   
 </style>
-    
-<link rel="stylesheet" href="listbox/css/listbox.css">
-<script src="listbox/js/listbox.js" type="text/javascript"></script>
-<script src="listbox/js/listbox-scrollable.js" type="text/javascript"></script>   
-<script src="listbox/js/utils.js" type="text/javascript"></script>
 
 <script src="bmhcData.js"></script>
 <script src="bmhcTags.js"></script>
@@ -117,11 +121,11 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
             </div>
     -->        
             <div id="eventViewer">
-                <b>2. Event list for:&nbsp;<span id="eventsAssemblyName" style="white-space: break-spaces;"></span><br></b>
+                <b>2. Event list for:&nbsp;<span id="eventsAssemblyName"></span><br></b>
             </div>
             
             <div id="eventEditor">
-                <b>2.a Event Editor for:&nbsp;<span id="eventAssemblyName" style="white-space: break-spaces;"></span></b>
+                <b>2.a Event Editor for:&nbsp;<span id="eventAssemblyName" ></span></b>
             </div>
             
             <div id="checkboxen">
@@ -130,7 +134,6 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <input type="checkbox" id="MennoniteCB" name="Mennonite" onchange='changeMennoniteCB(this.checked);'>
                 Mennonite
-                <br>
                 <br>
             </div>
 
@@ -156,7 +159,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
             <div id="newAssembly">
                 <scan id="assemblyNamePrompt">Enter a unique assembly name: </scan>
                 <br>
-                <input type="text" id="inputAssemblyName" style="white-space: break-spaces;" size=70>
+                <input type="text" id="inputAssemblyName" size=70>
                 <br>
                 <button type="button" onclick="initAssemblyViewer()">&#10094; cancel</button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -166,7 +169,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
             <div id="changeAssembly">
                 <scan id="changeAssemblyPrompt">Change its denomination (above) or name (below): </scan>
                 <br>
-                <input type="text" id="changingAssemblyName" style="white-space: break-spaces;" size=70>
+                <input type="text" id="changingAssemblyName" size=70>
                 <br>
                 <button type="button" onclick="initAssemblyViewer()">&#10094; cancel</button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -212,19 +215,11 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
             
        </div> <!-- end of midscreen -->
        
-        <!--<div class="listbox-area" > -->
-        <div id="myListbox">
-            <div class="all-area">
-                <ul id="ss_elem_list"
-                    tabindex="0"
-                    role="listbox"
-                    aria-labelledby="ss_elem"
-                    style="white-space: break-spaces;">
-            <!--    onclick ="whatever();"> <!--onselect, onchange don't work -->
-                </ul>
-            </div>  
-        </div>
-
+       <div id="myListbox">
+           <select id="selectList" size="18">
+           </select>
+       </div>
+       
     </div>
     
 <script>
@@ -270,13 +265,6 @@ function formatMidscreen(screenType){ //see midScreenTypes
     setCheckboxen(); 
 }
 
-/*
-function cacheDivs(){
-    Object.keys(divCaches).forEach(key => {
-        divCaches[key] = document.getElementById(key).innerHTML.slice();
-    });
-}
-*/
     
 function initVerbHTML(){
     let str = "";
@@ -313,15 +301,24 @@ function handleTagSelection(tag){
 function makeLIsOfArray(arr){
     let result = "";
     
+    /*
     function makeli(i) {
       return "<li id=\"xyzzy"+i+"\" role=\"option\" class=\"monotype\"></li>";
+    }
+    */
+    
+    function makeli(i) {
+      return "<option id=\"xyzzy"+i+"\" class=\"monotype\"></option>";
     }
     
     arr.forEach((item,i)=>{result+=makeli(i);});
     
-    document.getElementById("ss_elem_list").innerHTML = result; //build them first, so you can innerText them.
+    document.getElementById("selectList").innerHTML = result; //build them first, so you can innerText them.
     
-    arr.forEach((item,i)=> {document.getElementById("xyzzy"+i).innerText = item;});
+    arr.forEach((item,i)=> {
+        document.getElementById("xyzzy"+i).innerText = item;
+        document.getElementById("xyzzy"+i).value = item;
+    });
     
 }
     
@@ -332,6 +329,8 @@ function initAssemblyViewer(){
     formatMidscreen("assemblyInstructions");
     setAssemblyListboxInnerHTML();
     document.getElementById("myListbox").style.visibility='visible';
+    
+    document.getElementById("selectList").focus();
 }
     
 function setAssemblyListboxInnerHTML(){
@@ -343,6 +342,7 @@ function setAssemblyListboxInnerHTML(){
     else items = bmhc.getJointAssemblyNames();
     
     makeLIsOfArray(items);
+
 }
 
 function changeBrethrenCB(checked){
@@ -359,20 +359,6 @@ function changeMennoniteCB(checked){
     setAssemblyListboxInnerHTML();
 }
 
-    /*
-function listKeyPress(that, event){
-    //console.log(event.shiftKey, event.altKey, event.ctrlKey, event.metaKey);
-    //console.log(that.getAttributeNode("aria-activedescendant").value); //the id of selected item
-    //console.log(that); //<ul id="ss_elem_list"...
-    //console.log(event); //if event.key == "Enter" or.charCode: 13 (what is it on pc?)
-    if (event.charCode == 13){
-        var lineId = that.getAttributeNode("aria-activedescendant").value;
-        var elementText = document.getElementById(lineId).innerText; //NOT innerHTML
-        initEventViewer(elementText);
-    } 
-}   */
-
-
 //onclick only responds to mouse click, not to movement of selection through typing prefixen
 //or arrowUp arrowDn. Perhaps can use "return" key event to drive selection after movement.
 function initEventViewer(assemblyName){
@@ -386,7 +372,8 @@ function initEventViewer(assemblyName){
     makeLIsOfArray(bmhc.getEventStrings(assemblyName));
     document.getElementById("myListbox").style.visibility='visible';
     state.eventIndex = null; //clear it
-    //console.log(ss_elem_list.getAttribute('aria-activedescendant')); //dom not updated yet, reflects previous value
+    
+    document.getElementById("selectList").focus();
 }
 
 // Assembly editing, screenType 1
@@ -450,31 +437,36 @@ function deleteAssembly(name){
     
 // for installEventListener the word 'event' refers to window keydown events, not to assembly events!    
 function installEventListener(){
-    document.getElementById('ss_elem_list').addEventListener('keydown', function(event) { 
-        const itemId = document.getElementById('ss_elem_list').getAttributeNode("aria-activedescendant").value;
-        const item = document.getElementById(itemId).innerText; //NOT innerHTML
+    document.getElementById('selectList').addEventListener('keydown', function(event) { 
+        var sL = document.getElementById("selectList");
+        
+        //var text=sL.options[sL.selectedIndex].text;
+        //const itemId = document.getElementById('selectList').value;
+        //const item = document.getElementById(itemId).innerText; //NOT innerHTML
+        if (sL.selectedIndex >= 0){
+            if(state.whichList === 'assemblies'){
+                var assyName=sL.options[sL.selectedIndex].value;
+                if (event.key === 'Backspace' || event.key === 'Delete') { 
+                    event.preventDefault();
+                    deleteAssembly(assyName);
+                } else if (event.key === ' ' || event.key === 'Spacebar'){
+                    event.preventDefault();
+                    launchChangeAssembly(assyName);
+                } else if (event.key === 'Enter'){
+                    event.preventDefault();
+                    initEventViewer(assyName);
+                }
+            } else if (state.whichList === 'events') { 
+                //const index = parseInt(itemId.slice(5)); //remove the xyzzy
 
-        if(state.whichList === 'assemblies'){
-            //item is an assembly name
-            if (event.key === 'Backspace' || event.key === 'Delete') { 
-                event.preventDefault();
-                deleteAssembly(item);
-            } else if (event.key === ' ' || event.key === 'Spacebar'){
-                event.preventDefault();
-                launchChangeAssembly(item);
-            } else if (event.key === 'Enter'){
-                event.preventDefault();
-                initEventViewer(item);
-            }
-        } else if (state.whichList === 'events') { 
-            const index = parseInt(itemId.slice(5)); //remove the xyzzy
-            if (event.key === 'Backspace' || event.key === 'Delete') { 
-                event.preventDefault();
-                bmhc.deleteEvent(state.priorAssemblyName,index);
-                initEventViewer();
-            } else if (event.key === ' ' || event.key === 'Spacebar'){
-                event.preventDefault();
-                launchEditEvent(index);
+                if (event.key === 'Backspace' || event.key === 'Delete') { 
+                    event.preventDefault();
+                    bmhc.deleteEvent(state.priorAssemblyName,sL.selectedIndex);
+                    initEventViewer();
+                } else if (event.key === ' ' || event.key === 'Spacebar'){
+                    event.preventDefault();
+                    launchEditEvent(sL.selectedIndex);
+                }
             }
         }
     })
@@ -555,9 +547,9 @@ function makeMeDisappear(that){
 }
     
 function ultest(){
-    var ul = document.getElementById('ss_elem_list');
+    var ul = document.getElementById('selectList');
     ul.onclick = function(event) {
-        alert(event.target.innerText);
+        alert(event.target.innerText, event.target.value);
     };
 }
  
