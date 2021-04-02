@@ -82,13 +82,15 @@ bmhc.getAllAssemblyNames().forEach(name=>{
     let priorFeature = null;
     for (let yr = startYr; yr<=endYr; yr++){
         let state = bmhc.getState(name,yr+'/12/31'); //to string
-        let compString = state.comparisonString();
-        if (compString!=priorCompString) {
-            if (priorFeature) priorFeature.properties.end = (yr-1)+'';
-            priorFeature = birthNewFeature(name,yr,state);
-            //if (name == 'Antioch') console.log(compString,  priorFeature.geometry.coordinates.join("!"));
-            features.push(priorFeature);
-            priorCompString = compString;
+        if (state.coordinates){ //coordinates null or '' implies can't be expressed on map
+            let compString = state.comparisonString();
+            if (compString!=priorCompString) {
+                if (priorFeature) priorFeature.properties.end = (yr-1)+'';
+                priorFeature = birthNewFeature(name,yr,state);
+                //if (name == 'Antioch') console.log(compString,  priorFeature.geometry.coordinates.join("!"));
+                features.push(priorFeature);
+                priorCompString = compString;
+            }
         }
     }
     

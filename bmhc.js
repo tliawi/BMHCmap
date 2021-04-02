@@ -619,12 +619,16 @@ function BMHCobj(){
     function getCurrentAffiliations(name, date){
         var mra = mostRecentAffiliation(db.assemblies[name].events,date);
         if (mra == '') return [];
-        else return getCurrentAffiliations(mra,date).push(mra); //no circularity possible, was excluded in data entry.
+        else {
+            let result = getCurrentAffiliations(mra,date); //damn push returns length of modified array, not the array itself!
+            result.push(mra); //no circularity possible, was excluded in data entry.
+            return result;
+        }
     }
     
     //getCurrent coordinates, membership, and photo
-    //returns null, 0, '' if date out of lifetime
-    function getCurrentCMP(name,date){ 
+    //returns { null, 0, '' } if date out of lifetime
+    function getCurrentCoMePh(name,date){ 
         let reps = { coordinates:null, membership:0, photo:'' };
         let events = db.assemblies[name].events;
         for (let i=0;i<events.length;i++) {
@@ -632,7 +636,7 @@ function BMHCobj(){
             if (event.date > date) break;
             if (event.verb == 'set-locale') reps.coordinates = event.object;
             else if (event.verb == 'set-membership') reps.membership = event.object;
-            else if (event.verb == 'set-photo') reps.membership = event.object;
+            else if (event.verb == 'set-photo') reps.photo = event.object;
             else if (event.verb == 'expire-into') return { coordinates:null, membership:0, photo:'' };
         }
         return reps;
@@ -645,7 +649,7 @@ function BMHCobj(){
         for (let i=0;i<events.length;i++) {
             let event = events[i];
             if (event.date >= date) break;
-            if (event.verb == 'add-tag') if (!(tags.includes(tag))) tags.push(event.object);
+            if (event.verb == 'add-tag') if (!(tags.includes(event.object))) tags.push(event.object);
             else if (event.verb == 'remove-tag') tags = tags.filter(value => {return value != event.object });
             else if (event.verb == 'expire-into') tags = [];
         }
@@ -656,7 +660,7 @@ function BMHCobj(){
 //the state of an assembly at a given date
 function State(name,date){
     date = date+''; //convert to string if neccessary
-    let cmp = getCurrentCMP(name,date);
+    let cmp = getCurrentCoMePh(name,date);
     this.coordinates = cmp.coordinates;
     this.membership = cmp.membership;
     this.photo = cmp.photo;

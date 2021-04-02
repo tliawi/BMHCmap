@@ -1,22 +1,4 @@
-function bmhcData(){ return {"idSource":280,"assemblies":{
-	"(Old) Mennonite Church": {
-		"id": 275,
-		"mb": 2,
-		"events": [
-			{
-				"date": "1683",
-				"verb": "begin-history",
-				"object": "",
-				"comment": ""
-			},
-			{
-				"date": "2002",
-				"verb": "expire-into",
-				"object": 276,
-				"comment": ""
-			}
-		]
-	},
+function bmhcData(){ return {"idSource":275,"assemblies":{
 	"Antioch": {
 		"id": 245,
 		"mb": 1,
@@ -718,36 +700,6 @@ function bmhcData(){ return {"idSource":280,"assemblies":{
 				"comment": ""
 			},
 			{
-				"date": "1900",
-				"verb": "add-tag",
-				"object": "flag in sanctuary",
-				"comment": "REMOVE"
-			},
-			{
-				"date": "1910",
-				"verb": "add-tag",
-				"object": "paid minister",
-				"comment": "REMOVE"
-			},
-			{
-				"date": "1915",
-				"verb": "add-tag",
-				"object": "flag in sanctuary",
-				"comment": "REMOVE"
-			},
-			{
-				"date": "1920",
-				"verb": "remove-tag",
-				"object": "paid minister",
-				"comment": "REMOVE"
-			},
-			{
-				"date": "1930",
-				"verb": "remove-tag",
-				"object": "flag in sanctuary",
-				"comment": "REMOVE"
-			},
-			{
 				"date": "1976",
 				"verb": "just-comment",
 				"object": "",
@@ -842,24 +794,6 @@ function bmhcData(){ return {"idSource":280,"assemblies":{
 				"verb": "set-locale",
 				"object": "37.676127,-78.861668",
 				"comment": ""
-			},
-			{
-				"date": "1910",
-				"verb": "remove-tag",
-				"object": "flag in sanctuary",
-				"comment": "REMOVE"
-			},
-			{
-				"date": "1915",
-				"verb": "add-tag",
-				"object": "flag in sanctuary",
-				"comment": "REMOVE"
-			},
-			{
-				"date": "1920",
-				"verb": "add-tag",
-				"object": "flag in sanctuary",
-				"comment": "REMOVE"
 			},
 			{
 				"date": "1925",
@@ -1462,22 +1396,10 @@ function bmhcData(){ return {"idSource":280,"assemblies":{
 				"comment": "membership at organization"
 			},
 			{
-				"date": "1915",
-				"verb": "set-photo",
-				"object": "photos/1915church.jpg",
-				"comment": ""
-			},
-			{
 				"date": "1925",
 				"verb": "set-membership",
 				"object": "521",
 				"comment": "year1n"
-			},
-			{
-				"date": "1948",
-				"verb": "set-photo",
-				"object": "photos/newerchurch.jpg",
-				"comment": "testing only, date is dubious, please verify"
 			},
 			{
 				"date": "1950",
@@ -1490,12 +1412,6 @@ function bmhcData(){ return {"idSource":280,"assemblies":{
 				"verb": "set-membership",
 				"object": "729",
 				"comment": "year3n"
-			},
-			{
-				"date": "2001",
-				"verb": "set-photo",
-				"object": "photos/summer2001church.jpg",
-				"comment": ""
 			},
 			{
 				"date": "2002",
@@ -1982,18 +1898,6 @@ function bmhcData(){ return {"idSource":280,"assemblies":{
 				"verb": "set-membership",
 				"object": "58",
 				"comment": "year3n"
-			}
-		]
-	},
-	"Central District (VA Conf)": {
-		"id": 279,
-		"mb": 2,
-		"events": [
-			{
-				"date": "1965",
-				"verb": "begin-history",
-				"object": "",
-				"comment": "renaming of Middle District, date uncertain, please verify"
 			}
 		]
 	},
@@ -6695,18 +6599,6 @@ function bmhcData(){ return {"idSource":280,"assemblies":{
 			}
 		]
 	},
-	"MCUSA": {
-		"id": 276,
-		"mb": 2,
-		"events": [
-			{
-				"date": "2002",
-				"verb": "begin-history",
-				"object": "",
-				"comment": "by merger of General Conf and [275]"
-			}
-		]
-	},
 	"Meadow Mills": {
 		"id": 188,
 		"mb": 1,
@@ -6800,30 +6692,6 @@ function bmhcData(){ return {"idSource":280,"assemblies":{
 				"verb": "set-membership",
 				"object": "70",
 				"comment": "year4n"
-			}
-		]
-	},
-	"Middle District (VA Conf)": {
-		"id": 278,
-		"mb": 2,
-		"events": [
-			{
-				"date": "1837",
-				"verb": "begin-history",
-				"object": "",
-				"comment": ""
-			},
-			{
-				"date": "1837",
-				"verb": "set-affiliation",
-				"object": 277,
-				"comment": ""
-			},
-			{
-				"date": "1965",
-				"verb": "expire-into",
-				"object": 279,
-				"comment": "date of renaming uncertain, please verify"
 			}
 		]
 	},
@@ -12527,24 +12395,6 @@ function bmhcData(){ return {"idSource":280,"assemblies":{
 			}
 		]
 	},
-	"Virginia Mennonite Conference": {
-		"id": 277,
-		"mb": 2,
-		"events": [
-			{
-				"date": "1835",
-				"verb": "begin-history",
-				"object": "",
-				"comment": ""
-			},
-			{
-				"date": "1835",
-				"verb": "set-affiliation",
-				"object": 275,
-				"comment": ""
-			}
-		]
-	},
 	"Wakemans Grove": {
 		"id": 145,
 		"mb": 1,
@@ -12844,16 +12694,10 @@ function bmhcData(){ return {"idSource":280,"assemblies":{
 		"mb": 2,
 		"events": [
 			{
-				"date": "1825",
+				"date": "1827",
 				"verb": "begin-history",
 				"object": "",
-				"comment": "meeting at home of Peter Burkholder"
-			},
-			{
-				"date": "1825",
-				"verb": "set-affiliation",
-				"object": 275,
-				"comment": ""
+				"comment": "founded"
 			},
 			{
 				"date": "1827",
@@ -12865,18 +12709,6 @@ function bmhcData(){ return {"idSource":280,"assemblies":{
 				"date": "1827",
 				"verb": "set-locale",
 				"object": "38.455927,-78.904547",
-				"comment": ""
-			},
-			{
-				"date": "1835",
-				"verb": "set-affiliation",
-				"object": 277,
-				"comment": ""
-			},
-			{
-				"date": "1837",
-				"verb": "set-affiliation",
-				"object": 278,
 				"comment": ""
 			},
 			{
