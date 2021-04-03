@@ -382,7 +382,7 @@ function BMHCobj(){
     function checkReferences(subject, lifeTime){
 
         var subjectId = db.assemblies[subject].id;
-
+        
         //if in other assemblies there are set-affiliation or expire-into events outside my lifeTime, complain!
         //total scan of db! NOTE: can't 'return' (or break) from a "forEach", so I use oldfashioned loops
 
@@ -422,11 +422,13 @@ function BMHCobj(){
     // references in comment must already be in [id] rather than [name], and
     // if verb is set-afiliation or expire-into, object must already be in id, not in name.
     function newEventsArray(events, eventIndex, date,verb,object,comment){
-        let nuvents = [ ...events];
-        if (eventIndex == null) { // Issue is events having the same date as begin-history and/or expire-into.
+        let nuvents = [ ...events]; //veerrryyy risky. events and nuvents are separate
+        //arrays, but their events are the same event objects--they share their contents.
+        if (eventIndex == null) { //going to add a new event
+            // Issue is events having the same date as begin-history and/or expire-into.
             //Will be sorted by date before verification by checkEvents, 
             //but sort preserves insertion order when dates are identical.
-            //So policy is to add to end, 
+            //So policy is to add to end (fine for events having same date as begin-history), 
             //unless end is already an expire-into
             //in which case you want to add before the expire-into.
             nuvents.push(new naiveEvent(date,verb,object,comment)); //on the end
@@ -435,12 +437,9 @@ function BMHCobj(){
                 nuvents[nuvents.length-1] = nuvents[nuvents.length-2];
                 nuvents[nuvents.length-2] = swap;
             }
-        } else { 
-            let ev = nuvents[eventIndex];
-            ev.date = date; 
-            ev.verb = verb; 
-            ev.object = object; 
-            ev.comment = comment;
+        } else { //replace the eventIndexed event, in nuvents but not in events.
+            // nuvents is a candidate that must be further evaluated.
+            nuvents[eventIndex]=new naiveEvent(date,verb,object,comment);
         }
         sortEvents(nuvents);
         return nuvents;
@@ -463,6 +462,7 @@ function BMHCobj(){
         
         try{ comment = nameRefsToIdRefs(comment); } catch (e) {return e };  //---------***test this one***
         if (object.length && (verb=='set-affiliation' || verb=='expire-into')) object = db.assemblies[object].id; //critiqueVerbObject has already verified ok
+        
         return checkEvents(subjectAssembly,newEventsArray(events,eventIndex,date,verb,object,comment));
     }
     
@@ -479,7 +479,6 @@ function BMHCobj(){
         verb = verb.trim();
         object = object.trim();
         comment = comment.trim();
-        
         let ce = checkEvent(assemblyName,eventIndex,date,verb,object,comment);
         if (ce != 'ok') return ce;
         
