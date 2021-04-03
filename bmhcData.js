@@ -1994,6 +1994,12 @@ function bmhcData(){ return {"idSource":280,"assemblies":{
 				"verb": "begin-history",
 				"object": "",
 				"comment": "renaming of Middle District, date uncertain, please verify"
+			},
+			{
+				"date": "1965",
+				"verb": "set-affiliation",
+				"object": 277,
+				"comment": ""
 			}
 		]
 	},
