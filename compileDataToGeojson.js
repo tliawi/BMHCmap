@@ -1,9 +1,9 @@
 //compileGeojson.js
 
 //node compileGeojson.js
-//includes bmhc.js, bmhcTags.js, and data from bmhcData.js
-//writes map.geojson
-//for subsequent use by mapDisplay.html
+//includes bmhc.js, bmhcTags.js, and bmhcData.js
+//writes mapX.geojson and mapAffiliationsX.js for subsequent use 
+//(when renamed as map.geojson and mapAffiliations.js) by mapDisplay.html
 
 
 function FeatureCollection(featureArray){
@@ -67,8 +67,8 @@ bmhc.setTags(bmhcTags());
 eval(fs.readFileSync('./bmhcData.js')+''); //include 
 bmhc.setData(bmhcData());
 
-
 var features=[];
+var allAffiliations=[];
 
 //very long process that grows features array
 bmhc.getAllAssemblyNames().forEach(name=>{
@@ -87,9 +87,13 @@ bmhc.getAllAssemblyNames().forEach(name=>{
             if (compString!=priorCompString) {
                 if (priorFeature) priorFeature.properties.end = (yr-1)+'';
                 priorFeature = birthNewFeature(name,yr,state);
-                //if (name == 'Antioch') console.log(compString,  priorFeature.geometry.coordinates.join("!"));
                 features.push(priorFeature);
                 priorCompString = compString;
+                
+                //build list of all known affiliations, to save in mapAsssembliesX.js
+                state.affiliations.forEach(affiliation => {
+                    if (!(allAffiliations.includes(affiliation))) allAffiliations.push(affiliation);
+                });
             }
         }
     }
@@ -106,3 +110,13 @@ fs.writeFile('./mapX.geojson', jsonFeatureCollection(), function (err) {
     if (err) console.log(err);
     else console.log('mapX.geojson written.');
 });
+
+function wrapMapAffiliationsInJS(contentString){
+    return "function mapAffiliations(){ return "+contentString+"; }" ;
+}
+
+fs.writeFile('./mapAffiliationsX.js', wrapMapAffiliationsInJS(JSON.stringify(allAffiliations,null,'\t')), function (err) {
+        if (err) console.log(err);
+        else console.log('mapAffiliationsX.js written.');
+    });
+

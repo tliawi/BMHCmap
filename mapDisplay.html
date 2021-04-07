@@ -146,22 +146,9 @@
         
     </style>
     
-    <script src="bmhcData.js"></script>
     <script src="bmhcTags.js"></script>
-    <!-- https://github.com/lokesh-coder/pretty-checkbox 
-        or just use div or link image, and document.getElementById('<thing>').setAttribute("onclick", "myOnClickHandler()"); or
-
-        var images = ["https://images.pexels.com/photos/67636/rose-blue-flower-rose-blooms-67636.jpeg?auto=compress&cs=tinysrgb&h=350", "https://i2.wp.com/beebom.com/wp-content/uploads/2016/01/Reverse-Image-Search-Engines-Apps-And-Its-Uses-2016.jpg?resize=640%2C426", "https://images.pexels.com/photos/248797/pexels-photo-248797.jpeg?auto=compress&cs=tinysrgb&h=350"]
-
-        var imgState = 0;
-
-        var imgTag = document.getElementById("imgClickAndChange");
-
-        imgTag.addEventListener("click", function (event) {
-          imgState = (++imgState % images.length);
-          event.target.src = images[imgState];
-        });
-        -->
+    <script src="mapAffiliations.js"></script>
+    
 </head>
 
 <body id='body'>
@@ -221,11 +208,11 @@
         function currentYear(){ return new Date().getFullYear();}
     
         function initAffiliationHTML(){
-            let str = "";
-            //bmhc.getAffiliations().forEach(affiliation => {
-            ['any','none','Virginia Conference','MCUSA'].forEach(affiliation => {
+            let str = '<option value="any">any</option><option value="unaffiliated">unaffiliated</option>';
+            mapAffiliations().forEach(affiliation => {
                 str += '<option value="'+affiliation+'">'+affiliation+'</option>';
             });
+            
             document.getElementById("affiliation").innerHTML = str;
         }
         
@@ -243,6 +230,11 @@
             let str = document.getElementById('tagFilters').innerHTML;
             str += '<button type="button" class="tagFlag" onclick="negateTag(this.value)"> not</button><button type="button" class="tagFlag" onclick="dismissTag(this.value)">&nbsp;'+tag+'&nbsp;&nbsp;&nbsp;x</button><br>';
             document.getElementById("tagFilters").innerHTML = str;
+        }
+        
+        function handleAffiliationChange(affil){
+            filterBase.affiliation=affil;
+            setMapFilters();
         }
         
         var toggleBrethren = false;
@@ -317,7 +309,7 @@
             this.mb = 3;
             this.membershipSqrtRange = [ 0, Math.sqrt(maxMembership()) ];
             this.tags = [];
-            this.affiliations = []
+            this.affiliation = 'any';
         }
         
         
@@ -342,6 +334,12 @@
                    ]
         }
         
+        FilterBase.prototype.filterAffiliation = function(){
+            if (this.affiliation == 'any')return ['to-boolean',1];
+            if (this.affiliation == 'unaffiliated') return ['==',['length',['get','affiliations']],0];
+            return ['in',this.affiliation,['get','affiliations']];
+        }
+        
         //activeYear must be absent (in which case it runs off of prior established this.activeYear)
         //or a date in yyyy, or yyyy/mm, or yyyy/mm/dd
         FilterBase.prototype.filterTime = function(activeYear){
@@ -351,9 +349,8 @@
         
         FilterBase.prototype.filterSet = function(){
             //this.filterMembership()];
-            //fs.push(this.filterTags()); 
-            //fs.push(this.filterAffiliations()); 
-            return ['all',this.filterTime(),this.filterDenom(), this.filterMembership()];
+            //fs.push(this.filterTags());  
+            return ['all',this.filterTime(),this.filterDenom(), this.filterMembership(),this.filterAffiliation()];
         }
        
         function lengthFour(x,left){
@@ -370,7 +367,7 @@
           center: [-79.806421, 37.838214], // initial map center in [lon, lat]
           zoom: 6.9,
           attributionControl: false
-        }).addControl(new mapboxgl.AttributionControl({customAttribution: 'version 0.3 John Fairfield 2021.'}))
+        }).addControl(new mapboxgl.AttributionControl({customAttribution: 'version 0.4 2021 John Fairfield.'}))
         
         
         var updateMapTimer=null;

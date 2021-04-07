@@ -582,41 +582,80 @@ function BMHCobj(){
         buildIdToName();
     }
     
-    //used to create a file copy of db.assemblies
+    //used to create a JSON copy of db
     function getData(){
         return '{"idSource":' + db.idSource + ',"assemblies":' + JSON.stringify(db.assemblies,null,'\t') + '}';
     }
-
-    function wrapDataInJS(){
-        return "function bmhcData(){ return "+getData()+"; }" ;
+    
+    function wrapInJS(contentString){
+        return "function bmhcData(){ return "+contentString+"; }" ;
     }
     
     
     
     //--------------------- in support of compileGeojson ------------------
     
-    //returns affiliation as of the given date, or '' if none.
+    
+    function mostRecentIdentity(id,date){
+        if ( id == '' )return id;
+        var events= db.assemblies[idToName[id]].events;
+        for (var i=0;i<events.length;i++) {
+            if (events[i].date > date) break;
+            if (events[i].verb == 'expire-into'){
+                return mostRecentIdentity(events[i].object,date);
+                //you became the new identity. We fear no circularity, that was excluded during data entry.
+            }
+        }
+        return id;
+    }
+    
+    //returns affiliation name as of the given date, or '' if none.
     //note that if an assembly expires into another (for a renaming or merger)
-    //then post-merger the new one's affiliation holds as the affiliation of the old.
+    //then post-merger 
+    //affiliates to the old one become affilates to the new.
+    
+    //Which further implies the new one's affiliation holds as the affiliation of the old.
     //The people moved into another institution, and we're tracking those peoples' affiliation.
-    function mostRecentAffiliation(events,date){
+    
+    //example: Weavers was affiliated with Middle District, in turn affiliated to Virginia Conference
+    //but Middle District expired into Central District, also affiliated to Virginia Conference.
+    //Virginia Conference was affiliated to (Old) Mennonites which expired into MCUSA.
+    //So by 2010 Weavers church, whose most recent set-affiliation was to Middle District, 
+    // whose mostRecentIdentity is Central District, and Central District is affiliated to
+    //to Virginia Conference, whose most recent set-affiliation was to (Old) Mennonites,
+    //whose mostRecentIdentity was MCUSA.
+    
+    function mostRecentAffiliation(id,date){
+        if (id=='') return id;
+        var events = db.assemblies[idToName[id]].events;
         var currentAffiliationId = '';
         for (var i=0;i<events.length;i++) {
             if (events[i].date > date) break;
-            if (events[i].verb == 'set-affiliation') currentAffiliationId = events[i].object; //may be ''.
+            if (events[i].verb == 'set-affiliation') {
+                //in say 2010, this is the path by which Weavers is seen as affiliated to Central District,
+                //or Virginia Conference is seen as affiliated to MCUSA,
+                //in both cases the explicit affiliate expired into something else, i.e. 
+                //its mostRecentIdentity differed from the set-affiliation identity in events[i].object
+                currentAffiliationId = mostRecentIdentity(events[i].object,date); //may be ''.
+            }
             if (events[i].verb == 'expire-into'){
-                if (events[i].object == '') return '';
-                else return mostRecentAffiliation(db.assemblies[idToName[events[i].object]].events, date); //you became the new identity. We fear no circularity, that was excluded during data entry.
+                //suppose Middle District were affiliated to Virginia Menno Conf, 
+                //then Middle District expired into Central District, 
+                //then Central District affiliated to SouthEastern Conference.
+                //This is the path by which Weavers would beccome indirectly affiliated to SouthEastern.
+                //Alternately, suppose Central District did not affiliate with anyone. Then
+                //this is the path by which Weavers would become unaffiliated to anything higher than Central District.
+                return mostRecentAffiliation(events[i].object, date); //you became the new identity. We fear no circularity, that was excluded during data entry.
             }
         }
-        if (currentAffiliationId == '') return '';
+        if (currentAffiliationId == '') return currentAffiliationId;
         else return idToName[currentAffiliationId];
     }
     
     //name and date must be validated beforehand, does not check.
-    //returns an array of the ascending affiliations the named assembly, at the given date
+    //returns an array of the ascending affiliations of the named assembly, at the given date
     function getCurrentAffiliations(name, date){
-        var mra = mostRecentAffiliation(db.assemblies[name].events,date);
+        var mra = mostRecentAffiliation(db.assemblies[name].id,date);
         if (mra == '') return [];
         else {
             let result = getCurrentAffiliations(mra,date); //damn push returns length of modified array, not the array itself!
@@ -654,41 +693,28 @@ function BMHCobj(){
         }
         return tags;
     }
-    
 
-//the state of an assembly at a given date
-function State(name,date){
-    date = date+''; //convert to string if neccessary
-    let cmp = getCurrentCoMePh(name,date);
-    this.coordinates = cmp.coordinates;
-    this.membership = cmp.membership;
-    this.photo = cmp.photo;
-    this.affiliations = getCurrentAffiliations(name,date);
-    this.tags = getCurrentTags(name,date);
-}
 
-//only include what is necessary to distinguish two states of the same assembly, regardless of date
-State.prototype.comparisonString = function() {
-    return this.coordinates +'::'+ this.membership +'::'+ this.affiliations.join(';;') +'::'+ this.tags.join(';;') +'::'+ this.photo;
-}
-
-function getState(name,date){
-    return new State(name,date);
-}
-    /*
-    
-    //given an array hasDates of events or states or any objects which have a 'date' field, 
-    //and i an index thereinto, 
-    //return the date of the following item,
-    //or maxDate if there is none.
-    //assumes 0 <= i < hasDates.length
-    function followingDate(hasDates,i){
-        if(hasDates.length) {
-            if (i>=hasDates.length-1) return maxDate;
-            else return hasDates[i+1].date;
-        } else return maxDate;
+    //the state of an assembly at a given date
+    function State(name,date){
+        date = date+''; //convert to string if neccessary
+        let cmp = getCurrentCoMePh(name,date);
+        this.coordinates = cmp.coordinates;
+        this.membership = cmp.membership;
+        this.photo = cmp.photo;
+        this.affiliations = getCurrentAffiliations(name,date);
+        this.tags = getCurrentTags(name,date);
     }
-    */
+
+    //only include what is necessary to distinguish two states of the same assembly, regardless of date
+    State.prototype.comparisonString = function() {
+        return this.coordinates +'::'+ this.membership +'::'+ this.affiliations.join(';;') +'::'+ this.tags.join(';;') +'::'+ this.photo;
+    }
+
+    function getState(name,date){
+        return new State(name,date);
+    }
+    
     
     return {
             maxDate:maxDate,
@@ -699,7 +725,8 @@ function getState(name,date){
         
             getVerbs:getVerbs,
         
-            wrapDataInJS:wrapDataInJS,
+            wrapInJS:wrapInJS,
+        
             getData:getData,
             setData:setData,
             
@@ -726,6 +753,9 @@ function getState(name,date){
             getState:getState,
         
             //temporary, for testing only
+            mostRecentAffiliation:mostRecentAffiliation,
+            mostRecentIdentity:mostRecentIdentity,
+            getCurrentAffiliations:getCurrentAffiliations,
             db:db
            };
 

@@ -537,7 +537,7 @@ function makeTextFile(text) {
 
 function saveData(){
     let link = document.getElementById('downloadlink');
-    link.href = makeTextFile(bmhc.wrapDataInJS()); 
+    link.href = makeTextFile(bmhc.wrapInJS(bmhc.getData())); 
     link.style.visibility = 'visible'; //turn it on so user can accept/reject download to HD.
 }
 

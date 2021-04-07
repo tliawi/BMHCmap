@@ -23829,13 +23829,37 @@
 			"properties": {
 				"name": "Weavers",
 				"begin": "1997",
-				"end": "2006",
+				"end": "2001",
 				"denomination": 2,
 				"weight": 15.905973720586866,
 				"affiliations": [
 					"(Old) Mennonite Church",
 					"Virginia Mennonite Conference",
-					"Middle District (VA Conf)"
+					"Central District (VA Conf)"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.904547,
+					38.455927
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Weavers",
+				"begin": "2002",
+				"end": "2006",
+				"denomination": 2,
+				"weight": 15.905973720586866,
+				"affiliations": [
+					"MCUSA",
+					"Virginia Mennonite Conference",
+					"Central District (VA Conf)"
 				],
 				"tags": [],
 				"photo": ""
@@ -24981,13 +25005,37 @@
 			"properties": {
 				"name": "Weavers",
 				"begin": "1958",
-				"end": "1974",
+				"end": "1964",
 				"denomination": 2,
 				"weight": 17.378147196982766,
 				"affiliations": [
 					"(Old) Mennonite Church",
 					"Virginia Mennonite Conference",
 					"Middle District (VA Conf)"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.904547,
+					38.455927
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Weavers",
+				"begin": "1965",
+				"end": "1974",
+				"denomination": 2,
+				"weight": 17.378147196982766,
+				"affiliations": [
+					"(Old) Mennonite Church",
+					"Virginia Mennonite Conference",
+					"Central District (VA Conf)"
 				],
 				"tags": [],
 				"photo": ""
@@ -25189,9 +25237,9 @@
 				"denomination": 2,
 				"weight": 17.74823934929885,
 				"affiliations": [
-					"(Old) Mennonite Church",
+					"MCUSA",
 					"Virginia Mennonite Conference",
-					"Middle District (VA Conf)"
+					"Central District (VA Conf)"
 				],
 				"tags": [],
 				"photo": ""
@@ -25255,7 +25303,7 @@
 				"affiliations": [
 					"(Old) Mennonite Church",
 					"Virginia Mennonite Conference",
-					"Middle District (VA Conf)"
+					"Central District (VA Conf)"
 				],
 				"tags": [],
 				"photo": ""

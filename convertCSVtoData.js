@@ -137,6 +137,10 @@ function setLocales(){
     console.log(count+' locales established.');
 }
 
+function wrapDataInJS(contentString){
+    return "function bmhcData(){ return "+contentString+"; }" ;
+}
+
 function postRead(){
     
     //lCount, datArray now fully constituted
@@ -149,7 +153,7 @@ function postRead(){
     
     setLocales();
     
-    fs.writeFile('./bmhcDataX.js', bmhc.wrapDataInJS(), function (err) {
+    fs.writeFile('./bmhcDataX.js', wrapDataInJS(bmhc.getData()), function (err) {
         if (err) console.log(err);
         else console.log('bmhcDataX.js written.');
     });
