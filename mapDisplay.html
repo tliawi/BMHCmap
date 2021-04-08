@@ -190,7 +190,7 @@
         
         <div class='tranche' >
             <label for="addTag">add a tag:</label>
-            <select class="field" name="addTag" id="addTag"  required="true" onchange="handleAddTagChange(this.value)">
+            <select class="field" name="addTag" id="addTag"  required="true" onchange="handleAddTag(this.value)">
             </select>
         </div>
         
@@ -218,18 +218,42 @@
         
         
         function initAddTagHTML() {
-            let str = '<option value="none">none</option>';
+            var str = '';
             bmhcTags().forEach(tag => {
                 str += '<option value="'+tag+'">'+tag+'</option>';
             });
             document.getElementById("addTag").innerHTML = str;
         }
         
-        function handleAddTagChange(tag) {
-            if (tag == 'none') return;
-            let str = document.getElementById('tagFilters').innerHTML;
-            str += '<button type="button" class="tagFlag" onclick="negateTag(this.value)"> not</button><button type="button" class="tagFlag" onclick="dismissTag(this.value)">&nbsp;'+tag+'&nbsp;&nbsp;&nbsp;x</button><br>';
+        function setAddedTagsHTML(){
+            var str = '';
+            
+            Object.keys(filterBase.tags).forEach(tag=>{
+                var delin = filterBase.tags[tag]?'':'<del>';
+                var delout = filterBase.tags[tag]?'':'</del>';
+                
+                str += '<button type="button" class="tagFlag" value="'+tag+'" onclick="negateTag(this.value) "> not</button><button type="button" class="tagFlag" value="'+tag+'" onclick="dismissTag(this.value)">&nbsp;'+delin+tag+delout+'&nbsp;&nbsp;&nbsp;x</button><br>';
+            });
+            
             document.getElementById("tagFilters").innerHTML = str;
+        }
+        
+        function handleAddTag(tag) {
+            filterBase.tags[tag] = true;
+            setAddedTagsHTML();
+            setMapFilters();
+        }
+        
+        function negateTag(tag){
+            filterBase.tags[tag] = !filterBase.tags[tag];
+            setAddedTagsHTML();
+            setMapFilters();
+        }
+        
+        function dismissTag(tag){
+            delete filterBase.tags[tag];
+            setAddedTagsHTML();
+            setMapFilters();
         }
         
         function handleAffiliationChange(affil){
@@ -308,7 +332,7 @@
             this.activeYear = Math.round((1700+currentYear())/2)+'';
             this.mb = 3;
             this.membershipSqrtRange = [ 0, Math.sqrt(maxMembership()) ];
-            this.tags = [];
+            this.tags = {};
             this.affiliation = 'any';
         }
         
@@ -347,10 +371,21 @@
             return ['all',['<=',['get','begin'],this.activeYear],['<=',this.activeYear,['get','end']]];
         }
         
+        FilterBase.prototype.filterTags = function(){
+            if (Object.keys(this.tags).length == 0) return ['to-boolean',1];
+            
+            var result = ['all'];
+            Object.keys(this.tags).forEach(tag => {
+                if (this.tags[tag]) result.push(['in',tag,['get','tags']]);
+                else result.push(['!',['in',tag,['get','tags']]]);
+            });
+            return result;
+        }
+        
         FilterBase.prototype.filterSet = function(){
             //this.filterMembership()];
             //fs.push(this.filterTags());  
-            return ['all',this.filterTime(),this.filterDenom(), this.filterMembership(),this.filterAffiliation()];
+            return ['all',this.filterTime(),this.filterDenom(), this.filterMembership(),this.filterAffiliation(), this.filterTags()];
         }
        
         function lengthFour(x,left){

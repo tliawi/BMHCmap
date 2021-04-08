@@ -268,7 +268,7 @@
 			"properties": {
 				"name": "Bethel (Broadway)",
 				"begin": "1910",
-				"end": "1975",
+				"end": "1919",
 				"denomination": 1,
 				"weight": 0,
 				"affiliations": [],
@@ -276,6 +276,48 @@
 					"flag in sanctuary",
 					"paid minister"
 				],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.771349,
+					38.586515
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Bethel (Broadway)",
+				"begin": "1920",
+				"end": "1929",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [],
+				"tags": [
+					"flag in sanctuary"
+				],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.771349,
+					38.586515
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Bethel (Broadway)",
+				"begin": "1930",
+				"end": "1975",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [],
+				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
@@ -18376,10 +18418,7 @@
 				"denomination": 1,
 				"weight": 11.489125293076057,
 				"affiliations": [],
-				"tags": [
-					"flag in sanctuary",
-					"paid minister"
-				],
+				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
@@ -19899,10 +19938,7 @@
 				"denomination": 1,
 				"weight": 12.489995996796797,
 				"affiliations": [],
-				"tags": [
-					"flag in sanctuary",
-					"paid minister"
-				],
+				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
@@ -20782,10 +20818,7 @@
 				"denomination": 1,
 				"weight": 12.96148139681572,
 				"affiliations": [],
-				"tags": [
-					"flag in sanctuary",
-					"paid minister"
-				],
+				"tags": [],
 				"photo": ""
 			},
 			"geometry": {

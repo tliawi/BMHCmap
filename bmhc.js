@@ -687,8 +687,9 @@ function BMHCobj(){
         for (let i=0;i<events.length;i++) {
             let event = events[i];
             if (event.date >= date) break;
-            if (event.verb == 'add-tag') if (!(tags.includes(event.object))) tags.push(event.object);
-            else if (event.verb == 'remove-tag') tags = tags.filter(value => {return value != event.object });
+            if (event.verb == 'add-tag') { 
+                if (!(tags.includes(event.object))) tags.push(event.object);
+            } else if (event.verb == 'remove-tag') tags = tags.filter(value =>  value != event.object );
             else if (event.verb == 'expire-into') tags = [];
         }
         return tags;
