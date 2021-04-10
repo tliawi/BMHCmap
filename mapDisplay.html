@@ -65,10 +65,13 @@
         }
 
         .tranche {
-          height: 12px;
           width: 100%;
           text-align: center;
-          margin-bottom: 20px;
+          margin-bottom: 12px;
+        }
+        
+        #yearSlider{
+            margin-bottom: 20px;
         }
         
         #affiliation {
@@ -96,7 +99,7 @@
         }
         
         .mapboxgl-popup {
-            max-width: 400px;
+            max-width: 150px;
             font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
         }
         
@@ -129,8 +132,13 @@
         }
         
        #bmhcLogo{
-            width:50%;
-            margin: 0% 25% 5% 25%;
+            width:66%;
+            margin: 0% 17% 0% 17%;
+        }
+        
+        #photoImage{
+            width: 90%;
+            margin: 0% 5% 0% 5%;
         }
         
         #minMembership, #maxMembership {
@@ -158,19 +166,16 @@
     
     <div id='console'>
         
-        <img id='bmhcLogo' src="BMHC%20Logo%20-%20Color.png" >
-        <br>
+        <div id='photoName' class='tranche'></div>
+        
+        <div id='bmhcLogoTranche' class='tranche'>
+            <img id='bmhcLogo' src="BMHC%20Logo%20-%20Color.png" display="block">
+        </div>
+        
         <div id='active-year' class = 'tranche'>0000</div>
         
         <div id="yearSlider" class='tranche'> </div>
-        <!-- <div id='yearSlider' class=htranche' type='range' step='1' /> -->
         
-        <!--
-            <input type="checkbox" id="BrethrenCB" name="Brethren" value = 'brethren' onchange='changeBrethrenCB(this.checked);'>
-            <label for='BrethrenCB'>Brethren</label>
-            <input type="checkbox" id="MennoniteCB" name="Mennonite" value= 'mennonite' onchange='changeMennoniteCB(this.checked);'>
-            <label for='MennoniteCB'>Mennonite</label>
-        -->
         <div class='tranche' id='denomination'>
             <span><img id='BrethrenCB' src='butCheck.png' class='myChkBx' onclick='changeBrethrenCB()'>&nbsp;Brethren&nbsp;&nbsp;</span>
             <span><img id='MennoniteCB' src='butCheck.png' class='myChkBx' onclick='changeMennoniteCB()'>&nbsp;Mennonite&nbsp;&nbsp;</span>
@@ -182,19 +187,23 @@
             </div> 
         </div>
         <br>
-        <div class='tranche' >
+        <div class='tranche' id='affiliationTranche'>
             <label for="affiliation">affiliation:</label>
             <select class="field" name="affiliation" id="affiliation"  required="true" onchange="handleAffiliationChange(this.value)">
             </select>
         </div>
         
-        <div class='tranche' >
+        <div class='tranche' id = addTagTranche>
             <label for="addTag">add a tag:</label>
             <select class="field" name="addTag" id="addTag"  required="true" onchange="handleAddTag(this.value)">
             </select>
         </div>
         
         <div class='tranche' id="tagFilters" >
+        </div>
+        
+        <div id='photoImageTranche' class='tranche'> 
+            <img id='photoImage' src="BMHC%20Logo%20-%20Color.png"  display="block" onclick="toggleSwitcher();">
         </div>
         
     </div>
@@ -218,11 +227,12 @@
         
         
         function initAddTagHTML() {
-            var str = '';
+            var str = '<option value="none"></option>';
             bmhcTags().forEach(tag => {
                 str += '<option value="'+tag+'">'+tag+'</option>';
             });
             document.getElementById("addTag").innerHTML = str;
+            document.getElementById("addTag").value = 'none';
         }
         
         function setAddedTagsHTML(){
@@ -242,6 +252,8 @@
             filterBase.tags[tag] = true;
             setAddedTagsHTML();
             setMapFilters();
+            
+            document.getElementById("addTag").value = 'none';
         }
         
         function negateTag(tag){
@@ -382,9 +394,7 @@
             return result;
         }
         
-        FilterBase.prototype.filterSet = function(){
-            //this.filterMembership()];
-            //fs.push(this.filterTags());  
+        FilterBase.prototype.filterSet = function(){  
             return ['all',this.filterTime(),this.filterDenom(), this.filterMembership(),this.filterAffiliation(), this.filterTags()];
         }
        
@@ -392,6 +402,26 @@
             x = x+''; //convert to string
             for (let i=4-x.length; i>0; i--) x = (left)?'&nbsp;'+x:x+'&nbsp;';
             return x;
+        }
+        
+         //'active-year' and 'yearSlider' always block, never none.
+        var divSwitcher = [ 
+            { div: document.getElementById('photoName'),display:false}, //true: block, false: none
+            //the above  must be the first in this array, see dependency in yearSlider update
+            { div: document.getElementById('photoImageTranche'),display:false},
+            { div: document.getElementById('bmhcLogoTranche'),display:true},
+            { div: document.getElementById('denomination'),display:true},
+            { div: document.getElementById('membership'),display:true},
+            { div: document.getElementById('affiliationTranche'),display:true},
+            { div: document.getElementById('addTagTranche'),display:true},
+            { div: document.getElementById('tagFilters'),display:true}
+        ];
+    
+        function toggleSwitcher(){
+            divSwitcher.forEach(swch=>{
+                swch.div.style.display = swch.display?'block':'none';;
+                swch.display = !swch.display;
+            });
         }
         
         mapboxgl.accessToken = 'pk.eyJ1IjoiamhuZnJmbGQiLCJhIjoiY2tsbGtvb256MDA2ZzJ2bXB4NXJreHh1YyJ9.m5CZfFB_wUxWs6HIOs3_cg';
@@ -451,28 +481,41 @@
           map.setLayoutProperty('settlement-label', 'visibility', 'none');
           map.setLayoutProperty('poi-label', 'visibility', 'none');
           
-          /*
-          let ys = document.getElementById('yearSlider');
-          ys.min = 1700;
-          ys.max = currentYear();
-          //note can't use (ys.min + ys.max) because these have been magic changed to strings! Dunno how.
-          ys.value = Math.round((1700+currentYear())/2); 
-          document.getElementById('active-year').innerText = ys.value+'';
-            
-          document.getElementById('yearSlider').addEventListener('input', function(e) {
-              document.getElementById('active-year').innerText = e.target.value;
-              let activeYear = e.target.value + '';
-              filterBase.filterTime(activeYear);
-              setMapFilters();
-          });
-          */
             
         function updateMap(){
-            let aY = filterBase.activeYear;
+            
+            var aY = filterBase.activeYear;
+            
+            function setPhotoImage(){
+                if (!divSwitcher[0].display) { //has been toggled, so is displaying if display==false
+                    let name = document.getElementById('photoName').innerText;
+                    let features = map.queryRenderedFeatures({options:{ 
+                        layers: ['assemblyCircles'], 
+                        filter: ['==', ['get','name'], name],
+                        validate:true}}
+                    );
+
+                    //but the filter doesn't filter! Returns hundreds of stuff, everything visible I believe
+                    //console.log('>>'+name, features.length);
+                    //sooo...
+                    var i;//there can be more than one, and they're not always the same...
+                    for (i=0;i<features.length;i++) if (features[i].properties.name == name && features[i].properties.begin <= aY && features[i].properties.end >= aY) break;
+                    
+                    if (i<features.length && features[i].properties.photo.length){
+                        //console.log(i,features[i].properties.photo);
+                        document.getElementById('photoImage').src = features[i].properties.photo;
+                    } else {
+                        document.getElementById('photoImage').src = "./photos/nada.png";
+                    }
+                }
+            }
+            
             filterBase.filterTime(aY+'/00/00'); //make a non-change change!
             setMapFilters();
-            filterBase.filterTime(aY); //undo it, so that currentYear display correctly
+            filterBase.filterTime(aY); //undo it, so that currentYear displays correctly
             setMapFilters();
+            
+            setPhotoImage(); //now that filters have settled down?
         }
             
         document.getElementById('yearSlider').noUiSlider.on('update',function (values, handle){
@@ -486,6 +529,7 @@
             //doesn't update.
             if (updateMapTimer != null) window.clearTimeout(updateMapTimer);
             updateMapTimer = window.setTimeout(updateMap,300); //300 seems to be enough that map has cleared its throat.
+            
         });
             
         document.getElementById('maxMinSlider').noUiSlider.on('update', function (values, handle) {
@@ -503,6 +547,14 @@
             closeButton: false,
             closeOnClick: false
         });
+    
+        map.on('click','assemblyCircles',function (e){
+            if (e.features[0].properties.photo.length){
+                document.getElementById('photoName').innerText = e.features[0].properties.name;
+                document.getElementById('photoImage').src = e.features[0].properties.photo;
+                toggleSwitcher();
+            }
+        })
 
         map.on('mouseenter', 'assemblyCircles', function (e) {
             // Change the cursor style as a UI indicator.
@@ -510,6 +562,7 @@
 
             var coordinates = e.features[0].geometry.coordinates.slice();
             var name = e.features[0].properties.name;
+            var photo = e.features[0].properties.photo;
 
             // Ensure that if the map is zoomed out such that multiple
             // copies of the feature are visible, the popup appears
@@ -520,7 +573,9 @@
 
             // Populate the popup and set its coordinates
             // based on the feature found.
-            popup.setLngLat(coordinates).setHTML(name).addTo(map);
+            var str = name;
+            str += photo.length?'<br><img src="'+photo+'" style="max-width:100%; max-height:100%">':'';
+            popup.setLngLat(coordinates).setMaxWidth('150px').setHTML(str).addTo(map);
         });
 
         map.on('mouseleave', 'assemblyCircles', function () {
@@ -537,6 +592,7 @@
         initAddTagHTML();
         initYearSlider();
         initMaxMinSlider();
+        toggleSwitcher();
         
         //it's great that these two don't track the movement of the physical key,
         //but the setting and unsetting of the caps lock logic
