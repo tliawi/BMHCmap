@@ -428,11 +428,13 @@
 
         var map = new mapboxgl.Map({
           container: 'map', // container element id
-          style: 'mapbox://styles/mapbox/light-v10',
+          style: 'mapbox://styles/mapbox/outdoors-v11', // or /light-v10
           center: [-79.806421, 37.838214], // initial map center in [lon, lat]
+          pitch: 45, // pitch in degrees
+          bearing: 0, // bearing in degrees, so looking north
           zoom: 6.9,
           attributionControl: false
-        }).addControl(new mapboxgl.AttributionControl({customAttribution: 'version 0.4 2021 John Fairfield.'}))
+        }).addControl(new mapboxgl.AttributionControl({customAttribution: 'version 0.5 2021 John Fairfield.'}))
         
         
         var updateMapTimer=null;
@@ -457,7 +459,8 @@
                         40, 24
                       ],
                   'circle-color': ['case',['to-boolean',['%',['get','denomination'],2]], '#ff0055', '#00ccff'],
-                  'circle-opacity': 0.5
+                  'circle-opacity': 0.5,
+                  'circle-pitch-alignment':'map'
               },
             filter: filterBase.filterSet()
           });
@@ -470,7 +473,8 @@
                     'text-field': ['get', 'name'],
                     'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
                     'text-radial-offset': 0.5,
-                    'text-justify': 'auto'
+                    'text-justify': 'auto',
+                    'text-pitch-alignment':'map'
               },
             filter: filterBase.filterSet()
           });
@@ -478,9 +482,15 @@
         
             
           //in js console map.getStyle() will show you all the layers, so you can suppress what you don't want
+          let layers=map.getStyle().layers;
           map.setLayoutProperty('settlement-label', 'visibility', 'none');
           map.setLayoutProperty('poi-label', 'visibility', 'none');
-          
+          layers.forEach(layer=>{
+              if (layer.id.search('road')==0) map.setLayoutProperty(layer.id,'visibility', 'none');
+          });
+          map.setLayoutProperty('road-primary','visibility', 'visible');
+          map.setLayoutProperty('road-secondary-tertiary','visibility','visible');
+          map.setLayoutProperty('road-street','visibility', 'visible');
             
         function updateMap(){
             
