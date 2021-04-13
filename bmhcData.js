@@ -12853,7 +12853,7 @@ function bmhcData(){ return {"idSource":280,"assemblies":{
 				"date": "1825",
 				"verb": "begin-history",
 				"object": "",
-				"comment": "meeting at home of Peter Burkholder"
+				"comment": ""
 			},
 			{
 				"date": "1825",
@@ -12862,16 +12862,16 @@ function bmhcData(){ return {"idSource":280,"assemblies":{
 				"comment": ""
 			},
 			{
-				"date": "1827",
-				"verb": "just-comment",
-				"object": "",
-				"comment": "first building"
+				"date": "1825",
+				"verb": "set-locale",
+				"object": "38.45151997287086, -78.90420619418899",
+				"comment": "meeting at home of Peter Burkholder, currently (1920) a B&B."
 			},
 			{
 				"date": "1827",
 				"verb": "set-locale",
-				"object": "38.455927,-78.904547",
-				"comment": ""
+				"object": "38.45515915094008, -78.91109972498215",
+				"comment": "log meetinghouse, was across 33 from current (2021) stone church"
 			},
 			{
 				"date": "1835",
@@ -12902,6 +12902,12 @@ function bmhcData(){ return {"idSource":280,"assemblies":{
 				"verb": "set-membership",
 				"object": "196",
 				"comment": "year3n"
+			},
+			{
+				"date": "1943",
+				"verb": "set-locale",
+				"object": "38.45400992647942, -78.91079715661672",
+				"comment": "stone meetinghouse still in use (2021)."
 			},
 			{
 				"date": "1950",
