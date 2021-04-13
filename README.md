@@ -1,28 +1,33 @@
 # BMHCmap
 Map exhibit for the Brethren Mennonite Heritage Center, Harrisonburg, VA
 
-There are two html pages: index.html, which is the map data editor, and 
-mapDisplay.html, which is the map display engine.
+There are two html pages: index.html, which is the map data editor, and mapDisplay.html, which is the map display engine.
 
-Files:
+**Data Files:**
 
-bmhcData.js 
-contains all the information on "assemblies" (congregations, districts, 
-conferences, and etc.) and the various events comprising their histories
-(their location, membership, affiliations, perhaps some photos, etc.).
-The purpose of the data editor is to edit and add to this file.
+	Used by both the data editor and the map display:
+		
+		**bmhcTags.js**
+		is just a list of all accepted tags. The administrator is free to add tags to this file with a text editor, which permits users of the data editor to use those tags to describe assemblies, and populates the pulldown list of tags in the map display.
 
-bmhcTags.js
-is just a list of all accepted tags. The administrator is free to add tags to that file,
-which permits users of the data editor to use those tags to describe assemblies.
+	For the data editor:
+	
+		**bmhcData.js**
+		contains all the information on "assemblies" (congregations, districts, 
+		conferences, and etc.) and the various events comprising their histories
+		(their location, membership, affiliations, perhaps some photos, etc.).
+		The purpose of the data editor is to edit and add to this file.
 
-map.geojson 
-is what drives the map display. It is compiled from bmhcData.js as described below.
+	For the map display: These files are compiled from bmhcData.js, as described in the suite.
+	
+		**map.geojson** 
+		is what drives the map display.
 
-mapAssemblies.js
-is just a list of all affiliations so that the mapDisplay can list them as filter choices. 
-The same compiler as produces map.geojson also produces this file.
-
+		**mapAffiliations.js**
+		is a list of all affiliations so that the mapDisplay can list them as filter choices. 
+		The same compiler as produces map.geojson also produces this file.
+		
+	
 
 Work flow:
 
