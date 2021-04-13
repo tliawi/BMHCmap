@@ -2,8 +2,8 @@
 
 //node compileGeojson.js
 //includes bmhc.js, bmhcTags.js, and bmhcData.js
-//writes mapX.geojson and mapAffiliationsX.js for subsequent use 
-//(when renamed as map.geojson and mapAffiliations.js) by mapDisplay.html
+//writes map.geojson and mapAffiliations.js for subsequent use 
+//by mapDisplay.html
 
 
 function FeatureCollection(featureArray){
@@ -90,7 +90,7 @@ bmhc.getAllAssemblyNames().forEach(name=>{
                 features.push(priorFeature);
                 priorCompString = compString;
                 
-                //build list of all known affiliations, to save in mapAsssembliesX.js
+                //build list of all known affiliations, to save in mapAsssemblies.js
                 state.affiliations.forEach(affiliation => {
                     if (!(allAffiliations.includes(affiliation))) allAffiliations.push(affiliation);
                 });
@@ -106,17 +106,17 @@ function jsonFeatureCollection(){
     return JSON.stringify(new FeatureCollection(features),null,'\t');
 }
 
-fs.writeFile('./mapX.geojson', jsonFeatureCollection(), function (err) {
+fs.writeFile('./map.geojson', jsonFeatureCollection(), function (err) {
     if (err) console.log(err);
-    else console.log('mapX.geojson written.');
+    else console.log('map.geojson written.');
 });
 
 function wrapMapAffiliationsInJS(contentString){
     return "function mapAffiliations(){ return "+contentString+"; }" ;
 }
 
-fs.writeFile('./mapAffiliationsX.js', wrapMapAffiliationsInJS(JSON.stringify(allAffiliations,null,'\t')), function (err) {
+fs.writeFile('./mapAffiliations.js', wrapMapAffiliationsInJS(JSON.stringify(allAffiliations,null,'\t')), function (err) {
         if (err) console.log(err);
-        else console.log('mapAffiliationsX.js written.');
+        else console.log('mapAffiliations.js written.');
     });
 
