@@ -4494,6 +4494,28 @@
 			"type": "Feature",
 			"properties": {
 				"name": "Weavers",
+				"begin": "1825",
+				"end": "1826",
+				"denomination": 2,
+				"weight": 0,
+				"affiliations": [
+					"(Old) Mennonite Church"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.90420619418899,
+					38.45151997287086
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Weavers",
 				"begin": "1827",
 				"end": "1834",
 				"denomination": 2,
@@ -4507,8 +4529,8 @@
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.904547,
-					38.455927
+					-78.91109972498215,
+					38.45515915094008
 				]
 			}
 		},
@@ -4530,8 +4552,8 @@
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.904547,
-					38.455927
+					-78.91109972498215,
+					38.45515915094008
 				]
 			}
 		},
@@ -4554,8 +4576,8 @@
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.904547,
-					38.455927
+					-78.91109972498215,
+					38.45515915094008
 				]
 			}
 		},
@@ -21994,6 +22016,30 @@
 			"properties": {
 				"name": "Weavers",
 				"begin": "1925",
+				"end": "1942",
+				"denomination": 2,
+				"weight": 14,
+				"affiliations": [
+					"(Old) Mennonite Church",
+					"Virginia Mennonite Conference",
+					"Middle District (VA Conf)"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.91109972498215,
+					38.45515915094008
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Weavers",
+				"begin": "1943",
 				"end": "1949",
 				"denomination": 2,
 				"weight": 14,
@@ -22008,8 +22054,8 @@
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.904547,
-					38.455927
+					-78.91079715661672,
+					38.45400992647942
 				]
 			}
 		},
@@ -23292,8 +23338,8 @@
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.904547,
-					38.455927
+					-78.91109972498215,
+					38.45515915094008
 				]
 			}
 		},
@@ -23876,8 +23922,8 @@
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.904547,
-					38.455927
+					-78.91079715661672,
+					38.45400992647942
 				]
 			}
 		},
@@ -23900,8 +23946,8 @@
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.904547,
-					38.455927
+					-78.91079715661672,
+					38.45400992647942
 				]
 			}
 		},
@@ -24724,8 +24770,8 @@
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.904547,
-					38.455927
+					-78.91079715661672,
+					38.45400992647942
 				]
 			}
 		},
@@ -25008,8 +25054,8 @@
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.904547,
-					38.455927
+					-78.91109972498215,
+					38.45515915094008
 				]
 			}
 		},
@@ -25052,8 +25098,8 @@
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.904547,
-					38.455927
+					-78.91079715661672,
+					38.45400992647942
 				]
 			}
 		},
@@ -25076,8 +25122,8 @@
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.904547,
-					38.455927
+					-78.91079715661672,
+					38.45400992647942
 				]
 			}
 		},
@@ -25280,8 +25326,8 @@
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.904547,
-					38.455927
+					-78.91079715661672,
+					38.45400992647942
 				]
 			}
 		},
@@ -25344,8 +25390,8 @@
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.904547,
-					38.455927
+					-78.91079715661672,
+					38.45400992647942
 				]
 			}
 		},
