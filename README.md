@@ -3,16 +3,16 @@ Map exhibit for the Brethren Mennonite Heritage Center, Harrisonburg, VA
 
 There are two html pages: index.html, which is the map data editor, and mapDisplay.html, which is the map display engine.
 
-**Data Files:**
+Data Files:
 
 	Used by both the data editor and the map display:
 		
-		**bmhcTags.js**
-		is just a list of all accepted tags. The administrator is free to add tags to this file with a text editor, which permits users of the data editor to use those tags to describe assemblies, and populates the pulldown list of tags in the map display.
+		bmhcTags.js
+		is a list of all accepted tags. This file defines the set of tags that users of the data editor can use to describe assemblies. The administrator is free to add tags to this file with any text editor. The map display also reads this file to populate its pulldown list of tags.
 
 	For the data editor:
 	
-		**bmhcData.js**
+		bmhcData.js
 		contains all the information on "assemblies" (congregations, districts, 
 		conferences, and etc.) and the various events comprising their histories
 		(their location, membership, affiliations, perhaps some photos, etc.).
@@ -20,10 +20,10 @@ There are two html pages: index.html, which is the map data editor, and mapDispl
 
 	For the map display: These files are compiled from bmhcData.js, as described in the suite.
 	
-		**map.geojson** 
+		map.geojson 
 		is what drives the map display.
 
-		**mapAffiliations.js**
+		mapAffiliations.js
 		is a list of all affiliations so that the mapDisplay can list them as filter choices. 
 		The same compiler as produces map.geojson also produces this file.
 		
