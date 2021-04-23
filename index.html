@@ -71,6 +71,49 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
         height: 23em;
     }
 
+    
+    /* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 88px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,50,0); /* Fallback color */
+  background-color: rgba(0,50,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.sotto{
+  color: #888;
+}
   
 </style>
 
@@ -90,7 +133,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
                         Brethren Mennonite Heritage Center
                         <br>
                         <br> <span STYLE="font-size:x-large"><b>Map data editor</b></span>
-                        <br><span STYLE="font-size:x-small; color:#b0b0b0;">version 0.3 2021 John Fairfield</span>
+                        <br><span STYLE="font-size:x-small; color:#b0b0b0;">version 0.5 2021 John Fairfield</span>
                     </div>
                     <div class="tar">
                         <button type="button" class='load-save' onclick='saveData()'>Save database</button> <br>
@@ -102,31 +145,16 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
        
         <div id="midscreen">
 
-            <div id="assemblyViewer" ><b>1. Assembly List</b><br></div>
+            <div id="assemblyViewer" ><b>Page 1. Assembly List</b><br></div>
             
-            <div id="assemblyCreator" ><b>1.a Create an Assembly</b><br></div>
+            <div id="assemblyCreator" ><b>Create an Assembly</b><br></div>
             
-            <div id="assemblyEditor" ><b>1.b Edit an Assembly</b><br></div>
+            <div id="assemblyEditor" ><b>Edit an Assembly</b><br></div>
      
-    <!--
             <div id="eventViewer">
-                <div class="d-table">
-                    <div>
-                        <b>2. Event list for:&nbsp;<span id="eventsAssemblyName" style="white-space: break-spaces;"></span><br></b>
-                    </div>
-                    <div class="tar">
-                        <button type="button" class="load-save" onclick="initAssemblyViewer()">back to 1. Assembly List</button>
-                    </div>
-                </div>
-            </div>
-    -->        
-            <div id="eventViewer">
-                <b>2. Event list for:&nbsp;<span id="eventsAssemblyName"></span><br></b>
+                <b>Page 2. Event list for:&nbsp;<span id="eventsAssemblyName"></span><br></b>
             </div>
             
-            <div id="eventEditor">
-                <b>2.a Event Editor for:&nbsp;<span id="eventAssemblyName" ></span></b>
-            </div>
             
             <div id="checkboxen">
                 <input type="checkbox" id="BrethrenCB" name="Brethren" onchange='changeBrethrenCB(this.checked);'>
@@ -139,11 +167,11 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
 
             <div id="assemblyInstructions">
                 <button id="createAssembly" class="textButton" onclick="launchNewAssembly()">Click here to create a new assembly.</button>
-                <br> Or select an assembly (by clicking in the green, then use arrow keys or start typing its name)
-                <br> and hit <em>enter</em> (<em>return</em>) to view and edit its events,
-                <br> or <em>space</em> to change its name or denomination,
-                <br> or <em>delete</em> (or <em>backspace</em>) to delete it.
+                <br> Or select an assembly <span class="sotto">(by clicking on it, or use arrow keys or start typing its name)</span>
+                <br> and hit <em>delete</em> to delete it <span class="sotto">(<em>backspace</em> also works),</span>
+                <br> or double click to edit it <span class="sotto">(hitting the space bar also works),</span>
                 <br>
+                <br> OR, hit <em>return</em> to view its events <span class="sotto">(<em>enter</em> also works).</span>
             </div>
             
 <!-- strategy for making sure that for assembly names or in event objects or comments
@@ -180,37 +208,37 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
             <div id="eventInstructions">
                 <br>
                 <button class="textButton" onclick="launchEditEvent(null)">Click here to create a new event. </button>
-                <br> Or select a listed event 
-                <br> and hit <em>space</em> to change it,
-                <br> or <em>delete</em> (or <em>backspace</em>) to delete it.
-                <br><button type="button" class="load-save" onclick="initAssemblyViewer()">&#10094; back to 1. Assembly List</button>
+                <br> Or select a listed event <span class="sotto">(by clicking on it, or use arrow keys or start typing its date)</span>
+                <br> and hit <em>delete</em> to delete it <span class="sotto">(<em>backspace</em> also works),</span>
+                <br> or double click to edit it <span class="sotto">(hitting the space bar also works),</span>
+                <br>
+                <br><button type="button" class="load-save" onclick="initAssemblyViewer()">&#10094; OR, go back to Page 1.</button>
                 <br>
             </div> 
             
-            
-            <div id="eventForm">
-                <br>
-                <label for="eventDate">date (yyyy/mm/dd):</label>
-                  <input type="text" id="eventDate" size=8 >
-                <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <label for="eventVerb">verb:</label>
-                <select name="eventVerb" id="eventVerb"  required="true" onchange="handleVerbChange(this.value)">
-                </select>
-                <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <label>object:</label>
-                <input type="text" id="eventObject" size="58" >
-                <select name="eventTagObject" id="eventTagObject" required="true" onchange="handleTagSelection(this.value)"></select>
-                <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <label>comment:</label>
-                <textarea type="text" id="eventComment" rows=3 cols=50> </textarea>
-                <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <button type="button" onclick="initEventViewer()">&#10094; cancel</button>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <button type="button" onclick="checkAndSaveEvent()">save</button>
-            </div>
-           
-            <div id="stateOfEvents">
-                
+            <div id="eventEditor" class="modal">
+                <div class="modal-Content">
+                    <span class="close" onclick="initEventViewer()">&times;</span>
+                    <b>Event Editor for:&nbsp;<span id="eventAssemblyName" ></span></b>
+                    <br>
+                    <label for="eventDate">date (yyyy/mm/dd):</label>
+                      <input type="text" id="eventDate" size=8 >
+                    <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label for="eventVerb">verb:</label>
+                    <select name="eventVerb" id="eventVerb"  required="true" onchange="handleVerbChange(this.value)">
+                    </select>
+                    <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label>object:</label>
+                    <input type="text" id="eventObject" size="58" >
+                    <select name="eventTagObject" id="eventTagObject" required="true" onchange="handleTagSelection(this.value)"></select>
+                    <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label>comment:</label>
+                    <textarea type="text" id="eventComment" rows=2 cols=50> </textarea>
+                    <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button type="button" onclick="initEventViewer()">&#10094; cancel</button>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button type="button" onclick="checkAndSaveEvent()">save</button>
+                </div>
             </div>
             
        </div> <!-- end of midscreen -->
@@ -236,9 +264,7 @@ const switchDivs = [
     'checkboxen',
     'newAssembly',
     'changeAssembly',
-    'eventInstructions',
-    'eventForm',
-    'stateOfEvents'
+    'eventInstructions'
 ]
 
 const midscreenTypes = {
@@ -246,8 +272,7 @@ const midscreenTypes = {
     newAssembly:["assemblyCreator","checkboxen","newAssembly"],
     changeAssembly:["assemblyEditor","checkboxen","changeAssembly"],
     eventInstructions:["eventViewer","eventInstructions"],
-    editEvent:["eventEditor","eventForm"], 
-    stateOfEvents:["eventViewer","stateOfEvents"],
+    editEvent:["eventViewer","eventInstructions","eventEditor"]
 }
 
  
@@ -301,12 +326,6 @@ function handleTagSelection(tag){
 function makeLIsOfArray(arr){
     let result = "";
     
-    /*
-    function makeli(i) {
-      return "<li id=\"xyzzy"+i+"\" role=\"option\" class=\"monotype\"></li>";
-    }
-    */
-    
     function makeli(i) {
       return "<option id=\"xyzzy"+i+"\" class=\"monotype\"></option>";
     }
@@ -349,14 +368,14 @@ function changeBrethrenCB(checked){
     if (checked) state.checkbox = state.checkbox | 1;
     else state.checkbox = state.checkbox & 0xfffffe;  //...11110
     setAssemblyNamePrompt();
-    setAssemblyListboxInnerHTML();
+    initAssemblyViewer();
 }
     
 function changeMennoniteCB(checked){
     if (checked) state.checkbox = state.checkbox | 2;
     else state.checkbox = state.checkbox & 0xfffffd;  //...11101
     setAssemblyNamePrompt();
-    setAssemblyListboxInnerHTML();
+    initAssemblyViewer();
 }
 
 //onclick only responds to mouse click, not to movement of selection through typing prefixen
@@ -435,14 +454,11 @@ function deleteAssembly(name){
 
 //    ------------------------------------- event screens --------------------- 
     
-// for installEventListener the word 'event' refers to window keydown events, not to assembly events!    
-function installEventListener(){
+// for installEventListeners the word 'event' refers to window keydown events, not to assembly events!    
+function installEventListeners(){
     document.getElementById('selectList').addEventListener('keydown', function(event) { 
         var sL = document.getElementById("selectList");
         
-        //var text=sL.options[sL.selectedIndex].text;
-        //const itemId = document.getElementById('selectList').value;
-        //const item = document.getElementById(itemId).innerText; //NOT innerHTML
         if (sL.selectedIndex >= 0){
             if(state.whichList === 'assemblies'){
                 var assyName=sL.options[sL.selectedIndex].value;
@@ -469,7 +485,22 @@ function installEventListener(){
                 }
             }
         }
-    })
+    });
+    
+    document.getElementById('selectList').addEventListener('dblclick', function(event) {
+        var sL = document.getElementById("selectList");
+        
+        if (sL.selectedIndex >= 0){
+            if(state.whichList === 'assemblies'){
+                var assyName=sL.options[sL.selectedIndex].value;
+                event.preventDefault();
+                launchChangeAssembly(assyName);
+            } else if (state.whichList === 'events') { 
+                event.preventDefault();
+                launchEditEvent(sL.selectedIndex);
+            }
+        }
+    });
 }
 
    
@@ -565,10 +596,20 @@ let bmhc =  BMHCobj();
 bmhc.setData(bmhcData());
 bmhc.setTags(bmhcTags());
     
-installEventListener();
+window.onclick = function(event) {
+  var modals = document.getElementsByClassName("modal");
+  if (event.target == modals[0]) {
+      console.log("window.onclick", modals);
+    if (state.whichList=="assemblies" ) initAssemblyViewer();
+    else if (state.whichList=="events") initEventViewer();
+  }
+}
+    
+installEventListeners();
 initEventTagObjectHTML(); initVerbHTML();
 initAssemblyViewer();
     
+
 </script>
 
 </body>
