@@ -29,13 +29,30 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
     .container {
         padding:0px 20px;
     }
+    
+    .myChkBxWrapper{
+        margin: 10px 0px;
+    }
+    
+    .myChkBx {
+        width:13px; height:13px;
+        margin:0px 4px;
+    }
 
-    .textButton {
-        padding: 4px 1px;
-        border: none;
+    .cmdButton {
+        margin: 2px 1px;
+        padding: 0px;
+        width: 20px;
+        border: 1px solid #888;
+        border-radius: 5px;
         font-family: 'Times New Roman', serif;
-        font-size:medium;
-        background-color:#fffaf0;
+        font-size:large;
+        background-color:#d0efda;
+    }
+    .cmdButton:hover,
+    .cmdButton:focus {
+      background-color: rgb(230,255,230);
+      cursor: pointer;
     }
     
     .monotype {
@@ -60,7 +77,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
     }
     
     #selectList, #inputAssemblyName, #changingAssemblyName, #eventsAssemblyName, #eventAssemblyName {
-        background-color:#d0efd0;
+        background-color:#d0efda;
         white-space: break-spaces;
     }
     
@@ -87,6 +104,10 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
   background-color: rgba(0,50,0,0.4); /* Black w/ opacity */
 }
 
+.modal-perimeter{
+  margin:auto; padding:0px;
+}
+    
 /* Modal Content */
 .modal-content {
   background-color: #fefefe;
@@ -95,11 +116,13 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
   border: 1px solid #888;
   width: 80%;
 }
+    
 
 /* The Close Button */
 .close {
   color: #aaaaaa;
   float: right;
+  background:#eee;
   font-size: 32px;
   font-weight: bold;
 }
@@ -133,7 +156,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
                         Brethren Mennonite Heritage Center
                         <br>
                         <br> <span STYLE="font-size:x-large"><b>Map data editor</b></span>
-                        <br><span STYLE="font-size:x-small; color:#b0b0b0;">version 0.5 2021 John Fairfield</span>
+                        <br><span class='sotto' STYLE="font-size:x-small;">version 0.5 2021 John Fairfield</span>
                     </div>
                     <div class="tar">
                         <button type="button" class='load-save' onclick='saveData()'>Save database</button> <br>
@@ -144,34 +167,67 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
            </div>
        
         <div id="midscreen">
+            
+            <div id="assemblyModal" class="modal">
+                <div id='assemblyModalContent' class="modal-content">
+                    <span class="close" onclick="initAssemblyViewer()">&nbsp;&times;&nbsp;</span>
+                    <div id="assemblyCreator" ><b>Create a new Assembly</b><br></div>
+                    <div id="assemblyEditor" ><b>Edit an Assembly</b><br></div>
+                    
+                    <div id="modalCheckboxen" class="myChkBxWrapper">
+                        <span><img id='modalBrethrenCB' src='butCheck.png' class='myChkBx' onclick='changeBrethrenCB(this.checked),true'>Brethren</span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <span><img id='modalMennoniteCB' src='butEmpty.png' class='myChkBx' onclick='changeMennoniteCB(this.checked, true)'>Mennonite</span>
+                        <br>
+                    </div>
+
+                    <div id="newAssembly">
+                        <scan id="assemblyNamePrompt">Enter a unique assembly name: </scan>
+                        <br>
+                        <input type="text" id="inputAssemblyName" size=70>
+                        <br>
+                        <button type="button" onclick="initAssemblyViewer()">cancel</button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button type="button" onclick="saveAssembly()">save</button> 
+                    </div>
+                    <div id="changeAssembly">
+                        <scan id="changeAssemblyPrompt">Change its denomination (above) or name (below): </scan>
+                        <br>
+                        <input type="text" id="changingAssemblyName" size=70>
+                        <br>
+                        <button type="button" onclick="initAssemblyViewer()">cancel</button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button type="button" onclick="changeAssembly()">change</button>
+                    </div>
+                    
+                </div>
+            </div>
 
             <div id="assemblyViewer" ><b>Page 1. Assembly List</b><br></div>
             
-            <div id="assemblyCreator" ><b>Create an Assembly</b><br></div>
-            
-            <div id="assemblyEditor" ><b>Edit an Assembly</b><br></div>
      
             <div id="eventViewer">
                 <b>Page 2. Event list for:&nbsp;<span id="eventsAssemblyName"></span><br></b>
             </div>
             
             
-            <div id="checkboxen">
-                <input type="checkbox" id="BrethrenCB" name="Brethren" onchange='changeBrethrenCB(this.checked);'>
-                Brethren
+            <div id="checkboxen" class="myChkBxWrapper">
+                <span><img id='BrethrenCB' src='butCheck.png' class='myChkBx' onclick='changeBrethrenCB(this.checked)'>Brethren</span>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <input type="checkbox" id="MennoniteCB" name="Mennonite" onchange='changeMennoniteCB(this.checked);'>
-                Mennonite
+                <span><img id='MennoniteCB' src='butEmpty.png' class='myChkBx' onclick='changeMennoniteCB(this.checked)'>Mennonite</span>
                 <br>
             </div>
 
             <div id="assemblyInstructions">
-                <button id="createAssembly" class="textButton" onclick="launchNewAssembly()">Click here to create a new assembly.</button>
-                <br> Or select an assembly <span class="sotto">(by clicking on it, or use arrow keys or start typing its name)</span>
-                <br> and hit <em>delete</em> to delete it <span class="sotto">(<em>backspace</em> also works),</span>
-                <br> or double click to edit it <span class="sotto">(hitting the space bar also works),</span>
+                <button id="createAssembly" class="cmdButton" onclick="launchNewAssembly()"><u>C</u></button>reate a new assembly
                 <br>
-                <br> OR, hit <em>return</em> to view its events <span class="sotto">(<em>enter</em> also works).</span>
+                or click on an assembly (or use arrow keys or start typing its name),
+                <br>
+                <button class="cmdButton" onclick="deleteAssembly()"><u>D</u></button>elete it
+                <br>
+                <button class="cmdButton" onclick="editAssembly()"><u>E</u></button>dit it
+                <br>
+                <button class="cmdButton" onclick="gotoEvents()"><u>2</u></button> see its events on Page 2
             </div>
             
 <!-- strategy for making sure that for assembly names or in event objects or comments
@@ -183,42 +239,22 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
      and set innerText (not innerHTML) of divs and scans etc.
      AND use a constant character width font, so that extra blanks are clearly perceptible.
 -->
-
-            <div id="newAssembly">
-                <scan id="assemblyNamePrompt">Enter a unique assembly name: </scan>
-                <br>
-                <input type="text" id="inputAssemblyName" size=70>
-                <br>
-                <button type="button" onclick="initAssemblyViewer()">&#10094; cancel</button>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <button type="button" onclick="saveAssembly()">save</button> 
-            </div>
-            
-            <div id="changeAssembly">
-                <scan id="changeAssemblyPrompt">Change its denomination (above) or name (below): </scan>
-                <br>
-                <input type="text" id="changingAssemblyName" size=70>
-                <br>
-                <button type="button" onclick="initAssemblyViewer()">&#10094; cancel</button>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <button type="button" onclick="changeAssembly()">change</button>
-            </div>
             
             
             <div id="eventInstructions">
                 <br>
-                <button class="textButton" onclick="launchEditEvent(null)">Click here to create a new event. </button>
+                <button class="cmdButton" onclick="launchEditEvent(null)">Click here to create a new event. </button>
                 <br> Or select a listed event <span class="sotto">(by clicking on it, or use arrow keys or start typing its date)</span>
                 <br> and hit <em>delete</em> to delete it <span class="sotto">(<em>backspace</em> also works),</span>
                 <br> or double click to edit it <span class="sotto">(hitting the space bar also works),</span>
                 <br>
-                <br><button type="button" class="load-save" onclick="initAssemblyViewer()">&#10094; OR, go back to Page 1.</button>
+                <br><button type="button" class="load-save" onclick="initAssemblyViewer()">OR, click here to go back to Page 1.</button> 
                 <br>
             </div> 
             
             <div id="eventEditor" class="modal">
                 <div class="modal-Content">
-                    <span class="close" onclick="initEventViewer()">&times;</span>
+                    <span class="close" onclick="initEventViewer()">&nbsp;&times;&nbsp;</span>
                     <b>Event Editor for:&nbsp;<span id="eventAssemblyName" ></span></b>
                     <br>
                     <label for="eventDate">date (yyyy/mm/dd):</label>
@@ -235,7 +271,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
                     <label>comment:</label>
                     <textarea type="text" id="eventComment" rows=2 cols=50> </textarea>
                     <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <button type="button" onclick="initEventViewer()">&#10094; cancel</button>
+                    <button type="button" onclick="initEventViewer()">cancel</button>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <button type="button" onclick="checkAndSaveEvent()">save</button>
                 </div>
@@ -253,11 +289,14 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
 <script>
 
 //globals
+//&#10094; //bold <
     
 const switchDivs = [
     'assemblyViewer',
+    'assemblyModal',
     'assemblyCreator',
     'assemblyEditor',
+    'modalCheckboxen',
     'eventViewer',
     'eventEditor',
     'assemblyInstructions',
@@ -269,22 +308,25 @@ const switchDivs = [
 
 const midscreenTypes = {
     assemblyInstructions:["assemblyViewer","checkboxen","assemblyInstructions"], 
-    newAssembly:["assemblyCreator","checkboxen","newAssembly"],
-    changeAssembly:["assemblyEditor","checkboxen","changeAssembly"],
+    newAssembly:['assemblyViewer','checkboxen', 'assemblyInstructions', 'assemblyModal',"assemblyCreator","modalCheckboxen","newAssembly"],
+    changeAssembly:['assemblyViewer','checkboxen', 'assemblyInstructions', 
+    'assemblyModal',"assemblyEditor","modalCheckboxen","changeAssembly"],
     eventInstructions:["eventViewer","eventInstructions"],
     editEvent:["eventViewer","eventInstructions","eventEditor"]
 }
 
  
 // Of general utility:
+
+function setCheckboxen() { //0: neither checked, 1 Brethren, 2 Mennonite, 3 both
+    document.getElementById("BrethrenCB").checked =(state.checkbox == 1 || state.checkbox == 3);
+    document.getElementById("MennoniteCB").checked = (state.checkbox == 2 || state.checkbox == 3);
+
+    document.getElementById("modalBrethrenCB").checked =(state.checkbox == 1 || state.checkbox == 3);
+    document.getElementById("modalMennoniteCB").checked = (state.checkbox == 2 || state.checkbox == 3);
+}
     
 function formatMidscreen(screenType){ //see midScreenTypes
-    
-        function setCheckboxen() { //0: neither checked, 1 Brethren, 2 Mennonite, 3 both
-            if (document.getElementById("BrethrenCB") != null) document.getElementById("BrethrenCB").checked =(state.checkbox == 1 || state.checkbox == 3);
-            if (document.getElementById("MennoniteCB") != null) document.getElementById("MennoniteCB").checked = (state.checkbox == 2 || state.checkbox == 3);
-        }
-    
     switchDivs.forEach(div => document.getElementById(div).style.display='none'); //clear them all
     midscreenTypes[screenType].forEach(div => document.getElementById(div).style.display='block');
     setCheckboxen(); 
@@ -347,7 +389,7 @@ function initAssemblyViewer(){
     state.whichList = "assemblies";
     formatMidscreen("assemblyInstructions");
     setAssemblyListboxInnerHTML();
-    document.getElementById("myListbox").style.visibility='visible';
+    //document.getElementById("myListbox").style.visibility='visible';
     
     document.getElementById("selectList").focus();
 }
@@ -364,18 +406,35 @@ function setAssemblyListboxInnerHTML(){
 
 }
 
-function changeBrethrenCB(checked){
-    if (checked) state.checkbox = state.checkbox | 1;
-    else state.checkbox = state.checkbox & 0xfffffe;  //...11110
+function changeBrethrenCB(checked, modal){
+    var prefix = modal?'modal':'';
+    if (checked) {
+        state.checkbox = state.checkbox | 1;
+        document.getElementById(prefix+'BrethrenCB').src = 'butCheck.png';
+    } else { state.checkbox = state.checkbox & 0xfffffe;  //...11110
+        document.getElementById(prefix+'BrethrenCB').src = 'butEmpty.png';
+    };
     setAssemblyNamePrompt();
-    initAssemblyViewer();
+    if (modal) {
+        setCheckboxen();
+        setAssemblyListboxInnerHTML();
+    } else initAssemblyViewer();
 }
     
-function changeMennoniteCB(checked){
-    if (checked) state.checkbox = state.checkbox | 2;
-    else state.checkbox = state.checkbox & 0xfffffd;  //...11101
+function changeMennoniteCB(checked, modal){
+    var prefix = modal?'modal':'';
+    if (checked){ 
+        state.checkbox = state.checkbox | 2;
+        document.getElementById(prefix+'MennoniteCB').src = 'butCheck.png';
+    } else { 
+        state.checkbox = state.checkbox & 0xfffffd;  //...11101
+        document.getElementById(prefix+'MennoniteCB').src = 'butEmpty.png';
+    };
     setAssemblyNamePrompt();
-    initAssemblyViewer();
+    if (modal) {
+        setCheckboxen();
+        setAssemblyListboxInnerHTML(); 
+    } else initAssemblyViewer();
 }
 
 //onclick only responds to mouse click, not to movement of selection through typing prefixen
@@ -389,7 +448,7 @@ function initEventViewer(assemblyName){
     formatMidscreen("eventInstructions");
     document.getElementById("eventsAssemblyName").innerText = assemblyName;
     makeLIsOfArray(bmhc.getEventStrings(assemblyName));
-    document.getElementById("myListbox").style.visibility='visible';
+    //document.getElementById("myListbox").style.visibility='visible';
     state.eventIndex = null; //clear it
     
     document.getElementById("selectList").focus();
@@ -415,7 +474,6 @@ function launchNewAssembly(name=''){
     formatMidscreen("newAssembly");
     setAssemblyNamePrompt();
     document.getElementById("inputAssemblyName").value = name;
-    document.getElementById("myListbox").style.visibility='hidden';
 }
     
 function saveAssembly(){
@@ -430,7 +488,6 @@ function launchChangeAssembly(name){
     state.checkbox = bmhc.getDenomination(name);
     formatMidscreen("changeAssembly");
     document.getElementById("changingAssemblyName").value = name;
-    document.getElementById("myListbox").style.visibility='hidden';
 }
     
 function changeAssembly(){
@@ -508,7 +565,7 @@ function launchEditEvent(eventIndex){
     state.eventIndex = eventIndex; //if null means it's a new event to be added
     formatMidscreen("editEvent");
     document.getElementById("eventAssemblyName").innerText = state.priorAssemblyName;
-    document.getElementById("myListbox").style.visibility='visible';
+    //document.getElementById("myListbox").style.visibility='visible';
     
     if (eventIndex == null) setEventFields("","","","");
     else {
@@ -598,11 +655,15 @@ bmhc.setTags(bmhcTags());
     
 window.onclick = function(event) {
   var modals = document.getElementsByClassName("modal");
-  if (event.target == modals[0]) {
+  if (event.target == modals[0] || event.target == modals[1]) {
       console.log("window.onclick", modals);
     if (state.whichList=="assemblies" ) initAssemblyViewer();
     else if (state.whichList=="events") initEventViewer();
   }
+}
+
+window.onkeyup = function(event){
+  console.log('window ', event.key);
 }
     
 installEventListeners();
