@@ -19,7 +19,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
     body {
         font-size:medium;
         font-family: 'Times New Roman', serif;
-        background-color:#faf0e6; /*linen is #faf0e6. Or rgb(230,255, 220) is a light green;*/
+        background-color:#faf0e6; /*linen*/
     }
 
     input{
@@ -36,22 +36,22 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
     
     .myChkBx {
         width:13px; height:13px;
-        margin:0px 4px;
+        margin:0px 4px 0px 14px;
     }
 
     .cmdButton {
         margin: 2px 1px;
         padding: 0px;
-        width: 20px;
+        width: 40px;
         border: 1px solid #888;
         border-radius: 5px;
         font-family: 'Times New Roman', serif;
         font-size:large;
-        background-color:#d0efda;
+        background-color:#d0efdd;
     }
-    .cmdButton:hover,
-    .cmdButton:focus {
-      background-color: rgb(230,255,230);
+    .cmdButton:hover:not([disabled]),
+    .cmdButton:focus:not([disabled]) {
+      background-color: rgb(230,255,234);
       cursor: pointer;
     }
     
@@ -72,12 +72,8 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
       text-align: right;
     }
     
-    .load-save{
-        font-size: 14px;
-    }
-    
     #selectList, #inputAssemblyName, #changingAssemblyName, #eventsAssemblyName, #eventAssemblyName {
-        background-color:#d0efda;
+        background-color:#d0efdd;
         white-space: break-spaces;
     }
     
@@ -159,7 +155,9 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
                         <br><span class='sotto' STYLE="font-size:x-small;">version 0.5 2021 John Fairfield</span>
                     </div>
                     <div class="tar">
-                        <button type="button" class='load-save' onclick='saveData()'>Save database</button> <br>
+                        <u>s</u>ave database
+                        <button class="cmdButton" onclick="saveData()">&#8984;s</button>
+                        <br>
                         <a download="bmhcData.js" id="downloadlink" style="visibility: hidden" onclick='makeMeDisappear(this)'>OK to download?</a>
                     </div>
                 </div>
@@ -171,13 +169,13 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
             <div id="assemblyModal" class="modal">
                 <div id='assemblyModalContent' class="modal-content">
                     <span class="close" onclick="initAssemblyViewer()">&nbsp;&times;&nbsp;</span>
-                    <div id="assemblyCreator" ><b>Create a new Assembly</b><br></div>
-                    <div id="assemblyEditor" ><b>Edit an Assembly</b><br></div>
+                    <div id="assemblyCreator" ><b>Create a new assembly</b><br></div>
+                    <div id="assemblyEditor" ><b>Edit assembly</b><br></div>
                     
                     <div id="modalCheckboxen" class="myChkBxWrapper">
-                        <span><img id='modalBrethrenCB' src='butCheck.png' class='myChkBx' onclick='changeBrethrenCB(this.checked),true'>Brethren</span>
+                        <span><img id='modalBrethrenCB' src='butCheck.png' class='myChkBx' onclick='changeCB(1,true)'>Brethren</span>
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <span><img id='modalMennoniteCB' src='butEmpty.png' class='myChkBx' onclick='changeMennoniteCB(this.checked, true)'>Mennonite</span>
+                        <span><img id='modalMennoniteCB' src='butEmpty.png' class='myChkBx' onclick='changeCB(2,true)'>Mennonite</span>
                         <br>
                     </div>
 
@@ -212,22 +210,25 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
             
             
             <div id="checkboxen" class="myChkBxWrapper">
-                <span><img id='BrethrenCB' src='butCheck.png' class='myChkBx' onclick='changeBrethrenCB(this.checked)'>Brethren</span>
+                <span><img id='BrethrenCB' src='butCheck.png' class='myChkBx' onclick='changeCB(1)'>Brethren</span>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <span><img id='MennoniteCB' src='butEmpty.png' class='myChkBx' onclick='changeMennoniteCB(this.checked)'>Mennonite</span>
+                <span><img id='MennoniteCB' src='butEmpty.png' class='myChkBx' onclick='changeCB(2)'>Mennonite</span>
                 <br>
             </div>
 
             <div id="assemblyInstructions">
-                <button id="createAssembly" class="cmdButton" onclick="launchNewAssembly()"><u>C</u></button>reate a new assembly
+                <button id="createAssembly" class="cmdButton" onclick="launchNewAssembly()">&#8984;n</button> create a <u>n</u>ew assembly
                 <br>
                 or click on an assembly (or use arrow keys or start typing its name),
                 <br>
-                <button class="cmdButton" onclick="deleteAssembly()"><u>D</u></button>elete it
+                <span class = "dependentSpan"><button class="cmdButton dependentButton" onclick="deleteAssembly(selectedAssembly())">del</button>
+                <u>del</u>ete it </span>
                 <br>
-                <button class="cmdButton" onclick="editAssembly()"><u>E</u></button>dit it
+                <span class = "dependentSpan"> <button class="cmdButton dependentButton" onclick="launchChangeAssembly(selectedAssembly())">&#8984;e</button>
+                    <u>e</u>dit it</span>
                 <br>
-                <button class="cmdButton" onclick="gotoEvents()"><u>2</u></button> see its events on Page 2
+                <span class = "dependentSpan"><button class="cmdButton dependentButton" onclick="initEventViewer(selectedAssembly())">&#8984;2</button>
+                    see its events on Page <u>2</u></span>
             </div>
             
 <!-- strategy for making sure that for assembly names or in event objects or comments
@@ -280,7 +281,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
        </div> <!-- end of midscreen -->
        
        <div id="myListbox">
-           <select id="selectList" size="18">
+           <select id="selectList" size="18" onclick="enableCmdButtons()">
            </select>
        </div>
        
@@ -318,18 +319,46 @@ const midscreenTypes = {
  
 // Of general utility:
 
-function setCheckboxen() { //0: neither checked, 1 Brethren, 2 Mennonite, 3 both
-    document.getElementById("BrethrenCB").checked =(state.checkbox == 1 || state.checkbox == 3);
-    document.getElementById("MennoniteCB").checked = (state.checkbox == 2 || state.checkbox == 3);
+function setCheckboxen(){ 
+    
+    //denom = 'Brethren' or 'Mennonite'
+    function setDenom(denom,trueFalse){
+    
+        function image(){
+            return (trueFalse)?'butCheck.png':'butEmpty.png';
+        }
+    
+        document.getElementById(denom+'CB').src = image();
+        document.getElementById('modal'+denom+'CB').src = image();
+    
+    }
+    
+    //0: neither checked, 1 Brethren, 2 Mennonite, 3 both
+    setDenom('Brethren',state.checkbox&1);
+    setDenom('Mennonite',state.checkbox&2);
+}
 
-    document.getElementById("modalBrethrenCB").checked =(state.checkbox == 1 || state.checkbox == 3);
-    document.getElementById("modalMennoniteCB").checked = (state.checkbox == 2 || state.checkbox == 3);
+    
+function enableCmdButtons(){
+    
+    var dependentButtons = Array.from(document.getElementsByClassName('dependentButton'));
+    var dependentSpans =   Array.from(document.getElementsByClassName('dependentSpan'));
+    
+    console.log('enableCmdButtons:selectedIndex:'+document.getElementById('selectList').selectedIndex);
+    
+    if (document.getElementById('selectList').selectedIndex >= 0) {
+        dependentButtons.forEach(b => b.disabled = false ); //just for css hover
+        dependentSpans.forEach(s => s.style.opacity = 1 );
+    } else {
+        dependentButtons.forEach(b => b.disabled = true );  //just for css hover
+        dependentSpans.forEach(s => s.style.opacity = 0.6 );
+    }
 }
     
 function formatMidscreen(screenType){ //see midScreenTypes
     switchDivs.forEach(div => document.getElementById(div).style.display='none'); //clear them all
     midscreenTypes[screenType].forEach(div => document.getElementById(div).style.display='block');
-    setCheckboxen(); 
+    reflectState();
 }
 
     
@@ -382,16 +411,18 @@ function makeLIsOfArray(arr){
     });
     
 }
-    
-//Assembly viewer, screenType 0:
+
+function reflectState(){
+    setCheckboxen();
+    setAssemblyListboxInnerHTML();
+    enableCmdButtons(); //setAssemblyListboxInnerHTML must precede, it clobbers selection so cmdButtons disabled
+    document.getElementById("selectList").focus();
+}
     
 function initAssemblyViewer(){ 
     state.whichList = "assemblies";
     formatMidscreen("assemblyInstructions");
-    setAssemblyListboxInnerHTML();
-    //document.getElementById("myListbox").style.visibility='visible';
-    
-    document.getElementById("selectList").focus();
+    reflectState();
 }
     
 function setAssemblyListboxInnerHTML(){
@@ -406,35 +437,11 @@ function setAssemblyListboxInnerHTML(){
 
 }
 
-function changeBrethrenCB(checked, modal){
-    var prefix = modal?'modal':'';
-    if (checked) {
-        state.checkbox = state.checkbox | 1;
-        document.getElementById(prefix+'BrethrenCB').src = 'butCheck.png';
-    } else { state.checkbox = state.checkbox & 0xfffffe;  //...11110
-        document.getElementById(prefix+'BrethrenCB').src = 'butEmpty.png';
-    };
+//b1m2: brethren 1, mennonite 2
+function changeCB(b1m2, modal){
+    state.checkbox ^= b1m2;
     setAssemblyNamePrompt();
-    if (modal) {
-        setCheckboxen();
-        setAssemblyListboxInnerHTML();
-    } else initAssemblyViewer();
-}
-    
-function changeMennoniteCB(checked, modal){
-    var prefix = modal?'modal':'';
-    if (checked){ 
-        state.checkbox = state.checkbox | 2;
-        document.getElementById(prefix+'MennoniteCB').src = 'butCheck.png';
-    } else { 
-        state.checkbox = state.checkbox & 0xfffffd;  //...11101
-        document.getElementById(prefix+'MennoniteCB').src = 'butEmpty.png';
-    };
-    setAssemblyNamePrompt();
-    if (modal) {
-        setCheckboxen();
-        setAssemblyListboxInnerHTML(); 
-    } else initAssemblyViewer();
+    reflectState();
 }
 
 //onclick only responds to mouse click, not to movement of selection through typing prefixen
@@ -509,13 +516,18 @@ function deleteAssembly(name){
     }
 }
 
+function selectedAssembly(){
+    var sL = document.getElementById("selectList");
+    if (sL.selectedIndex >= 0) return sL.options[sL.selectedIndex].value;
+    else return null;
+}
+    
 //    ------------------------------------- event screens --------------------- 
     
 // for installEventListeners the word 'event' refers to window keydown events, not to assembly events!    
 function installEventListeners(){
     document.getElementById('selectList').addEventListener('keydown', function(event) { 
         var sL = document.getElementById("selectList");
-        
         if (sL.selectedIndex >= 0){
             if(state.whichList === 'assemblies'){
                 var assyName=sL.options[sL.selectedIndex].value;
@@ -544,6 +556,7 @@ function installEventListeners(){
         }
     });
     
+    
     document.getElementById('selectList').addEventListener('dblclick', function(event) {
         var sL = document.getElementById("selectList");
         
@@ -557,6 +570,11 @@ function installEventListeners(){
                 launchEditEvent(sL.selectedIndex);
             }
         }
+    });
+    
+    document.getElementById('selectList').addEventListener('keyup',function(event){
+       //has to be on keyup, selection isn't made until then.
+       enableCmdButtons(); 
     });
 }
 
@@ -669,7 +687,6 @@ window.onkeyup = function(event){
 installEventListeners();
 initEventTagObjectHTML(); initVerbHTML();
 initAssemblyViewer();
-    
 
 </script>
 
