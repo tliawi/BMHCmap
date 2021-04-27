@@ -42,13 +42,18 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
     .cmdButton {
         margin: 2px 1px;
         padding: 0px;
-        width: 40px;
+        width: 60px;
         border: 1px solid #888;
         border-radius: 5px;
         font-family: 'Times New Roman', serif;
-        font-size:large;
+        font-size:medium;
         background-color:#d0efdd;
     }
+    
+    .cmdButton:disabled{
+        border: 1px solid #ddd;
+    }
+    
     .cmdButton:hover:not([disabled]),
     .cmdButton:focus:not([disabled]) {
       background-color: rgb(230,255,234);
@@ -131,7 +136,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
 }
 
 .sotto{
-  color: #888;
+  color: #999;
 }
   
 </style>
@@ -144,7 +149,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
     
 <body>
 
-   <div class="container">
+   <div class="container" id='everything'>
        
        <div id="header">
                 <div class="d-table" >
@@ -155,8 +160,8 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
                         <br><span class='sotto' STYLE="font-size:x-small;">version 0.5 2021 John Fairfield</span>
                     </div>
                     <div class="tar">
-                        <u>s</u>ave database
-                        <button class="cmdButton" onclick="saveData()">&#8984;s</button>
+                        save database
+                        <button class="cmdButton" onclick="saveData()">save</button>
                         <br>
                         <a download="bmhcData.js" id="downloadlink" style="visibility: hidden" onclick='makeMeDisappear(this)'>OK to download?</a>
                     </div>
@@ -195,7 +200,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
                         <br>
                         <button type="button" onclick="initAssemblyViewer()">cancel</button>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <button type="button" onclick="changeAssembly()">change</button>
+                        <button type="button" onclick="changeAssembly()">save</button>
                     </div>
                     
                 </div>
@@ -217,18 +222,18 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
             </div>
 
             <div id="assemblyInstructions">
-                <button id="createAssembly" class="cmdButton" onclick="launchNewAssembly()">&#8984;n</button> create a <u>n</u>ew assembly
+                <button id="createAssembly" class="cmdButton" onclick="launchNewAssembly()">create</button> create a new assembly <span class='sotto'>( . )</span>
+                <br><br>
+                or click on an assembly <span class='sotto'>(or use arrow keys or start typing its name)</span>
                 <br>
-                or click on an assembly (or use arrow keys or start typing its name),
+                <button class="cmdButton dependentButton" onclick="deleteAssembly(selectedAssembly())">delete</button>
+                    <span class = "dependentSpan">delete it <span class='sotto'>(delete or backspace)</span></span>
                 <br>
-                <span class = "dependentSpan"><button class="cmdButton dependentButton" onclick="deleteAssembly(selectedAssembly())">del</button>
-                <u>del</u>ete it </span>
+                <button class="cmdButton dependentButton" onclick="launchChangeAssembly(selectedAssembly())">edit</button>
+                    <span class = "dependentSpan">edit it <span class='sotto'>(space bar)</span></span>
                 <br>
-                <span class = "dependentSpan"> <button class="cmdButton dependentButton" onclick="launchChangeAssembly(selectedAssembly())">&#8984;e</button>
-                    <u>e</u>dit it</span>
-                <br>
-                <span class = "dependentSpan"><button class="cmdButton dependentButton" onclick="initEventViewer(selectedAssembly())">&#8984;2</button>
-                    see its events on Page <u>2</u></span>
+                <button class="cmdButton dependentButton" onclick="initEventViewer(selectedAssembly())">page 2</button>
+                    <span class = "dependentSpan">see its events on Page 2 <span class = 'sotto'>(return or enter)</span></span>
             </div>
             
 <!-- strategy for making sure that for assembly names or in event objects or comments
@@ -243,14 +248,19 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
             
             
             <div id="eventInstructions">
+                <button class="cmdButton" onclick="launchEditEvent(null)">create</button> create a new event
+                <span class="sotto">( . )</span>
                 <br>
-                <button class="cmdButton" onclick="launchEditEvent(null)">Click here to create a new event. </button>
-                <br> Or select a listed event <span class="sotto">(by clicking on it, or use arrow keys or start typing its date)</span>
-                <br> and hit <em>delete</em> to delete it <span class="sotto">(<em>backspace</em> also works),</span>
-                <br> or double click to edit it <span class="sotto">(hitting the space bar also works),</span>
+                or click on an event <span class="sotto">(or use arrow keys or start typing its date)</span>
                 <br>
-                <br><button type="button" class="load-save" onclick="initAssemblyViewer()">OR, click here to go back to Page 1.</button> 
+                <button class="cmdButton dependentButton" onclick="deleteEvent(selectedEvent())">delete</button>
+                <span class = "dependentSpan">delete it <span class="sotto">(delete or backspace)</span></span>
+                <br> 
+                <button class="cmdButton dependentButton" onclick="launchChangeEvent(selectedEvent())">edit</button>
+                    <span class = "dependentSpan"> edit it <span class="sotto">(space bar)</span></span>
                 <br>
+                <button class="cmdButton" onclick="initAssemblyViewer()">page 1</button>
+                    return to assemblies on page 1 <span class = 'sotto'>(return or enter)</span>
             </div> 
             
             <div id="eventEditor" class="modal">
@@ -351,7 +361,7 @@ function enableCmdButtons(){
         dependentSpans.forEach(s => s.style.opacity = 1 );
     } else {
         dependentButtons.forEach(b => b.disabled = true );  //just for css hover
-        dependentSpans.forEach(s => s.style.opacity = 0.6 );
+        dependentSpans.forEach(s => s.style.opacity = 0.3 );
     }
 }
     
@@ -526,36 +536,53 @@ function selectedAssembly(){
     
 // for installEventListeners the word 'event' refers to window keydown events, not to assembly events!    
 function installEventListeners(){
-    document.getElementById('selectList').addEventListener('keydown', function(event) { 
+    /*
+    document.getElementById('everything').addEventListener('keydown', function(event) {
+        //independent of selection
+        if (state.whichList === 'assemblies') {
+            if (event.key === '.') launchNewAssembly();
+        } else if (state.whichList === 'events') {
+            if (event.key === '.') launchEditEvent(null)
+            else if (event.key == 'Enter') initAssemblyViewer();
+        };
+    });
+    */
+    document.getElementById('selectList').addEventListener('keydown', function(event) {
+        
+         //independent of selection
+        if (state.whichList === 'assemblies') {
+            if (event.key === '.') launchNewAssembly();
+        } else if (state.whichList === 'events') {
+            if (event.key === '.') launchEditEvent(null)
+            else if (event.key == 'Enter') initAssemblyViewer();
+        };
+        
+        //dependent on selectedIndex
         var sL = document.getElementById("selectList");
         if (sL.selectedIndex >= 0){
             if(state.whichList === 'assemblies'){
                 var assyName=sL.options[sL.selectedIndex].value;
-                if (event.key === 'Backspace' || event.key === 'Delete') { 
-                    event.preventDefault();
+                
+                if (event.key === 'Backspace' || event.key === 'Delete') {
                     deleteAssembly(assyName);
-                } else if (event.key === ' ' || event.key === 'Spacebar'){
-                    event.preventDefault();
+                } else if (event.key === ' '){
                     launchChangeAssembly(assyName);
-                } else if (event.key === 'Enter'){
-                    event.preventDefault();
+                } else if (event.key == 'Enter'){
                     initEventViewer(assyName);
                 }
             } else if (state.whichList === 'events') { 
-                //const index = parseInt(itemId.slice(5)); //remove the xyzzy
-
                 if (event.key === 'Backspace' || event.key === 'Delete') { 
-                    event.preventDefault();
                     bmhc.deleteEvent(state.priorAssemblyName,sL.selectedIndex);
                     initEventViewer();
-                } else if (event.key === ' ' || event.key === 'Spacebar'){
-                    event.preventDefault();
+                } else if (event.key === ' '){
                     launchEditEvent(sL.selectedIndex);
+                } else if (event.key === 'Enter'){
+                    initAssemblyViewer();
                 }
+                
             }
         }
     });
-    
     
     document.getElementById('selectList').addEventListener('dblclick', function(event) {
         var sL = document.getElementById("selectList");
@@ -563,10 +590,8 @@ function installEventListeners(){
         if (sL.selectedIndex >= 0){
             if(state.whichList === 'assemblies'){
                 var assyName=sL.options[sL.selectedIndex].value;
-                event.preventDefault();
                 launchChangeAssembly(assyName);
             } else if (state.whichList === 'events') { 
-                event.preventDefault();
                 launchEditEvent(sL.selectedIndex);
             }
         }
