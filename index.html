@@ -142,7 +142,7 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
 </style>
 
 <script src="bmhcData.js"></script>
-<script src="bmhcTags.js"></script>
+<script id="tagsSrc" src="bmhcTags.js"></script>
 <script src="bmhc.js"></script>
     
 </head>
@@ -536,17 +536,7 @@ function selectedAssembly(){
     
 // for installEventListeners the word 'event' refers to window keydown events, not to assembly events!    
 function installEventListeners(){
-    /*
-    document.getElementById('everything').addEventListener('keydown', function(event) {
-        //independent of selection
-        if (state.whichList === 'assemblies') {
-            if (event.key === '.') launchNewAssembly();
-        } else if (state.whichList === 'events') {
-            if (event.key === '.') launchEditEvent(null)
-            else if (event.key == 'Enter') initAssemblyViewer();
-        };
-    });
-    */
+    
     document.getElementById('selectList').addEventListener('keydown', function(event) {
         
          //independent of selection
