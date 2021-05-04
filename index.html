@@ -145,6 +145,9 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
 <script src="bmhcTags.js"></script>
 <script src="bmhc.js"></script>
     
+<!-- see https://unixpapa.com/js/dyna.html -->
+<script id="tagsSrc" type="text/javascript" src="https://drive.google.com/file/d/1vcxTcc2u0--sgcP-lrjae3_oZ3ZlCFym/view?usp=sharing"></script>
+    
 </head>
     
 <body>
@@ -253,10 +256,10 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
                 <br>
                 or click on an event <span class="sotto">(or use arrow keys or start typing its date)</span>
                 <br>
-                <button class="cmdButton dependentButton" onclick="deleteEvent(selectedEvent())">delete</button>
+                <button class="cmdButton dependentButton" onclick="deleteCurrentEvent()">delete</button>
                 <span class = "dependentSpan">delete it <span class="sotto">(delete or backspace)</span></span>
                 <br> 
-                <button class="cmdButton dependentButton" onclick="launchChangeEvent(selectedEvent())">edit</button>
+                <button class="cmdButton dependentButton" onclick="launchEditEvent(document.getElementById('selectList').selectedIndex)">edit</button>
                     <span class = "dependentSpan"> edit it <span class="sotto">(space bar)</span></span>
                 <br>
                 <button class="cmdButton" onclick="initAssemblyViewer()">page 1</button>
@@ -354,7 +357,7 @@ function enableCmdButtons(){
     var dependentButtons = Array.from(document.getElementsByClassName('dependentButton'));
     var dependentSpans =   Array.from(document.getElementsByClassName('dependentSpan'));
     
-    console.log('enableCmdButtons:selectedIndex:'+document.getElementById('selectList').selectedIndex);
+    //console.log('enableCmdButtons:selectedIndex:'+document.getElementById('selectList').selectedIndex);
     
     if (document.getElementById('selectList').selectedIndex >= 0) {
         dependentButtons.forEach(b => b.disabled = false ); //just for css hover
@@ -424,15 +427,17 @@ function makeLIsOfArray(arr){
 
 function reflectState(){
     setCheckboxen();
-    setAssemblyListboxInnerHTML();
+    if (state.whichList == 'assemblies') setAssemblyListboxInnerHTML();
+    else makeLIsOfArray(bmhc.getEventStrings(state.priorAssemblyName));
     enableCmdButtons(); //setAssemblyListboxInnerHTML must precede, it clobbers selection so cmdButtons disabled
     document.getElementById("selectList").focus();
 }
+
+var bomb = function(){};
     
 function initAssemblyViewer(){ 
     state.whichList = "assemblies";
     formatMidscreen("assemblyInstructions");
-    reflectState();
 }
     
 function setAssemblyListboxInnerHTML(){
@@ -462,13 +467,10 @@ function initEventViewer(assemblyName){
     else state.priorAssemblyName = assemblyName;
     
     state.whichList = "events";
-    formatMidscreen("eventInstructions");
     document.getElementById("eventsAssemblyName").innerText = assemblyName;
-    makeLIsOfArray(bmhc.getEventStrings(assemblyName));
-    //document.getElementById("myListbox").style.visibility='visible';
     state.eventIndex = null; //clear it
     
-    document.getElementById("selectList").focus();
+    formatMidscreen("eventInstructions");
 }
 
 // Assembly editing, screenType 1
@@ -534,28 +536,21 @@ function selectedAssembly(){
     
 //    ------------------------------------- event screens --------------------- 
     
+function deleteCurrentEvent(){
+    var sI = document.getElementById("selectList").selectedIndex;
+    if (sI >= 0) bmhc.deleteEvent(state.priorAssemblyName,sI);
+    initEventViewer();
+}
+    
 // for installEventListeners the word 'event' refers to window keydown events, not to assembly events!    
 function installEventListeners(){
-    /*
-    document.getElementById('everything').addEventListener('keydown', function(event) {
-        //independent of selection
-        if (state.whichList === 'assemblies') {
-            if (event.key === '.') launchNewAssembly();
-        } else if (state.whichList === 'events') {
-            if (event.key === '.') launchEditEvent(null)
-            else if (event.key == 'Enter') initAssemblyViewer();
-        };
-    });
-    */
+    
     document.getElementById('selectList').addEventListener('keydown', function(event) {
         
          //independent of selection
-        if (state.whichList === 'assemblies') {
-            if (event.key === '.') launchNewAssembly();
-        } else if (state.whichList === 'events') {
-            if (event.key === '.') launchEditEvent(null)
-            else if (event.key == 'Enter') initAssemblyViewer();
-        };
+        if (state.whichList === 'assemblies' && event.key === '.') { launchNewAssembly(); return;};
+        if (state.whichList === 'events' && event.key === '.') { launchEditEvent(null); return;};
+        if (state.whichList === 'events' && event.key == 'Enter') { initAssemblyViewer(); return;};
         
         //dependent on selectedIndex
         var sL = document.getElementById("selectList");
@@ -572,8 +567,7 @@ function installEventListeners(){
                 }
             } else if (state.whichList === 'events') { 
                 if (event.key === 'Backspace' || event.key === 'Delete') { 
-                    bmhc.deleteEvent(state.priorAssemblyName,sL.selectedIndex);
-                    initEventViewer();
+                    deleteCurrentEvent();
                 } else if (event.key === ' '){
                     launchEditEvent(sL.selectedIndex);
                 } else if (event.key === 'Enter'){
