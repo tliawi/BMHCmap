@@ -138,6 +138,10 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
 .sotto{
   color: #999;
 }
+
+input[type="file"] {
+    display: none;
+}
   
 </style>
 
@@ -164,6 +168,11 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
                         <button class="cmdButton" onclick="saveData()">save</button>
                         <br>
                         <a download="bmhcData.js" id="downloadlink" style="visibility: hidden" onclick='makeMeDisappear(this)'>OK to download?</a>
+                        <br>
+                        <label class="cmdButton">
+                            <input type="file" id="loadLocal" onchange="loadLocalData()"/>
+                            load local db
+                        </label>
                     </div>
                 </div>
                 <hr>
@@ -354,7 +363,7 @@ function enableCmdButtons(){
     var dependentButtons = Array.from(document.getElementsByClassName('dependentButton'));
     var dependentSpans =   Array.from(document.getElementsByClassName('dependentSpan'));
     
-    console.log('enableCmdButtons:selectedIndex:'+document.getElementById('selectList').selectedIndex);
+    //console.log('enableCmdButtons:selectedIndex:'+document.getElementById('selectList').selectedIndex);
     
     if (document.getElementById('selectList').selectedIndex >= 0) {
         dependentButtons.forEach(b => b.disabled = false ); //just for css hover
@@ -648,9 +657,20 @@ function checkAndSaveEvent(){
 }
 
 
-function loadData(){
-    //bmhc.loadDB();
-    initAssemblyViewer();
+function loadLocalData(){
+    if (document.getElementById("loadLocal").files.length){ //is zero if user hit 'cancel'
+        var file = document.getElementById("loadLocal").files[0];
+        
+        var reader = new FileReader();
+
+        reader.onloadend = function(){
+            bmhc.setData(JSON.parse(bmhc.unwrap(reader.result.toString())));
+            bmhcData = undefined; //so fcn and its long string can be garbage collected
+            initAssemblyViewer();
+        }
+
+        reader.readAsBinaryString(file); //only do this after onloadend has been declared
+    }
 }
 
 function makeTextFile(text) {
@@ -668,7 +688,7 @@ function makeTextFile(text) {
 
 function saveData(){
     let link = document.getElementById('downloadlink');
-    link.href = makeTextFile(bmhc.wrapInJS(bmhc.getData())); 
+    link.href = makeTextFile(bmhc.wrapInJS(bmhc.getData()));
     link.style.visibility = 'visible'; //turn it on so user can accept/reject download to HD.
 }
 
@@ -695,6 +715,7 @@ let state = {checkbox:1, whichList:"assemblies", priorAssemblyName:"", eventInde
 let bmhc =  BMHCobj(); 
 bmhc.setData(bmhcData());
 bmhc.setTags(bmhcTags());
+    
     
 window.onclick = function(event) {
   var modals = document.getElementsByClassName("modal");

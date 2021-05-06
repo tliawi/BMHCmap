@@ -35,7 +35,7 @@ function BMHCobj(){
     }
     
     function getVerbs(){
-        return [...db.verbs];
+        return [...db.verbs]; //shallow copy
     }
     
     function getTags(){
@@ -587,8 +587,14 @@ function BMHCobj(){
         return '{"idSource":' + db.idSource + ',"assemblies":' + JSON.stringify(db.assemblies,null,'\t') + '}';
     }
     
+    var wrapperPrefix = "function bmhcData(){ return ";
+    var wrapperSuffix = "; }";
     function wrapInJS(contentString){
-        return "function bmhcData(){ return "+contentString+"; }" ;
+        return wrapperPrefix+contentString+wrapperSuffix ;
+    }
+    
+    function unwrap(wrappedData){
+        return wrappedData.substring(wrapperPrefix.length,wrappedData.length-wrapperSuffix.length);
     }
     
     
@@ -727,6 +733,7 @@ function BMHCobj(){
             getVerbs:getVerbs,
         
             wrapInJS:wrapInJS,
+            unwrap:unwrap,
         
             getData:getData,
             setData:setData,
