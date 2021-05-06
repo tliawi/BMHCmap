@@ -48,6 +48,8 @@ https://stackoverflow.com/questions/4130237/displaying-crosshairs-in-the-center-
         font-family: 'Times New Roman', serif;
         font-size:medium;
         background-color:#d0efdd;
+        display: inline-block;
+        text-align: center;
     }
     
     .cmdButton:disabled{
@@ -167,14 +169,13 @@ input[type="file"] {
                         <br><span class='sotto' STYLE="font-size:x-small;">version 0.5 2021 John Fairfield</span>
                     </div>
                     <div class="tar">
-                        save database
                         <button class="cmdButton" onclick="saveData()">save</button>
                         <br>
                         <a download="bmhcData.js" id="downloadlink" style="visibility: hidden" onclick='makeMeDisappear(this)'>OK to download?</a>
                         <br>
                         <label class="cmdButton">
                             <input type="file" id="loadLocal" onchange="loadLocalData()"/>
-                            load local db
+                            load
                         </label>
                     </div>
                 </div>
