@@ -166,7 +166,7 @@ input[type="file"] {
                         Brethren Mennonite Heritage Center
                         <br>
                         <br> <span STYLE="font-size:x-large"><b>Map data editor</b></span>
-                        <br><span class='sotto' STYLE="font-size:x-small;">version 0.5 2021 John Fairfield</span>
+                        <br><span class='sotto' STYLE="font-size:x-small;">version 0.51 2021 John Fairfield</span>
                     </div>
                     <div class="tar">
                         <button class="cmdButton" onclick="saveData()">save</button>
@@ -548,7 +548,10 @@ function selectedAssembly(){
     
 function deleteCurrentEvent(){
     var sI = document.getElementById("selectList").selectedIndex;
-    if (sI >= 0) bmhc.deleteEvent(state.priorAssemblyName,sI);
+    if (sI >= 0) { 
+        const result = bmhc.deleteEvent(state.priorAssemblyName,sI);
+        if (result != 'ok') alert(result);
+    }
     initEventViewer();
 }
     
