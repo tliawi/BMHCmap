@@ -166,7 +166,7 @@ input[type="file"] {
                         Brethren Mennonite Heritage Center
                         <br>
                         <br> <span STYLE="font-size:x-large"><b>Map data editor</b></span>
-                        <br><span class='sotto' STYLE="font-size:x-small;">version 0.51 2021 John Fairfield</span>
+                        <br><span class='sotto' STYLE="font-size:x-small;">version 0.52 2021 John Fairfield</span>
                     </div>
                     <div class="tar">
                         <button class="cmdButton" onclick="saveData()">save</button>
@@ -200,7 +200,7 @@ input[type="file"] {
                     <div id="newAssembly">
                         <scan id="assemblyNamePrompt">Enter a unique assembly name: </scan>
                         <br>
-                        <input type="text" id="inputAssemblyName" size=70>
+                        <input type="text" id="inputAssemblyName" autocomplete="off" size=70>
                         <br>
                         <button type="button" onclick="initAssemblyViewer()">cancel</button>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -209,7 +209,7 @@ input[type="file"] {
                     <div id="changeAssembly">
                         <scan id="changeAssemblyPrompt">Change its denomination (above) or name (below): </scan>
                         <br>
-                        <input type="text" id="changingAssemblyName" size=70>
+                        <input type="text" id="changingAssemblyName" autocomplete="off" size=70>
                         <br>
                         <button type="button" onclick="initAssemblyViewer()">cancel</button>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -282,14 +282,14 @@ input[type="file"] {
                     <b>Event Editor for:&nbsp;<span id="eventAssemblyName" ></span></b>
                     <br>
                     <label for="eventDate">date (yyyy/mm/dd):</label>
-                      <input type="text" id="eventDate" size=8 >
+                      <input type="text" id="eventDate"  autocomplete="off" size=8 >
                     <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <label for="eventVerb">verb:</label>
                     <select name="eventVerb" id="eventVerb"  required="true" onchange="handleVerbChange(this.value)">
                     </select>
                     <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <label>object:</label>
-                    <input type="text" id="eventObject" size="58" >
+                    <input type="text" id="eventObject"  autocomplete="off" size="58" >
                     <select name="eventTagObject" id="eventTagObject" required="true" onchange="handleTagSelection(this.value)"></select>
                     <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <label>comment:</label>
