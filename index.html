@@ -150,10 +150,7 @@ input[type="file"] {
 <script src="bmhcData.js"></script>
 <script src="bmhcTags.js"></script>
 <script src="bmhc.js"></script>
-    
-<!-- see https://unixpapa.com/js/dyna.html -->
-<script id="tagsSrc" type="text/javascript" src="https://drive.google.com/file/d/1vcxTcc2u0--sgcP-lrjae3_oZ3ZlCFym/view?usp=sharing"></script>
-    
+
 </head>
     
 <body>
@@ -166,7 +163,7 @@ input[type="file"] {
                         Brethren Mennonite Heritage Center
                         <br>
                         <br> <span STYLE="font-size:x-large"><b>Map data editor</b></span>
-                        <br><span class='sotto' STYLE="font-size:x-small;">version 0.52 2021 John Fairfield</span>
+                        <br><span class='sotto' STYLE="font-size:x-small;">version 0.6 2021 John Fairfield</span>
                     </div>
                     <div class="tar">
                         <button class="cmdButton" onclick="saveData()">save</button>
@@ -644,7 +641,7 @@ function checkAndSaveEvent(){
         makeLIsOfArray(bmhc.getEventStrings(state.priorAssemblyName)); //so listBox reflects changes
         if (verb == 'set-membership'){ 
             let temp = date;
-            date = bmhc.yearLater(state.oldSetmMembershipDate,date);
+            date = bmhc.yearLater(state.oldSetMembershipDate,date);
             state.oldSetMembershipDate = temp;
         }
         else {date = ''; verb = ''; state.oldSetMembershipDate = null;} 
@@ -718,7 +715,7 @@ bmhc.setTags(bmhcTags());
 window.onclick = function(event) {
   var modals = document.getElementsByClassName("modal");
   if (event.target == modals[0] || event.target == modals[1]) {
-      console.log("window.onclick", modals);
+    console.log("window.onclick", modals);
     if (state.whichList=="assemblies" ) initAssemblyViewer();
     else if (state.whichList=="events") initEventViewer();
   }

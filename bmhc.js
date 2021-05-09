@@ -1,7 +1,7 @@
 /* 
 BMHC.js
 
-version 0.2 Copyright 2021 John R C Fairfield, see MIT License
+version 0.6 Copyright 2021 John R C Fairfield, see MIT License
 
 */
 
@@ -543,7 +543,7 @@ function BMHCobj(){
     
     //returns naiveEvent of dereferenced strings
     function dereferencedEvent(ev){
-        return new naiveEvent( ev.date, ev.verb, (ev.verb == "set-affiliation" || ev.verb == 'expire-into')?idToName[ev.object]:ev.object, idRefsToNameRefs(ev.comment));
+        return new naiveEvent( ev.date, ev.verb, (ev.object.length?((ev.verb == 'set-affiliation' || ev.verb == 'expire-into')?idToName[ev.object]:ev.object):''), idRefsToNameRefs(ev.comment));
     }
                          
     //Used for display of list of events.
@@ -560,7 +560,7 @@ function BMHCobj(){
         
         function eventToString(ev){
             let sev = dereferencedEvent(ev);
-            return buff(sev.date,10) + ' ' + sev.verb + (sev.object.length?(' '+sev.object):'') + (sev.comment.length?(" comment:"+ sev.comment):"");
+            return buff(sev.date,10) + ' ' + sev.verb + (sev.object.length?(' '+sev.object):'') + (sev.comment.length?(' comment:'+ sev.comment):'');
         }
         
         if (assemblyExists(assemblyName)) {
