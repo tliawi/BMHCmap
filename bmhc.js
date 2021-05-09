@@ -198,7 +198,7 @@ function BMHCobj(){
             });
         }
     
-        //scan and remove set-affiliation events whose objIds == id, maintaining order of events
+        //scan and remove set-affiliation or expire-into events whose objIds == id, maintaining order of events
         Object.keys(db.assemblies).forEach(assembly => { 
             filterObjectReferences(assembly); 
             clobberCommentReferences(assembly);
@@ -543,7 +543,7 @@ function BMHCobj(){
     
     //returns naiveEvent of dereferenced strings
     function dereferencedEvent(ev){
-        return new naiveEvent( ev.date, ev.verb, (ev.object.length?((ev.verb == 'set-affiliation' || ev.verb == 'expire-into')?idToName[ev.object]:ev.object):''), idRefsToNameRefs(ev.comment));
+        return new naiveEvent( ev.date, ev.verb, ((ev.object == '')?'':((ev.verb == 'set-affiliation' || ev.verb == 'expire-into')?idToName[ev.object]:ev.object)), idRefsToNameRefs(ev.comment));
     }
                          
     //Used for display of list of events.
