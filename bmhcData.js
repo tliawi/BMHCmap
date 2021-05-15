@@ -1494,7 +1494,7 @@ function bmhcData(){ return {"idSource":280,"assemblies":{
 			{
 				"date": "2001",
 				"verb": "set-photo",
-				"object": "photos/summer2001church.jpg",
+				"object": "https://drive.google.com/file/d/18GTTkGoQvLCf3L-LtKz9X5rREf0zK7wV/view?usp=sharing",
 				"comment": ""
 			},
 			{
@@ -12865,7 +12865,7 @@ function bmhcData(){ return {"idSource":280,"assemblies":{
 				"date": "1825",
 				"verb": "set-locale",
 				"object": "38.45151997287086, -78.90420619418899",
-				"comment": "meeting at home of Peter Burkholder, currently (1920) a B&B."
+				"comment": "meeting at home of Peter Burkholder, currently (2021) a B&B."
 			},
 			{
 				"date": "1827",
