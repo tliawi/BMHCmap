@@ -1464,7 +1464,7 @@ function bmhcData(){ return {"idSource":280,"assemblies":{
 			{
 				"date": "1915",
 				"verb": "set-photo",
-				"object": "photos/1915church.jpg",
+				"object": "https://lh3.googleusercontent.com/pw/ACtC-3fRylLjj9PFSprE_N7HQqw678xiB3vk4c2Jxw-F6ZB01NlVkjjUxFSphQSvcwCypLHOTL0TClIsfKOXq28lNwEblBfNRKrIZFviHAB5PsQoGdCAqIT8kOsHRKk0PsMzZFONSQVJiytIOe-pi6LNZJvZ=w494-h376-no?authuser=0",
 				"comment": ""
 			},
 			{
@@ -1476,7 +1476,7 @@ function bmhcData(){ return {"idSource":280,"assemblies":{
 			{
 				"date": "1948",
 				"verb": "set-photo",
-				"object": "photos/newerchurch.jpg",
+				"object": "https://lh3.googleusercontent.com/pw/ACtC-3epw_TjpMkcjU0nOSOV5J_ykjbFOXGeMYkwWgWXBrPV2XnTsMROHQytde7cJuLeyp2rvf1ysNxs8EpGbbCYPKSswSobHDrsK4YQTMOf91dqmsffMv_AZlVM_jNjluZkG8fImtq_0ADLor2acSZDSPDE=w592-h285-no?authuser=0",
 				"comment": "testing only, date is dubious, please verify"
 			},
 			{
@@ -1494,7 +1494,7 @@ function bmhcData(){ return {"idSource":280,"assemblies":{
 			{
 				"date": "2001",
 				"verb": "set-photo",
-				"object": "https://drive.google.com/file/d/18GTTkGoQvLCf3L-LtKz9X5rREf0zK7wV/view?usp=sharing",
+				"object": "https://lh3.googleusercontent.com/pw/ACtC-3dG8j0wh3gcN_XGNTAN3MQBAzsd90ZVn142gEKTIEmR4pcnTGz95-tiIvbywLrW9yClaT4NeCLS8IAYxjuSmiOmbgR4PkVwGpAHBj_0Rc2gO_7JLw8JMcv71CrQyIx7V5CaQ-ZeCl0lu6re0ty--PBT=w372-h166-no?authuser=0",
 				"comment": ""
 			},
 			{
