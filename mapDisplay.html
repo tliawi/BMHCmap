@@ -68,6 +68,7 @@
           width: 100%;
           text-align: center;
           margin-bottom: 12px;
+          position: relative;
         }
         
         #yearSlider{
@@ -136,6 +137,14 @@
             margin: 0% 17% 0% 17%;
         }
         
+        #pitchControl{
+            position:absolute;
+            left: 96%;
+            top: 0%;
+            background-color: transparent;
+            border: 0;
+        }
+        
         #photoImage{
             width: 90%;
             margin: 0% 5% 0% 5%;
@@ -170,6 +179,7 @@
         
         <div id='bmhcLogoTranche' class='tranche'>
             <img id='bmhcLogo' src="BMHC%20Logo%20-%20Color.png" display="block">
+            <button id='pitchControl' onclick='togglePitch()'>/</button>
         </div>
         
         <div id='active-year' class = 'tranche'>0000</div>
@@ -225,6 +235,16 @@
             document.getElementById("affiliation").innerHTML = str;
         }
         
+        function togglePitch(){
+            var x = document.getElementById('pitchControl');
+            if (x.innerHTML == '/') {
+                map.setPitch(45);
+                x.innerHTML = '|';
+            } else {
+                map.setPitch(0);
+                x.innerHTML = '/';
+            }
+        }
         
         function initAddTagHTML() {
             var str = '<option value="none"></option>';
@@ -430,7 +450,7 @@
           container: 'map', // container element id
           style: 'mapbox://styles/mapbox/outdoors-v11', // or /light-v10
           center: [-79.806421, 37.838214], // initial map center in [lon, lat]
-          pitch: 45, // pitch in degrees
+          pitch: 0, // pitch in degrees, see togglePitch
           bearing: 0, // bearing in degrees, so looking north
           zoom: 6.9,
           attributionControl: false
@@ -613,6 +633,29 @@
         document.getElementById('body').addEventListener('keyup', function(e) {
             if(!e.getModifierState('CapsLock')) document.getElementById('console').style.display = 'block';
         });
+        
+        
+        //in support of automatic refresh after time of no user activity:
+        
+        var reloadThreshold = 300; //in seconds
+        var secondsSinceMousemove = -1; //i.e. is fresh reload before any mousemove, else is 0 or pos
+        
+        // Reset the last_user_action
+        function reset() {
+            secondsSinceMousemove = 0;
+        }
+        window.addEventListener("mousemove", reset, false);
+        
+        // executes every second
+        setInterval(function () {
+            //don't touch if quiescent after reload, no point in reloading
+            if (secondsSinceMousemove >= 0) secondsSinceMousemove++; 
+            
+            if (secondsSinceMousemove >= reloadThreshold ) {
+                window.location.reload();
+            }
+        }, 1000);
+        
 
     </script>
     
