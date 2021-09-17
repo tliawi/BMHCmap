@@ -1,4 +1,4 @@
-function bmhcData(){ return {"idSource":280,"assemblies":{
+function bmhcData(){ return {"idSource":287,"assemblies":{
 	"(Old) Mennonite Church": {
 		"id": 275,
 		"mb": 2,
@@ -1433,6 +1433,18 @@ function bmhcData(){ return {"idSource":280,"assemblies":{
 			}
 		]
 	},
+	"Brethren Church": {
+		"id": 283,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1883",
+				"verb": "begin-history",
+				"object": "",
+				"comment": "Formed when Henry Holsinger was disfellowshipped by the [281]"
+			}
+		]
+	},
 	"Bridgewater": {
 		"id": 86,
 		"mb": 1,
@@ -2063,6 +2075,18 @@ function bmhcData(){ return {"idSource":280,"assemblies":{
 			}
 		]
 	},
+	"Charis Fellowship": {
+		"id": 285,
+		"mb": 1,
+		"events": [
+			{
+				"date": "2018",
+				"verb": "begin-history",
+				"object": "",
+				"comment": "Formerly known as [286]"
+			}
+		]
+	},
 	"Chimney Run": {
 		"id": 108,
 		"mb": 1,
@@ -2210,6 +2234,18 @@ function bmhcData(){ return {"idSource":280,"assemblies":{
 				"verb": "set-membership",
 				"object": "41",
 				"comment": "year4n"
+			}
+		]
+	},
+	"Church of the Brethren": {
+		"id": 280,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1908",
+				"verb": "begin-history",
+				"object": "",
+				"comment": "Formerly known as the [281]"
 			}
 		]
 	},
@@ -3821,6 +3857,24 @@ function bmhcData(){ return {"idSource":280,"assemblies":{
 			}
 		]
 	},
+	"Fellowship of Grace Brethren Churches": {
+		"id": 286,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1987",
+				"verb": "begin-history",
+				"object": "",
+				"comment": "Formerly known as [284]"
+			},
+			{
+				"date": "2018",
+				"verb": "expire-into",
+				"object": 285,
+				"comment": ""
+			}
+		]
+	},
 	"Ferrum, First": {
 		"id": 252,
 		"mb": 1,
@@ -4388,6 +4442,24 @@ function bmhcData(){ return {"idSource":280,"assemblies":{
 				"verb": "set-membership",
 				"object": "10",
 				"comment": "year4n"
+			}
+		]
+	},
+	"German Baptist Brethren": {
+		"id": 281,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1708",
+				"verb": "begin-history",
+				"object": "",
+				"comment": ""
+			},
+			{
+				"date": "1908",
+				"verb": "expire-into",
+				"object": 280,
+				"comment": ""
 			}
 		]
 	},
@@ -8135,6 +8207,24 @@ function bmhcData(){ return {"idSource":280,"assemblies":{
 			}
 		]
 	},
+	"National Fellowship of Brethren Churches": {
+		"id": 284,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1939",
+				"verb": "begin-history",
+				"object": "",
+				"comment": "Formed after a division within the [283]"
+			},
+			{
+				"date": "1987",
+				"verb": "expire-into",
+				"object": 286,
+				"comment": ""
+			}
+		]
+	},
 	"New Dale": {
 		"id": 272,
 		"mb": 1,
@@ -11839,25 +11929,25 @@ function bmhcData(){ return {"idSource":280,"assemblies":{
 				"date": "2002",
 				"verb": "begin-history",
 				"object": "",
-				"comment": "founded"
-			},
-			{
-				"date": "2002",
-				"verb": "just-comment",
-				"object": "",
-				"comment": "organization"
+				"comment": "Formed largely from members who had left [184], with pastor J. D. Glick (who had been the pastor at [184])"
 			},
 			{
 				"date": "2002",
 				"verb": "set-locale",
-				"object": "38.433223,-78.882021",
+				"object": "38.43159216028694, -78.8826531955399",
+				"comment": ""
+			},
+			{
+				"date": "2002",
+				"verb": "set-affiliation",
+				"object": 280,
 				"comment": ""
 			},
 			{
 				"date": "2018",
 				"verb": "set-membership",
 				"object": "116",
-				"comment": "year1n"
+				"comment": ""
 			}
 		]
 	},
@@ -12556,52 +12646,64 @@ function bmhcData(){ return {"idSource":280,"assemblies":{
 		"mb": 1,
 		"events": [
 			{
-				"date": "1897",
+				"date": "1901",
 				"verb": "begin-history",
 				"object": "",
-				"comment": "founded"
+				"comment": "Formed when a new meetinghouse was built on land donated by J. O. Wakeman"
 			},
 			{
-				"date": "1897",
+				"date": "1901",
 				"verb": "set-locale",
-				"object": "38.845866,-78.618445",
+				"object": "38.84551502651718, -78.6189492582128",
 				"comment": ""
 			},
 			{
-				"date": "1961",
-				"verb": "just-comment",
-				"object": "",
-				"comment": "organization"
+				"date": "1901",
+				"verb": "set-affiliation",
+				"object": 136,
+				"comment": ""
+			},
+			{
+				"date": "1910",
+				"verb": "set-affiliation",
+				"object": 140,
+				"comment": "Became part of the [140] congregation when the [136] congregation was reorganized/divided"
 			},
 			{
 				"date": "1961",
 				"verb": "set-membership",
 				"object": "104",
-				"comment": "membership at organization"
+				"comment": "Membership at organization as an independent congregation"
+			},
+			{
+				"date": "1961",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": "Officially organized as an independent congregation"
 			},
 			{
 				"date": "1975",
 				"verb": "set-membership",
 				"object": "183",
-				"comment": "year1n"
+				"comment": ""
 			},
 			{
 				"date": "1980",
 				"verb": "set-membership",
 				"object": "220",
-				"comment": "year2n"
+				"comment": ""
 			},
 			{
 				"date": "1999",
 				"verb": "set-membership",
 				"object": "283",
-				"comment": "year3n"
+				"comment": ""
 			},
 			{
 				"date": "2018",
 				"verb": "set-membership",
 				"object": "376",
-				"comment": "year4n"
+				"comment": ""
 			}
 		]
 	},
