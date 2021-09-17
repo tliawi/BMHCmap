@@ -8681,7 +8681,7 @@ function bmhcData(){ return {"idSource":287,"assemblies":{
 			}
 		]
 	},
-	"Oak Grove – South": {
+	"Oak Grove â South": {
 		"id": 258,
 		"mb": 1,
 		"events": [
@@ -8984,6 +8984,18 @@ function bmhcData(){ return {"idSource":287,"assemblies":{
 				"verb": "set-membership",
 				"object": "32",
 				"comment": "year5n"
+			}
+		]
+	},
+	"Old German Baptist Brethren": {
+		"id": 282,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1881",
+				"verb": "begin-history",
+				"object": "",
+				"comment": "Formed when the old orders left the [281]"
 			}
 		]
 	},

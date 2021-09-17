@@ -4178,15 +4178,17 @@
 				"end": "2017",
 				"denomination": 1,
 				"weight": 0,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.882021,
-					38.433223
+					-78.8826531955399,
+					38.43159216028694
 				]
 			}
 		},
@@ -4414,19 +4416,43 @@
 			"type": "Feature",
 			"properties": {
 				"name": "Wakemans Grove",
-				"begin": "1897",
-				"end": "1960",
+				"begin": "1901",
+				"end": "1909",
 				"denomination": 1,
 				"weight": 0,
-				"affiliations": [],
+				"affiliations": [
+					"Flat Rock"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.618445,
-					38.845866
+					-78.6189492582128,
+					38.84551502651718
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Wakemans Grove",
+				"begin": "1910",
+				"end": "1960",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Pleasant View (VA)"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.6189492582128,
+					38.84551502651718
 				]
 			}
 		},
@@ -15714,7 +15740,7 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"name": "Oak Grove – South",
+				"name": "Oak Grove â South",
 				"begin": "2002",
 				"end": "2017",
 				"denomination": 1,
@@ -16119,15 +16145,17 @@
 				"end": "1974",
 				"denomination": 1,
 				"weight": 10.198039027185569,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.618445,
-					38.845866
+					-78.6189492582128,
+					38.84551502651718
 				]
 			}
 		},
@@ -16414,7 +16442,7 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"name": "Oak Grove – South",
+				"name": "Oak Grove â South",
 				"begin": "2018",
 				"end": "2021",
 				"denomination": 1,
@@ -16494,7 +16522,7 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"name": "Oak Grove – South",
+				"name": "Oak Grove â South",
 				"begin": "1975",
 				"end": "2001",
 				"denomination": 1,
@@ -17174,7 +17202,7 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"name": "Oak Grove – South",
+				"name": "Oak Grove â South",
 				"begin": "1956",
 				"end": "1963",
 				"denomination": 1,
@@ -17339,15 +17367,17 @@
 				"end": "2021",
 				"denomination": 1,
 				"weight": 10.770329614269007,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.882021,
-					38.433223
+					-78.8826531955399,
+					38.43159216028694
 				]
 			}
 		},
@@ -18274,7 +18304,7 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"name": "Oak Grove – South",
+				"name": "Oak Grove â South",
 				"begin": "1964",
 				"end": "1974",
 				"denomination": 1,
@@ -21539,15 +21569,17 @@
 				"end": "1979",
 				"denomination": 1,
 				"weight": 13.527749258468683,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.618445,
-					38.845866
+					-78.6189492582128,
+					38.84551502651718
 				]
 			}
 		},
@@ -23107,15 +23139,17 @@
 				"end": "1998",
 				"denomination": 1,
 				"weight": 14.832396974191326,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.618445,
-					38.845866
+					-78.6189492582128,
+					38.84551502651718
 				]
 			}
 		},
@@ -24619,15 +24653,17 @@
 				"end": "2017",
 				"denomination": 1,
 				"weight": 16.822603841260722,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.618445,
-					38.845866
+					-78.6189492582128,
+					38.84551502651718
 				]
 			}
 		},
@@ -26403,15 +26439,17 @@
 				"end": "2021",
 				"denomination": 1,
 				"weight": 19.390719429665317,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.618445,
-					38.845866
+					-78.6189492582128,
+					38.84551502651718
 				]
 			}
 		},
