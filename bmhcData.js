@@ -1,4 +1,4 @@
-function bmhcData(){ return {"idSource":287,"assemblies":{
+function bmhcData(){ return {"idSource":290,"assemblies":{
 	"(Old) Mennonite Church": {
 		"id": 275,
 		"mb": 2,
@@ -1901,6 +1901,84 @@ function bmhcData(){ return {"idSource":287,"assemblies":{
 			}
 		]
 	},
+	"Cedar Grove-Ruckersville": {
+		"id": 117,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1897",
+				"verb": "begin-history",
+				"object": "",
+				"comment": "founded"
+			},
+			{
+				"date": "1897",
+				"verb": "set-locale",
+				"object": "38.211058924172804, -78.3968714768425",
+				"comment": ""
+			},
+			{
+				"date": "1897",
+				"verb": "set-affiliation",
+				"object": 98,
+				"comment": ""
+			},
+			{
+				"date": "1901",
+				"verb": "set-affiliation",
+				"object": 287,
+				"comment": ""
+			},
+			{
+				"date": "1952",
+				"verb": "set-affiliation",
+				"object": 288,
+				"comment": ""
+			},
+			{
+				"date": "1980",
+				"verb": "set-membership",
+				"object": "144",
+				"comment": "membership at organization"
+			},
+			{
+				"date": "1980",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
+			},
+			{
+				"date": "1982",
+				"verb": "set-membership",
+				"object": "144",
+				"comment": "year1n"
+			},
+			{
+				"date": "1990",
+				"verb": "set-membership",
+				"object": "83",
+				"comment": ""
+			},
+			{
+				"date": "1999",
+				"verb": "set-membership",
+				"object": "69",
+				"comment": "year2n"
+			},
+			{
+				"date": "2000",
+				"verb": "set-membership",
+				"object": "74",
+				"comment": ""
+			},
+			{
+				"date": "2018",
+				"verb": "set-membership",
+				"object": "58",
+				"comment": "year3n"
+			}
+		]
+	},
 	"Cedar Run": {
 		"id": 88,
 		"mb": 1,
@@ -1945,54 +2023,6 @@ function bmhcData(){ return {"idSource":287,"assemblies":{
 				"date": "2018",
 				"verb": "set-membership",
 				"object": "82",
-				"comment": "year3n"
-			}
-		]
-	},
-	"Ceder Grove-Ruckersville": {
-		"id": 117,
-		"mb": 1,
-		"events": [
-			{
-				"date": "1897",
-				"verb": "begin-history",
-				"object": "",
-				"comment": "founded"
-			},
-			{
-				"date": "1897",
-				"verb": "set-locale",
-				"object": "38.21057,-78.397365",
-				"comment": ""
-			},
-			{
-				"date": "1980",
-				"verb": "just-comment",
-				"object": "",
-				"comment": "organization"
-			},
-			{
-				"date": "1980",
-				"verb": "set-membership",
-				"object": "144",
-				"comment": "membership at organization"
-			},
-			{
-				"date": "1982",
-				"verb": "set-membership",
-				"object": "144",
-				"comment": "year1n"
-			},
-			{
-				"date": "1999",
-				"verb": "set-membership",
-				"object": "69",
-				"comment": "year2n"
-			},
-			{
-				"date": "2018",
-				"verb": "set-membership",
-				"object": "58",
 				"comment": "year3n"
 			}
 		]
@@ -2086,6 +2116,11 @@ function bmhcData(){ return {"idSource":287,"assemblies":{
 				"comment": "Formerly known as [286]"
 			}
 		]
+	},
+	"Charlottesville": {
+		"id": 289,
+		"mb": 1,
+		"events": []
 	},
 	"Chimney Run": {
 		"id": 108,
@@ -3464,6 +3499,18 @@ function bmhcData(){ return {"idSource":287,"assemblies":{
 				"verb": "set-membership",
 				"object": "38",
 				"comment": "year4n"
+			}
+		]
+	},
+	"Eastern Mount Carmel": {
+		"id": 288,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1952",
+				"verb": "begin-history",
+				"object": "",
+				"comment": ""
 			}
 		]
 	},
@@ -7361,6 +7408,18 @@ function bmhcData(){ return {"idSource":287,"assemblies":{
 			}
 		]
 	},
+	"Mount Carmel": {
+		"id": 287,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1901",
+				"verb": "begin-history",
+				"object": "",
+				"comment": "Created from [98] in Greene County"
+			}
+		]
+	},
 	"Mount Carmel (WV)": {
 		"id": 271,
 		"mb": 1,
@@ -8681,7 +8740,7 @@ function bmhcData(){ return {"idSource":287,"assemblies":{
 			}
 		]
 	},
-	"Oak Grove â South": {
+	"Oak Grove ÃÂ¢ÃÂÃÂ South": {
 		"id": 258,
 		"mb": 1,
 		"events": [
