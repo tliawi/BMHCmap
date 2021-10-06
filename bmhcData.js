@@ -1,4 +1,4 @@
-function bmhcData(){ return {"idSource":290,"assemblies":{
+function bmhcData(){ return {"idSource":291,"assemblies":{
 	"(Old) Mennonite Church": {
 		"id": 275,
 		"mb": 2,
@@ -3651,10 +3651,16 @@ function bmhcData(){ return {"idSource":290,"assemblies":{
 				"comment": ""
 			},
 			{
+				"date": "1952",
+				"verb": "set-affiliation",
+				"object": 290,
+				"comment": ""
+			},
+			{
 				"date": "1962",
 				"verb": "just-comment",
 				"object": "",
-				"comment": "organization"
+				"comment": "organization as fellowship in Shenandoah District"
 			},
 			{
 				"date": "1962",
@@ -3673,6 +3679,12 @@ function bmhcData(){ return {"idSource":290,"assemblies":{
 				"verb": "set-membership",
 				"object": "152",
 				"comment": "year2n"
+			},
+			{
+				"date": "1996",
+				"verb": "set-membership",
+				"object": "144",
+				"comment": ""
 			},
 			{
 				"date": "2002",
@@ -11193,10 +11205,16 @@ function bmhcData(){ return {"idSource":290,"assemblies":{
 				"comment": ""
 			},
 			{
+				"date": "1952",
+				"verb": "set-affiliation",
+				"object": 290,
+				"comment": ""
+			},
+			{
 				"date": "1961",
 				"verb": "just-comment",
 				"object": "",
-				"comment": "organization"
+				"comment": "organization as fellowship in Shenandoah District"
 			},
 			{
 				"date": "1999",
@@ -13111,6 +13129,18 @@ function bmhcData(){ return {"idSource":290,"assemblies":{
 				"verb": "set-membership",
 				"object": "315",
 				"comment": "year8n"
+			}
+		]
+	},
+	"Western Mt. Carmel": {
+		"id": 290,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1952",
+				"verb": "begin-history",
+				"object": "",
+				"comment": ""
 			}
 		]
 	},
