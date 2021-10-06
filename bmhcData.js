@@ -2120,7 +2120,20 @@ function bmhcData(){ return {"idSource":292,"assemblies":{
 	"Charlottesville": {
 		"id": 289,
 		"mb": 1,
-		"events": []
+		"events": [
+			{
+				"date": "1957",
+				"verb": "begin-history",
+				"object": "",
+				"comment": ""
+			},
+			{
+				"date": "1957",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
+			}
+		]
 	},
 	"Chimney Run": {
 		"id": 108,
