@@ -1,5 +1,10 @@
 function mapAffiliations(){ return [
+	"Mill Creek",
+	"German Baptist Brethren",
+	"Mount Carmel",
 	"Church of the Brethren",
+	"Eastern Mount Carmel",
+	"Western Mount Carmel",
 	"Flat Rock",
 	"Pleasant View (VA)",
 	"(Old) Mennonite Church",
