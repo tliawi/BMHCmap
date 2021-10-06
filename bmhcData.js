@@ -3511,6 +3511,18 @@ function bmhcData(){ return {"idSource":292,"assemblies":{
 				"verb": "begin-history",
 				"object": "",
 				"comment": ""
+			},
+			{
+				"date": "1952",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
+			},
+			{
+				"date": "1980",
+				"verb": "expire-into",
+				"object": "",
+				"comment": ""
 			}
 		]
 	},
@@ -3647,7 +3659,19 @@ function bmhcData(){ return {"idSource":292,"assemblies":{
 			{
 				"date": "1898",
 				"verb": "set-locale",
-				"object": "38.27137,-78.544787",
+				"object": "38.27208593611432, -78.54526980091677",
+				"comment": ""
+			},
+			{
+				"date": "1898",
+				"verb": "set-affiliation",
+				"object": 98,
+				"comment": ""
+			},
+			{
+				"date": "1901",
+				"verb": "set-affiliation",
+				"object": 287,
 				"comment": ""
 			},
 			{
@@ -3673,6 +3697,12 @@ function bmhcData(){ return {"idSource":292,"assemblies":{
 				"verb": "set-membership",
 				"object": "267",
 				"comment": "year1n"
+			},
+			{
+				"date": "1962",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
 			},
 			{
 				"date": "1975",
@@ -11201,11 +11231,23 @@ function bmhcData(){ return {"idSource":292,"assemblies":{
 			{
 				"date": "1936",
 				"verb": "set-locale",
-				"object": "38.3836,-78.425123",
+				"object": "38.38346221069918, -78.42571843709815",
+				"comment": ""
+			},
+			{
+				"date": "1936",
+				"verb": "set-affiliation",
+				"object": 287,
 				"comment": ""
 			},
 			{
 				"date": "1952",
+				"verb": "set-affiliation",
+				"object": 288,
+				"comment": ""
+			},
+			{
+				"date": "1954",
 				"verb": "set-affiliation",
 				"object": 290,
 				"comment": ""
@@ -11215,6 +11257,12 @@ function bmhcData(){ return {"idSource":292,"assemblies":{
 				"verb": "just-comment",
 				"object": "",
 				"comment": "organization as fellowship in Shenandoah District"
+			},
+			{
+				"date": "1961",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
 			},
 			{
 				"date": "1999",
@@ -13132,13 +13180,25 @@ function bmhcData(){ return {"idSource":292,"assemblies":{
 			}
 		]
 	},
-	"Western Mt. Carmel": {
+	"Western Mount Carmel": {
 		"id": 290,
 		"mb": 1,
 		"events": [
 			{
 				"date": "1952",
 				"verb": "begin-history",
+				"object": "",
+				"comment": ""
+			},
+			{
+				"date": "1952",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
+			},
+			{
+				"date": "1961",
+				"verb": "expire-into",
 				"object": "",
 				"comment": ""
 			}
