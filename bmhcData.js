@@ -7459,6 +7459,18 @@ function bmhcData(){ return {"idSource":292,"assemblies":{
 				"verb": "begin-history",
 				"object": "",
 				"comment": "Created from [98] in Greene County"
+			},
+			{
+				"date": "1901",
+				"verb": "set-affiliation",
+				"object": 281,
+				"comment": ""
+			},
+			{
+				"date": "1952",
+				"verb": "expire-into",
+				"object": "",
+				"comment": ""
 			}
 		]
 	},
