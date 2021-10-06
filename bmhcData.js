@@ -8752,7 +8752,7 @@ function bmhcData(){ return {"idSource":291,"assemblies":{
 			}
 		]
 	},
-	"Oak Grove ÃÂ¢ÃÂÃÂ South": {
+	"Oak Grove South": {
 		"id": 258,
 		"mb": 1,
 		"events": [
