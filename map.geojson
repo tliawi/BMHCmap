@@ -773,6 +773,97 @@
 		{
 			"type": "Feature",
 			"properties": {
+				"name": "Cedar Grove-Ruckersville",
+				"begin": "1897",
+				"end": "1900",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Mill Creek"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.3968714768425,
+					38.211058924172804
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Cedar Grove-Ruckersville",
+				"begin": "1901",
+				"end": "1907",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"German Baptist Brethren",
+					"Mount Carmel"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.3968714768425,
+					38.211058924172804
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Cedar Grove-Ruckersville",
+				"begin": "1908",
+				"end": "1951",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Church of the Brethren",
+					"Mount Carmel"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.3968714768425,
+					38.211058924172804
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Cedar Grove-Ruckersville",
+				"begin": "1952",
+				"end": "1979",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Church of the Brethren",
+					"Eastern Mount Carmel"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.3968714768425,
+					38.211058924172804
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
 				"name": "Cedar Run",
 				"begin": "1897",
 				"end": "1972",
@@ -787,26 +878,6 @@
 				"coordinates": [
 					-78.837495,
 					38.607009
-				]
-			}
-		},
-		{
-			"type": "Feature",
-			"properties": {
-				"name": "Ceder Grove-Ruckersville",
-				"begin": "1897",
-				"end": "1979",
-				"denomination": 1,
-				"weight": 0,
-				"affiliations": [],
-				"tags": [],
-				"photo": ""
-			},
-			"geometry": {
-				"type": "Point",
-				"coordinates": [
-					-78.397365,
-					38.21057
 				]
 			}
 		},
@@ -1315,6 +1386,97 @@
 			"properties": {
 				"name": "Evergreen",
 				"begin": "1898",
+				"end": "1900",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Mill Creek"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.54526980091677,
+					38.27208593611432
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Evergreen",
+				"begin": "1901",
+				"end": "1907",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"German Baptist Brethren",
+					"Mount Carmel"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.54526980091677,
+					38.27208593611432
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Evergreen",
+				"begin": "1908",
+				"end": "1951",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Church of the Brethren",
+					"Mount Carmel"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.54526980091677,
+					38.27208593611432
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Evergreen",
+				"begin": "1952",
+				"end": "1960",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Church of the Brethren",
+					"Western Mount Carmel"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.54526980091677,
+					38.27208593611432
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Evergreen",
+				"begin": "1961",
 				"end": "1961",
 				"denomination": 1,
 				"weight": 0,
@@ -1325,8 +1487,8 @@
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.544787,
-					38.27137
+					-78.54526980091677,
+					38.27208593611432
 				]
 			}
 		},
@@ -3915,18 +4077,89 @@
 			"properties": {
 				"name": "Shiloh (Greene)",
 				"begin": "1936",
-				"end": "1998",
+				"end": "1951",
 				"denomination": 1,
 				"weight": 0,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren",
+					"Mount Carmel"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.425123,
-					38.3836
+					-78.42571843709815,
+					38.38346221069918
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Shiloh (Greene)",
+				"begin": "1952",
+				"end": "1953",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Church of the Brethren",
+					"Eastern Mount Carmel"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.42571843709815,
+					38.38346221069918
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Shiloh (Greene)",
+				"begin": "1954",
+				"end": "1960",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Church of the Brethren",
+					"Western Mount Carmel"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.42571843709815,
+					38.38346221069918
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Shiloh (Greene)",
+				"begin": "1961",
+				"end": "1998",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.42571843709815,
+					38.38346221069918
 				]
 			}
 		},
@@ -9637,15 +9870,17 @@
 				"end": "2017",
 				"denomination": 1,
 				"weight": 6.6332495807108,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.425123,
-					38.3836
+					-78.42571843709815,
+					38.38346221069918
 				]
 			}
 		},
@@ -11212,20 +11447,22 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"name": "Ceder Grove-Ruckersville",
+				"name": "Cedar Grove-Ruckersville",
 				"begin": "2018",
 				"end": "2021",
 				"denomination": 1,
 				"weight": 7.615773105863909,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.397365,
-					38.21057
+					-78.3968714768425,
+					38.211058924172804
 				]
 			}
 		},
@@ -11659,15 +11896,17 @@
 				"end": "2021",
 				"denomination": 1,
 				"weight": 7.874007874011811,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.425123,
-					38.3836
+					-78.42571843709815,
+					38.38346221069918
 				]
 			}
 		},
@@ -12316,20 +12555,22 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"name": "Ceder Grove-Ruckersville",
+				"name": "Cedar Grove-Ruckersville",
 				"begin": "1999",
-				"end": "2017",
+				"end": "1999",
 				"denomination": 1,
 				"weight": 8.306623862918075,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.397365,
-					38.21057
+					-78.3968714768425,
+					38.211058924172804
 				]
 			}
 		},
@@ -12912,6 +13153,28 @@
 				"coordinates": [
 					-79.079211,
 					38.391219
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Cedar Grove-Ruckersville",
+				"begin": "2000",
+				"end": "2017",
+				"denomination": 1,
+				"weight": 8.602325267042627,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.3968714768425,
+					38.211058924172804
 				]
 			}
 		},
@@ -14012,6 +14275,28 @@
 				"coordinates": [
 					-79.24476,
 					38.62484
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Cedar Grove-Ruckersville",
+				"begin": "1990",
+				"end": "1998",
+				"denomination": 1,
+				"weight": 9.1104335791443,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.3968714768425,
+					38.211058924172804
 				]
 			}
 		},
@@ -15305,15 +15590,17 @@
 				"end": "2021",
 				"denomination": 1,
 				"weight": 9.9498743710662,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.544787,
-					38.27137
+					-78.54526980091677,
+					38.27208593611432
 				]
 			}
 		},
@@ -15740,7 +16027,7 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"name": "Oak Grove â South",
+				"name": "Oak Grove South",
 				"begin": "2002",
 				"end": "2017",
 				"denomination": 1,
@@ -16442,7 +16729,7 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"name": "Oak Grove â South",
+				"name": "Oak Grove South",
 				"begin": "2018",
 				"end": "2021",
 				"denomination": 1,
@@ -16522,7 +16809,7 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"name": "Oak Grove â South",
+				"name": "Oak Grove South",
 				"begin": "1975",
 				"end": "2001",
 				"denomination": 1,
@@ -17202,7 +17489,7 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"name": "Oak Grove â South",
+				"name": "Oak Grove South",
 				"begin": "1956",
 				"end": "1963",
 				"denomination": 1,
@@ -18304,7 +18591,7 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"name": "Oak Grove â South",
+				"name": "Oak Grove South",
 				"begin": "1964",
 				"end": "1974",
 				"denomination": 1,
@@ -18929,15 +19216,17 @@
 				"end": "2017",
 				"denomination": 1,
 				"weight": 11.832159566199232,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.544787,
-					38.27137
+					-78.54526980091677,
+					38.27208593611432
 				]
 			}
 		},
@@ -19184,20 +19473,44 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"name": "Ceder Grove-Ruckersville",
+				"name": "Cedar Grove-Ruckersville",
 				"begin": "1980",
-				"end": "1998",
+				"end": "1989",
 				"denomination": 1,
 				"weight": 12,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.397365,
-					38.21057
+					-78.3968714768425,
+					38.211058924172804
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Evergreen",
+				"begin": "1996",
+				"end": "2001",
+				"denomination": 1,
+				"weight": 12,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.54526980091677,
+					38.27208593611432
 				]
 			}
 		},
@@ -19746,18 +20059,20 @@
 			"properties": {
 				"name": "Evergreen",
 				"begin": "1975",
-				"end": "2001",
+				"end": "1995",
 				"denomination": 1,
 				"weight": 12.328828005937952,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.544787,
-					38.27137
+					-78.54526980091677,
+					38.27208593611432
 				]
 			}
 		},
@@ -24313,15 +24628,17 @@
 				"end": "1974",
 				"denomination": 1,
 				"weight": 16.34013463836819,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.544787,
-					38.27137
+					-78.54526980091677,
+					38.27208593611432
 				]
 			}
 		},
