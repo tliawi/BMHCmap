@@ -74,32 +74,34 @@ var allAffiliations=[];
 bmhc.getAllAssemblyNames().forEach(name=>{
     
     let span = bmhc.assemblyLifeTime(name);
-    let startYr = parseInt(span.begin); //get year
-    let endYr = parseInt(span.end);
-    if (endYr > compilationYear()) endYr = compilationYear(); 
-    
-    let priorCompString = '';
-    let priorFeature = null;
-    for (let yr = startYr; yr<=endYr; yr++){
-        let state = bmhc.getState(name,yr+'/12/31'); //to string
-        if (state.coordinates){ //coordinates null or '' implies can't be expressed on map
-            let compString = state.comparisonString();
-            if (compString!=priorCompString) {
-                if (priorFeature) priorFeature.properties.end = (yr-1)+'';
-                priorFeature = birthNewFeature(name,yr,state);
-                features.push(priorFeature);
-                priorCompString = compString;
-                
-                //build list of all known affiliations, to save in mapAsssemblies.js
-                state.affiliations.forEach(affiliation => {
-                    if (!(allAffiliations.includes(affiliation))) allAffiliations.push(affiliation);
-                });
+    if (span) {
+        let startYr = parseInt(span.begin); //get year
+        let endYr = parseInt(span.end);
+        if (endYr > compilationYear()) endYr = compilationYear(); 
+
+        let priorCompString = '';
+        let priorFeature = null;
+        for (let yr = startYr; yr<=endYr; yr++){
+            let state = bmhc.getState(name,yr+'/12/31'); //to string
+            if (state.coordinates){ //coordinates null or '' implies can't be expressed on map
+                let compString = state.comparisonString();
+                if (compString!=priorCompString) {
+                    if (priorFeature) priorFeature.properties.end = (yr-1)+'';
+                    priorFeature = birthNewFeature(name,yr,state);
+                    features.push(priorFeature);
+                    priorCompString = compString;
+
+                    //build list of all known affiliations, to save in mapAsssemblies.js
+                    state.affiliations.forEach(affiliation => {
+                        if (!(allAffiliations.includes(affiliation))) allAffiliations.push(affiliation);
+                    });
+                }
             }
         }
-    }
-    
-    //sort them by weight so larger congregation's names are given display precedence
-    features.sort((a,b)=>{return (a.properties.weight - b.properties.weight);});
+
+        //sort them by weight so larger congregation's names are given display precedence
+        features.sort((a,b)=>{return (a.properties.weight - b.properties.weight);});
+    } else console.log("Assembly '"+name+"' has no events.");
 });
 
 function jsonFeatureCollection(){
