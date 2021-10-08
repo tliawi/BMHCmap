@@ -1,4 +1,4 @@
-function bmhcData(){ return {"idSource":292,"assemblies":{
+function bmhcData(){ return {"idSource":293,"assemblies":{
 	"(Old) Mennonite Church": {
 		"id": 275,
 		"mb": 2,
@@ -4274,6 +4274,66 @@ function bmhcData(){ return {"idSource":292,"assemblies":{
 				"verb": "set-membership",
 				"object": "135",
 				"comment": "year4n"
+			}
+		]
+	},
+	"Free Union": {
+		"id": 292,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1870",
+				"verb": "begin-history",
+				"object": "",
+				"comment": ""
+			},
+			{
+				"date": "1870",
+				"verb": "set-affiliation",
+				"object": 98,
+				"comment": ""
+			},
+			{
+				"date": "1896",
+				"verb": "just-comment",
+				"object": "",
+				"comment": "built meeting house"
+			},
+			{
+				"date": "1912",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
+			},
+			{
+				"date": "1912",
+				"verb": "set-affiliation",
+				"object": "",
+				"comment": "union church with Disciples of Christ"
+			},
+			{
+				"date": "1912",
+				"verb": "just-comment",
+				"object": "",
+				"comment": "Known as Lower Union Church of the Brethren"
+			},
+			{
+				"date": "1960",
+				"verb": "just-comment",
+				"object": "",
+				"comment": "granted congregational status, affiliation Church of the Brethren"
+			},
+			{
+				"date": "1960",
+				"verb": "set-locale",
+				"object": "38°09'05.1\"N, 78°33'40.7\"W",
+				"comment": ""
+			},
+			{
+				"date": "1989",
+				"verb": "set-membership",
+				"object": "74",
+				"comment": ""
 			}
 		]
 	},
