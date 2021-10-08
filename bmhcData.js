@@ -1,4 +1,4 @@
-function bmhcData(){ return {"idSource":294,"assemblies":{
+function bmhcData(){ return {"idSource":295,"assemblies":{
 	"(Old) Mennonite Church": {
 		"id": 275,
 		"mb": 2,
@@ -6494,6 +6494,54 @@ function bmhcData(){ return {"idSource":294,"assemblies":{
 				"verb": "expire-into",
 				"object": "",
 				"comment": "Changes name to Free Union Church of the Brethren"
+			}
+		]
+	},
+	"Lower Union": {
+		"id": 294,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1870",
+				"verb": "begin-history",
+				"object": "",
+				"comment": ""
+			},
+			{
+				"date": "1870",
+				"verb": "set-affiliation",
+				"object": 293,
+				"comment": ""
+			},
+			{
+				"date": "1896",
+				"verb": "just-comment",
+				"object": "",
+				"comment": "Builds meeting house"
+			},
+			{
+				"date": "1930",
+				"verb": "just-comment",
+				"object": "",
+				"comment": "Locust Grove moves into Lower Union meeting house"
+			},
+			{
+				"date": "1962",
+				"verb": "just-comment",
+				"object": "",
+				"comment": "New Church building completed"
+			},
+			{
+				"date": "1963",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
+			},
+			{
+				"date": "1963",
+				"verb": "just-comment",
+				"object": "",
+				"comment": "Changes name to Free Union"
 			}
 		]
 	},
