@@ -5896,15 +5896,21 @@ function bmhcData(){ return {"idSource":295,"assemblies":{
 		"mb": 1,
 		"events": [
 			{
-				"date": "1940",
+				"date": "1920",
 				"verb": "begin-history",
 				"object": "",
 				"comment": "founded"
 			},
 			{
+				"date": "1920",
+				"verb": "set-affiliation",
+				"object": "",
+				"comment": "East Mt. Carmel"
+			},
+			{
 				"date": "1940",
 				"verb": "set-locale",
-				"object": "38.153705,-78.281562",
+				"object": "38.155985, -78.281452",
 				"comment": ""
 			},
 			{
@@ -5917,13 +5923,19 @@ function bmhcData(){ return {"idSource":295,"assemblies":{
 				"date": "1980",
 				"verb": "just-comment",
 				"object": "",
-				"comment": "organization"
+				"comment": "organization as fellowship in Shenandoah District"
 			},
 			{
 				"date": "2002",
 				"verb": "set-membership",
 				"object": "52",
 				"comment": "year2n"
+			},
+			{
+				"date": "2016",
+				"verb": "just-comment",
+				"object": "",
+				"comment": "Establishes mission point in Gordonsville"
 			},
 			{
 				"date": "2018",
