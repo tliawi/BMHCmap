@@ -1,4 +1,4 @@
-function bmhcData(){ return {"idSource":293,"assemblies":{
+function bmhcData(){ return {"idSource":294,"assemblies":{
 	"(Old) Mennonite Church": {
 		"id": 275,
 		"mb": 2,
@@ -4330,6 +4330,12 @@ function bmhcData(){ return {"idSource":293,"assemblies":{
 				"comment": ""
 			},
 			{
+				"date": "1960",
+				"verb": "just-comment",
+				"object": "",
+				"comment": "Became known as Free Union Church of the Brethren"
+			},
+			{
 				"date": "1989",
 				"verb": "set-membership",
 				"object": "74",
@@ -6446,6 +6452,48 @@ function bmhcData(){ return {"idSource":293,"assemblies":{
 				"verb": "set-membership",
 				"object": "100",
 				"comment": "year1n"
+			}
+		]
+	},
+	"Locust Grove": {
+		"id": 293,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1870",
+				"verb": "begin-history",
+				"object": "",
+				"comment": "Founded by Mill Creek"
+			},
+			{
+				"date": "1870",
+				"verb": "set-affiliation",
+				"object": 98,
+				"comment": ""
+			},
+			{
+				"date": "1913",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
+			},
+			{
+				"date": "1920",
+				"verb": "just-comment",
+				"object": "",
+				"comment": "Moves to Lower Union meeting house"
+			},
+			{
+				"date": "1963",
+				"verb": "just-comment",
+				"object": "",
+				"comment": "Locust Grove changes name to Free Union Church of the Brethren"
+			},
+			{
+				"date": "1964",
+				"verb": "expire-into",
+				"object": "",
+				"comment": "Changes name to Free Union Church of the Brethren"
 			}
 		]
 	},
