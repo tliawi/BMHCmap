@@ -1,4 +1,4 @@
-function bmhcData(){ return {"idSource":295,"assemblies":{
+function bmhcData(){ return {"idSource":296,"assemblies":{
 	"(Old) Mennonite Church": {
 		"id": 275,
 		"mb": 2,
@@ -4760,6 +4760,30 @@ function bmhcData(){ return {"idSource":295,"assemblies":{
 				"verb": "set-membership",
 				"object": "5",
 				"comment": "year3n"
+			}
+		]
+	},
+	"Gordonsville Chapel": {
+		"id": 295,
+		"mb": 1,
+		"events": [
+			{
+				"date": "2016",
+				"verb": "begin-history",
+				"object": "",
+				"comment": "Gordonsville Chapel founded as mission point of Knight's Chapel"
+			},
+			{
+				"date": "2016",
+				"verb": "set-affiliation",
+				"object": "",
+				"comment": "Knight's Chapel Church of the Brethren mission point"
+			},
+			{
+				"date": "2016",
+				"verb": "set-locale",
+				"object": "38.138976, -78.188092",
+				"comment": ""
 			}
 		]
 	},
