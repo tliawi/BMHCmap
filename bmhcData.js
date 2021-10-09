@@ -1,4 +1,4 @@
-function bmhcData(){ return {"idSource":295,"assemblies":{
+function bmhcData(){ return {"idSource":293,"assemblies":{
 	"(Old) Mennonite Church": {
 		"id": 275,
 		"mb": 2,
@@ -6494,6 +6494,66 @@ function bmhcData(){ return {"idSource":295,"assemblies":{
 				"verb": "set-membership",
 				"object": "58",
 				"comment": "year5n"
+			}
+		]
+	},
+	"Madison": {
+		"id": 292,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1760",
+				"verb": "begin-history",
+				"object": "",
+				"comment": "Founded by Brethren from PA"
+			},
+			{
+				"date": "1878",
+				"verb": "set-affiliation",
+				"object": "",
+				"comment": "Mill Creek establishes preaching point"
+			},
+			{
+				"date": "1878",
+				"verb": "just-comment",
+				"object": "",
+				"comment": "Meeting house built"
+			},
+			{
+				"date": "1879",
+				"verb": "set-membership",
+				"object": "32",
+				"comment": ""
+			},
+			{
+				"date": "1883",
+				"verb": "set-affiliation",
+				"object": "",
+				"comment": "Midland congregation, Eastern Virginia takes responsibility"
+			},
+			{
+				"date": "1899",
+				"verb": "just-comment",
+				"object": "",
+				"comment": "Congregational status granted"
+			},
+			{
+				"date": "1967",
+				"verb": "set-locale",
+				"object": "38.3911688,-78.2067628",
+				"comment": ""
+			},
+			{
+				"date": "1989",
+				"verb": "set-membership",
+				"object": "70",
+				"comment": ""
+			},
+			{
+				"date": "2000",
+				"verb": "set-membership",
+				"object": "81",
+				"comment": ""
 			}
 		]
 	},
