@@ -1,4 +1,4 @@
-function bmhcData(){ return {"idSource":293,"assemblies":{
+function bmhcData(){ return {"idSource":296,"assemblies":{
 	"(Old) Mennonite Church": {
 		"id": 275,
 		"mb": 2,
@@ -4277,6 +4277,36 @@ function bmhcData(){ return {"idSource":293,"assemblies":{
 			}
 		]
 	},
+	"Free Union": {
+		"id": 292,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1962",
+				"verb": "begin-history",
+				"object": "",
+				"comment": ""
+			},
+			{
+				"date": "1962",
+				"verb": "set-locale",
+				"object": "38Â°09'05.1\"N, 78Â°33'40.7\"W",
+				"comment": ""
+			},
+			{
+				"date": "1962",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
+			},
+			{
+				"date": "1989",
+				"verb": "set-membership",
+				"object": "74",
+				"comment": ""
+			}
+		]
+	},
 	"Fremont": {
 		"id": 191,
 		"mb": 1,
@@ -4694,6 +4724,30 @@ function bmhcData(){ return {"idSource":293,"assemblies":{
 				"verb": "set-membership",
 				"object": "5",
 				"comment": "year3n"
+			}
+		]
+	},
+	"Gordonsville Chapel": {
+		"id": 295,
+		"mb": 1,
+		"events": [
+			{
+				"date": "2016",
+				"verb": "begin-history",
+				"object": "",
+				"comment": "Gordonsville Chapel founded as mission point of Knight's Chapel"
+			},
+			{
+				"date": "2016",
+				"verb": "set-affiliation",
+				"object": 106,
+				"comment": "Knight's Chapel Church of the Brethren mission point"
+			},
+			{
+				"date": "2016",
+				"verb": "set-locale",
+				"object": "38.138976, -78.188092",
+				"comment": ""
 			}
 		]
 	},
@@ -5830,15 +5884,27 @@ function bmhcData(){ return {"idSource":293,"assemblies":{
 		"mb": 1,
 		"events": [
 			{
-				"date": "1940",
+				"date": "1938",
 				"verb": "begin-history",
 				"object": "",
 				"comment": "founded"
 			},
 			{
-				"date": "1940",
+				"date": "1938",
+				"verb": "set-affiliation",
+				"object": 287,
+				"comment": ""
+			},
+			{
+				"date": "1938",
 				"verb": "set-locale",
-				"object": "38.153705,-78.281562",
+				"object": "38.155985, -78.281452",
+				"comment": ""
+			},
+			{
+				"date": "1952",
+				"verb": "set-affiliation",
+				"object": 288,
 				"comment": ""
 			},
 			{
@@ -5851,13 +5917,25 @@ function bmhcData(){ return {"idSource":293,"assemblies":{
 				"date": "1980",
 				"verb": "just-comment",
 				"object": "",
-				"comment": "organization"
+				"comment": "organization as fellowship in Shenandoah District"
+			},
+			{
+				"date": "1980",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
 			},
 			{
 				"date": "2002",
 				"verb": "set-membership",
 				"object": "52",
 				"comment": "year2n"
+			},
+			{
+				"date": "2016",
+				"verb": "just-comment",
+				"object": "",
+				"comment": "Establishes mission point in Gordonsville"
 			},
 			{
 				"date": "2018",
@@ -6386,6 +6464,96 @@ function bmhcData(){ return {"idSource":293,"assemblies":{
 				"verb": "set-membership",
 				"object": "100",
 				"comment": "year1n"
+			}
+		]
+	},
+	"Locust Grove": {
+		"id": 293,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1870",
+				"verb": "begin-history",
+				"object": "",
+				"comment": "Founded by Mill Creek"
+			},
+			{
+				"date": "1870",
+				"verb": "set-affiliation",
+				"object": 98,
+				"comment": ""
+			},
+			{
+				"date": "1870",
+				"verb": "set-locale",
+				"object": "38.19134018044454, -78.65511473797046",
+				"comment": ""
+			},
+			{
+				"date": "1913",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
+			},
+			{
+				"date": "1930",
+				"verb": "just-comment",
+				"object": "",
+				"comment": "Moves to Lower Union meeting house"
+			},
+			{
+				"date": "1930",
+				"verb": "set-locale",
+				"object": "38.15101808046847, -78.56142200250994",
+				"comment": ""
+			},
+			{
+				"date": "1963",
+				"verb": "just-comment",
+				"object": "",
+				"comment": "Locust Grove changes name to Free Union Church of the Brethren"
+			},
+			{
+				"date": "1963",
+				"verb": "expire-into",
+				"object": 292,
+				"comment": "Changes name to Free Union Church of the Brethren"
+			}
+		]
+	},
+	"Lower Union": {
+		"id": 294,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1896",
+				"verb": "begin-history",
+				"object": "",
+				"comment": ""
+			},
+			{
+				"date": "1896",
+				"verb": "set-affiliation",
+				"object": 293,
+				"comment": ""
+			},
+			{
+				"date": "1896",
+				"verb": "just-comment",
+				"object": "",
+				"comment": "Builds meeting house"
+			},
+			{
+				"date": "1896",
+				"verb": "set-locale",
+				"object": "38.15101808046847, -78.56142200250994",
+				"comment": ""
+			},
+			{
+				"date": "1930",
+				"verb": "expire-into",
+				"object": 293,
+				"comment": ""
 			}
 		]
 	},
