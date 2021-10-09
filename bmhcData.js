@@ -1,4 +1,4 @@
-function bmhcData(){ return {"idSource":296,"assemblies":{
+function bmhcData(){ return {"idSource":293,"assemblies":{
 	"(Old) Mennonite Church": {
 		"id": 275,
 		"mb": 2,
@@ -4277,72 +4277,6 @@ function bmhcData(){ return {"idSource":296,"assemblies":{
 			}
 		]
 	},
-	"Free Union": {
-		"id": 292,
-		"mb": 1,
-		"events": [
-			{
-				"date": "1870",
-				"verb": "begin-history",
-				"object": "",
-				"comment": ""
-			},
-			{
-				"date": "1870",
-				"verb": "set-affiliation",
-				"object": 98,
-				"comment": ""
-			},
-			{
-				"date": "1896",
-				"verb": "just-comment",
-				"object": "",
-				"comment": "built meeting house"
-			},
-			{
-				"date": "1912",
-				"verb": "set-affiliation",
-				"object": 280,
-				"comment": ""
-			},
-			{
-				"date": "1912",
-				"verb": "set-affiliation",
-				"object": "",
-				"comment": "union church with Disciples of Christ"
-			},
-			{
-				"date": "1912",
-				"verb": "just-comment",
-				"object": "",
-				"comment": "Known as Lower Union Church of the Brethren"
-			},
-			{
-				"date": "1960",
-				"verb": "just-comment",
-				"object": "",
-				"comment": "granted congregational status, affiliation Church of the Brethren"
-			},
-			{
-				"date": "1960",
-				"verb": "set-locale",
-				"object": "38°09'05.1\"N, 78°33'40.7\"W",
-				"comment": ""
-			},
-			{
-				"date": "1960",
-				"verb": "just-comment",
-				"object": "",
-				"comment": "Became known as Free Union Church of the Brethren"
-			},
-			{
-				"date": "1989",
-				"verb": "set-membership",
-				"object": "74",
-				"comment": ""
-			}
-		]
-	},
 	"Fremont": {
 		"id": 191,
 		"mb": 1,
@@ -4760,30 +4694,6 @@ function bmhcData(){ return {"idSource":296,"assemblies":{
 				"verb": "set-membership",
 				"object": "5",
 				"comment": "year3n"
-			}
-		]
-	},
-	"Gordonsville Chapel": {
-		"id": 295,
-		"mb": 1,
-		"events": [
-			{
-				"date": "2016",
-				"verb": "begin-history",
-				"object": "",
-				"comment": "Gordonsville Chapel founded as mission point of Knight's Chapel"
-			},
-			{
-				"date": "2016",
-				"verb": "set-affiliation",
-				"object": "",
-				"comment": "Knight's Chapel Church of the Brethren mission point"
-			},
-			{
-				"date": "2016",
-				"verb": "set-locale",
-				"object": "38.138976, -78.188092",
-				"comment": ""
 			}
 		]
 	},
@@ -5920,21 +5830,15 @@ function bmhcData(){ return {"idSource":296,"assemblies":{
 		"mb": 1,
 		"events": [
 			{
-				"date": "1920",
+				"date": "1940",
 				"verb": "begin-history",
 				"object": "",
 				"comment": "founded"
 			},
 			{
-				"date": "1920",
-				"verb": "set-affiliation",
-				"object": "",
-				"comment": "East Mt. Carmel"
-			},
-			{
 				"date": "1940",
 				"verb": "set-locale",
-				"object": "38.155985, -78.281452",
+				"object": "38.153705,-78.281562",
 				"comment": ""
 			},
 			{
@@ -5947,19 +5851,13 @@ function bmhcData(){ return {"idSource":296,"assemblies":{
 				"date": "1980",
 				"verb": "just-comment",
 				"object": "",
-				"comment": "organization as fellowship in Shenandoah District"
+				"comment": "organization"
 			},
 			{
 				"date": "2002",
 				"verb": "set-membership",
 				"object": "52",
 				"comment": "year2n"
-			},
-			{
-				"date": "2016",
-				"verb": "just-comment",
-				"object": "",
-				"comment": "Establishes mission point in Gordonsville"
 			},
 			{
 				"date": "2018",
@@ -6488,96 +6386,6 @@ function bmhcData(){ return {"idSource":296,"assemblies":{
 				"verb": "set-membership",
 				"object": "100",
 				"comment": "year1n"
-			}
-		]
-	},
-	"Locust Grove": {
-		"id": 293,
-		"mb": 1,
-		"events": [
-			{
-				"date": "1870",
-				"verb": "begin-history",
-				"object": "",
-				"comment": "Founded by Mill Creek"
-			},
-			{
-				"date": "1870",
-				"verb": "set-affiliation",
-				"object": 98,
-				"comment": ""
-			},
-			{
-				"date": "1913",
-				"verb": "set-affiliation",
-				"object": 280,
-				"comment": ""
-			},
-			{
-				"date": "1920",
-				"verb": "just-comment",
-				"object": "",
-				"comment": "Moves to Lower Union meeting house"
-			},
-			{
-				"date": "1963",
-				"verb": "just-comment",
-				"object": "",
-				"comment": "Locust Grove changes name to Free Union Church of the Brethren"
-			},
-			{
-				"date": "1964",
-				"verb": "expire-into",
-				"object": "",
-				"comment": "Changes name to Free Union Church of the Brethren"
-			}
-		]
-	},
-	"Lower Union": {
-		"id": 294,
-		"mb": 1,
-		"events": [
-			{
-				"date": "1870",
-				"verb": "begin-history",
-				"object": "",
-				"comment": ""
-			},
-			{
-				"date": "1870",
-				"verb": "set-affiliation",
-				"object": 293,
-				"comment": ""
-			},
-			{
-				"date": "1896",
-				"verb": "just-comment",
-				"object": "",
-				"comment": "Builds meeting house"
-			},
-			{
-				"date": "1930",
-				"verb": "just-comment",
-				"object": "",
-				"comment": "Locust Grove moves into Lower Union meeting house"
-			},
-			{
-				"date": "1962",
-				"verb": "just-comment",
-				"object": "",
-				"comment": "New Church building completed"
-			},
-			{
-				"date": "1963",
-				"verb": "set-affiliation",
-				"object": 280,
-				"comment": ""
-			},
-			{
-				"date": "1963",
-				"verb": "just-comment",
-				"object": "",
-				"comment": "Changes name to Free Union"
 			}
 		]
 	},
@@ -8210,6 +8018,42 @@ function bmhcData(){ return {"idSource":296,"assemblies":{
 				"verb": "set-membership",
 				"object": "370",
 				"comment": "year4n"
+			}
+		]
+	},
+	"Mountain Grove Chapel Fellowship": {
+		"id": 292,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1930",
+				"verb": "begin-history",
+				"object": "",
+				"comment": ""
+			},
+			{
+				"date": "1930",
+				"verb": "set-affiliation",
+				"object": "",
+				"comment": "Western Mt. Carmel"
+			},
+			{
+				"date": "1930",
+				"verb": "just-comment",
+				"object": "",
+				"comment": "On same property as Brethren Industrial School"
+			},
+			{
+				"date": "1940",
+				"verb": "set-locale",
+				"object": "38.2948245,-78.5748276",
+				"comment": ""
+			},
+			{
+				"date": "1961",
+				"verb": "set-affiliation",
+				"object": "",
+				"comment": "Separated as fellowship in Eastern District (Shenandoah District after 1967)"
 			}
 		]
 	},
