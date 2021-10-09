@@ -4290,7 +4290,7 @@ function bmhcData(){ return {"idSource":296,"assemblies":{
 			{
 				"date": "1962",
 				"verb": "set-locale",
-				"object": "38Â°09'05.1\"N, 78Â°33'40.7\"W",
+				"object": "38.15101808046847, -78.56142200250994",
 				"comment": ""
 			},
 			{
@@ -6509,15 +6509,9 @@ function bmhcData(){ return {"idSource":296,"assemblies":{
 			},
 			{
 				"date": "1963",
-				"verb": "just-comment",
-				"object": "",
-				"comment": "Locust Grove changes name to Free Union Church of the Brethren"
-			},
-			{
-				"date": "1963",
 				"verb": "expire-into",
 				"object": 292,
-				"comment": "Changes name to Free Union Church of the Brethren"
+				"comment": ""
 			}
 		]
 	},
@@ -6533,12 +6527,6 @@ function bmhcData(){ return {"idSource":296,"assemblies":{
 			},
 			{
 				"date": "1896",
-				"verb": "set-affiliation",
-				"object": 293,
-				"comment": ""
-			},
-			{
-				"date": "1896",
 				"verb": "just-comment",
 				"object": "",
 				"comment": "Builds meeting house"
@@ -6547,6 +6535,12 @@ function bmhcData(){ return {"idSource":296,"assemblies":{
 				"date": "1896",
 				"verb": "set-locale",
 				"object": "38.15101808046847, -78.56142200250994",
+				"comment": ""
+			},
+			{
+				"date": "1896",
+				"verb": "set-affiliation",
+				"object": 293,
 				"comment": ""
 			},
 			{
@@ -8254,33 +8248,33 @@ function bmhcData(){ return {"idSource":296,"assemblies":{
 		"mb": 1,
 		"events": [
 			{
-				"date": "1930",
+				"date": "1914",
 				"verb": "begin-history",
 				"object": "",
 				"comment": ""
 			},
 			{
-				"date": "1930",
+				"date": "1914",
 				"verb": "set-affiliation",
-				"object": "",
-				"comment": "Western Mt. Carmel"
+				"object": 287,
+				"comment": ""
 			},
 			{
-				"date": "1930",
-				"verb": "just-comment",
-				"object": "",
-				"comment": "On same property as Brethren Industrial School"
-			},
-			{
-				"date": "1940",
+				"date": "1914",
 				"verb": "set-locale",
-				"object": "38.2948245,-78.5748276",
+				"object": "38.29479825875512, -78.57433768667788",
+				"comment": ""
+			},
+			{
+				"date": "1952",
+				"verb": "set-affiliation",
+				"object": 290,
 				"comment": ""
 			},
 			{
 				"date": "1961",
 				"verb": "set-affiliation",
-				"object": "",
+				"object": 280,
 				"comment": "Separated as fellowship in Eastern District (Shenandoah District after 1967)"
 			}
 		]
