@@ -1,4 +1,4 @@
-function bmhcData(){ return {"idSource":296,"assemblies":{
+function bmhcData(){ return {"idSource":299,"assemblies":{
 	"(Old) Mennonite Church": {
 		"id": 275,
 		"mb": 2,
@@ -6660,26 +6660,32 @@ function bmhcData(){ return {"idSource":296,"assemblies":{
 		]
 	},
 	"Madison": {
-		"id": 292,
+		"id": 298,
 		"mb": 1,
 		"events": [
 			{
 				"date": "1760",
 				"verb": "begin-history",
 				"object": "",
-				"comment": "Founded by Brethren from PA"
+				"comment": ""
+			},
+			{
+				"date": "1760",
+				"verb": "set-affiliation",
+				"object": 281,
+				"comment": ""
+			},
+			{
+				"date": "1760",
+				"verb": "set-locale",
+				"object": "38.39155272565588, -78.20484819592511",
+				"comment": ""
 			},
 			{
 				"date": "1878",
 				"verb": "set-affiliation",
-				"object": "",
-				"comment": "Mill Creek establishes preaching point"
-			},
-			{
-				"date": "1878",
-				"verb": "just-comment",
-				"object": "",
-				"comment": "Meeting house built"
+				"object": 98,
+				"comment": ""
 			},
 			{
 				"date": "1879",
@@ -6688,21 +6694,9 @@ function bmhcData(){ return {"idSource":296,"assemblies":{
 				"comment": ""
 			},
 			{
-				"date": "1883",
-				"verb": "set-affiliation",
-				"object": "",
-				"comment": "Midland congregation, Eastern Virginia takes responsibility"
-			},
-			{
 				"date": "1899",
-				"verb": "just-comment",
-				"object": "",
-				"comment": "Congregational status granted"
-			},
-			{
-				"date": "1967",
-				"verb": "set-locale",
-				"object": "38.3911688,-78.2067628",
+				"verb": "set-affiliation",
+				"object": 281,
 				"comment": ""
 			},
 			{
@@ -7865,6 +7859,36 @@ function bmhcData(){ return {"idSource":296,"assemblies":{
 			}
 		]
 	},
+	"Mount Lebanon Fellowship": {
+		"id": 294,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1931",
+				"verb": "begin-history",
+				"object": "",
+				"comment": ""
+			},
+			{
+				"date": "1931",
+				"verb": "set-affiliation",
+				"object": 287,
+				"comment": ""
+			},
+			{
+				"date": "1931",
+				"verb": "set-locale",
+				"object": "38.1836069738692, -78.34039951899243",
+				"comment": ""
+			},
+			{
+				"date": "1967",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": "A separate fellowship in Shenandoah District, Church of the Brethren"
+			}
+		]
+	},
 	"Mount Olive": {
 		"id": 206,
 		"mb": 1,
@@ -8243,8 +8267,8 @@ function bmhcData(){ return {"idSource":296,"assemblies":{
 			}
 		]
 	},
-	"Mountain Grove Chapel Fellowship": {
-		"id": 292,
+	"Mountain Grove Chapel": {
+		"id": 296,
 		"mb": 1,
 		"events": [
 			{
@@ -8262,7 +8286,7 @@ function bmhcData(){ return {"idSource":296,"assemblies":{
 			{
 				"date": "1914",
 				"verb": "set-locale",
-				"object": "38.29479825875512, -78.57433768667788",
+				"object": "38.294816120992564, -78.57432251381192",
 				"comment": ""
 			},
 			{
@@ -8275,7 +8299,7 @@ function bmhcData(){ return {"idSource":296,"assemblies":{
 				"date": "1961",
 				"verb": "set-affiliation",
 				"object": 280,
-				"comment": "Separated as fellowship in Eastern District (Shenandoah District after 1967)"
+				"comment": ""
 			}
 		]
 	},
@@ -8510,36 +8534,6 @@ function bmhcData(){ return {"idSource":296,"assemblies":{
 				"verb": "set-membership",
 				"object": "51",
 				"comment": "year7n"
-			}
-		]
-	},
-	"Mt. Lebanon Fellowship": {
-		"id": 294,
-		"mb": 1,
-		"events": [
-			{
-				"date": "1900",
-				"verb": "begin-history",
-				"object": "",
-				"comment": ""
-			},
-			{
-				"date": "1900",
-				"verb": "set-affiliation",
-				"object": "",
-				"comment": "Eastern Mt.Carmel congregation.  A Union church with Disciples of Christ."
-			},
-			{
-				"date": "1950",
-				"verb": "set-locale",
-				"object": "38.1835841,-78.3405816",
-				"comment": ""
-			},
-			{
-				"date": "1967",
-				"verb": "set-affiliation",
-				"object": "",
-				"comment": "A separate fellowship in Shenandoah District, Church of the Brethren"
 			}
 		]
 	},
@@ -10020,32 +10014,38 @@ function bmhcData(){ return {"idSource":296,"assemblies":{
 		]
 	},
 	"Pine Ridge": {
-		"id": 293,
+		"id": 297,
 		"mb": 1,
 		"events": [
 			{
-				"date": "1930",
+				"date": "1942",
 				"verb": "begin-history",
 				"object": "",
 				"comment": ""
 			},
 			{
-				"date": "1930",
+				"date": "1942",
 				"verb": "set-affiliation",
-				"object": "",
-				"comment": "Eastern Mt. Carmel congregation"
+				"object": 287,
+				"comment": ""
 			},
 			{
-				"date": "1950",
+				"date": "1942",
 				"verb": "set-locale",
-				"object": "38.2015076,-78.475246",
+				"object": "38.201483667503574, -78.47494964321636",
+				"comment": ""
+			},
+			{
+				"date": "1952",
+				"verb": "set-affiliation",
+				"object": 288,
 				"comment": ""
 			},
 			{
 				"date": "1973",
 				"verb": "set-affiliation",
-				"object": "",
-				"comment": "Church of the Brethren"
+				"object": 280,
+				"comment": ""
 			},
 			{
 				"date": "1984",
