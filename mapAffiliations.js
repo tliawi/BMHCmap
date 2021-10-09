@@ -5,6 +5,7 @@ function mapAffiliations(){ return [
 	"Church of the Brethren",
 	"Eastern Mount Carmel",
 	"Western Mount Carmel",
+	"Knights Chapel",
 	"Flat Rock",
 	"Pleasant View (VA)",
 	"(Old) Mennonite Church",
