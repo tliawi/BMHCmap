@@ -8312,6 +8312,12 @@ function bmhcData(){ return {"idSource":295,"assemblies":{
 				"verb": "set-locale",
 				"object": "38.1835841,-78.3405816",
 				"comment": ""
+			},
+			{
+				"date": "1967",
+				"verb": "set-affiliation",
+				"object": "",
+				"comment": "A separate fellowship in Shenandoah District, Church of the Brethren"
 			}
 		]
 	},
