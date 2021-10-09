@@ -1,4 +1,4 @@
-function bmhcData(){ return {"idSource":294,"assemblies":{
+function bmhcData(){ return {"idSource":295,"assemblies":{
 	"(Old) Mennonite Church": {
 		"id": 275,
 		"mb": 2,
@@ -8288,6 +8288,30 @@ function bmhcData(){ return {"idSource":294,"assemblies":{
 				"verb": "set-membership",
 				"object": "51",
 				"comment": "year7n"
+			}
+		]
+	},
+	"Mt. Lebanon Fellowship": {
+		"id": 294,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1900",
+				"verb": "begin-history",
+				"object": "",
+				"comment": ""
+			},
+			{
+				"date": "1900",
+				"verb": "set-affiliation",
+				"object": "",
+				"comment": "Eastern Mt.Carmel congregation.  A Union church with Disciples of Christ."
+			},
+			{
+				"date": "1950",
+				"verb": "set-locale",
+				"object": "38.1835841,-78.3405816",
+				"comment": ""
 			}
 		]
 	},
