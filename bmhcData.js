@@ -1,4 +1,4 @@
-function bmhcData(){ return {"idSource":293,"assemblies":{
+function bmhcData(){ return {"idSource":294,"assemblies":{
 	"(Old) Mennonite Church": {
 		"id": 275,
 		"mb": 2,
@@ -9764,6 +9764,48 @@ function bmhcData(){ return {"idSource":293,"assemblies":{
 				"verb": "set-membership",
 				"object": "55",
 				"comment": "year4n"
+			}
+		]
+	},
+	"Pine Ridge": {
+		"id": 293,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1930",
+				"verb": "begin-history",
+				"object": "",
+				"comment": ""
+			},
+			{
+				"date": "1930",
+				"verb": "set-affiliation",
+				"object": "",
+				"comment": "Eastern Mt. Carmel congregation"
+			},
+			{
+				"date": "1950",
+				"verb": "set-locale",
+				"object": "38.2015076,-78.475246",
+				"comment": ""
+			},
+			{
+				"date": "1973",
+				"verb": "set-affiliation",
+				"object": "",
+				"comment": "Church of the Brethren"
+			},
+			{
+				"date": "1984",
+				"verb": "set-membership",
+				"object": "76",
+				"comment": ""
+			},
+			{
+				"date": "1989",
+				"verb": "set-membership",
+				"object": "128",
+				"comment": ""
 			}
 		]
 	},
