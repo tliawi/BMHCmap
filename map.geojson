@@ -1695,6 +1695,28 @@
 		{
 			"type": "Feature",
 			"properties": {
+				"name": "Free Union",
+				"begin": "1962",
+				"end": "1988",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.56142200250994,
+					38.15101808046847
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
 				"name": "Fremont",
 				"begin": "1921",
 				"end": "1949",
@@ -1849,6 +1871,29 @@
 				"coordinates": [
 					-79.968764,
 					37.264677
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Gordonsville Chapel",
+				"begin": "2016",
+				"end": "2021",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Church of the Brethren",
+					"Knights Chapel"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.188092,
+					38.138976
 				]
 			}
 		},
@@ -2296,19 +2341,45 @@
 			"type": "Feature",
 			"properties": {
 				"name": "Knights Chapel",
-				"begin": "1940",
-				"end": "1974",
+				"begin": "1938",
+				"end": "1951",
 				"denomination": 1,
 				"weight": 0,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren",
+					"Mount Carmel"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.281562,
-					38.153705
+					-78.281452,
+					38.155985
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Knights Chapel",
+				"begin": "1952",
+				"end": "1974",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Church of the Brethren",
+					"Eastern Mount Carmel"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.281452,
+					38.155985
 				]
 			}
 		},
@@ -2495,6 +2566,92 @@
 		{
 			"type": "Feature",
 			"properties": {
+				"name": "Locust Grove",
+				"begin": "1870",
+				"end": "1912",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Mill Creek"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.65511473797046,
+					38.19134018044454
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Locust Grove",
+				"begin": "1913",
+				"end": "1929",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.65511473797046,
+					38.19134018044454
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Locust Grove",
+				"begin": "1930",
+				"end": "2021",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.56142200250994,
+					38.15101808046847
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Lower Union",
+				"begin": "1896",
+				"end": "2021",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.56142200250994,
+					38.15101808046847
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
 				"name": "Luray",
 				"begin": "1920",
 				"end": "1954",
@@ -2529,6 +2686,50 @@
 				"coordinates": [
 					-78.945297,
 					38.024984
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Madison",
+				"begin": "1760",
+				"end": "1877",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"German Baptist Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.20484819592511,
+					38.39155272565588
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Madison",
+				"begin": "1878",
+				"end": "1878",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Mill Creek"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.20484819592511,
+					38.39155272565588
 				]
 			}
 		},
@@ -2855,6 +3056,71 @@
 		{
 			"type": "Feature",
 			"properties": {
+				"name": "Mount Lebanon Fellowship",
+				"begin": "1931",
+				"end": "1951",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Church of the Brethren",
+					"Mount Carmel"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.34039951899243,
+					38.1836069738692
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Mount Lebanon Fellowship",
+				"begin": "1952",
+				"end": "1966",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.34039951899243,
+					38.1836069738692
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Mount Lebanon Fellowship",
+				"begin": "1967",
+				"end": "2021",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.34039951899243,
+					38.1836069738692
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
 				"name": "Mount Olive",
 				"begin": "1884",
 				"end": "1949",
@@ -2969,6 +3235,74 @@
 				"coordinates": [
 					-78.927733,
 					38.640729
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Mountain Grove Chapel",
+				"begin": "1914",
+				"end": "1951",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Church of the Brethren",
+					"Mount Carmel"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.57432251381192,
+					38.294816120992564
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Mountain Grove Chapel",
+				"begin": "1952",
+				"end": "1960",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Church of the Brethren",
+					"Western Mount Carmel"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.57432251381192,
+					38.294816120992564
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Mountain Grove Chapel",
+				"begin": "1961",
+				"end": "2021",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.57432251381192,
+					38.294816120992564
 				]
 			}
 		},
@@ -3549,6 +3883,74 @@
 				"coordinates": [
 					-80.999817,
 					37.509273
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Pine Ridge",
+				"begin": "1942",
+				"end": "1951",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Church of the Brethren",
+					"Mount Carmel"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.47494964321636,
+					38.201483667503574
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Pine Ridge",
+				"begin": "1952",
+				"end": "1972",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Church of the Brethren",
+					"Eastern Mount Carmel"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.47494964321636,
+					38.201483667503574
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Pine Ridge",
+				"begin": "1973",
+				"end": "1983",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.47494964321636,
+					38.201483667503574
 				]
 			}
 		},
@@ -8025,6 +8427,72 @@
 		{
 			"type": "Feature",
 			"properties": {
+				"name": "Madison",
+				"begin": "1879",
+				"end": "1898",
+				"denomination": 1,
+				"weight": 5.656854249492381,
+				"affiliations": [
+					"Mill Creek"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.20484819592511,
+					38.39155272565588
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Madison",
+				"begin": "1899",
+				"end": "1907",
+				"denomination": 1,
+				"weight": 5.656854249492381,
+				"affiliations": [
+					"German Baptist Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.20484819592511,
+					38.39155272565588
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Madison",
+				"begin": "1908",
+				"end": "1988",
+				"denomination": 1,
+				"weight": 5.656854249492381,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.20484819592511,
+					38.39155272565588
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
 				"name": "Mount Bethel (Botetourt)",
 				"begin": "1950",
 				"end": "1954",
@@ -8107,18 +8575,43 @@
 			"properties": {
 				"name": "Knights Chapel",
 				"begin": "1975",
-				"end": "2001",
+				"end": "1979",
 				"denomination": 1,
 				"weight": 5.744562646538029,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren",
+					"Eastern Mount Carmel"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.281562,
-					38.153705
+					-78.281452,
+					38.155985
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Knights Chapel",
+				"begin": "1980",
+				"end": "2001",
+				"denomination": 1,
+				"weight": 5.744562646538029,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.281452,
+					38.155985
 				]
 			}
 		},
@@ -10812,15 +11305,17 @@
 				"end": "2017",
 				"denomination": 1,
 				"weight": 7.211102550927978,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.281562,
-					38.153705
+					-78.281452,
+					38.155985
 				]
 			}
 		},
@@ -12777,6 +13272,28 @@
 		{
 			"type": "Feature",
 			"properties": {
+				"name": "Madison",
+				"begin": "1989",
+				"end": "1999",
+				"denomination": 1,
+				"weight": 8.366600265340756,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.20484819592511,
+					38.39155272565588
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
 				"name": "Melrose",
 				"begin": "2018",
 				"end": "2021",
@@ -13181,6 +13698,28 @@
 		{
 			"type": "Feature",
 			"properties": {
+				"name": "Free Union",
+				"begin": "1989",
+				"end": "2021",
+				"denomination": 1,
+				"weight": 8.602325267042627,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.56142200250994,
+					38.15101808046847
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
 				"name": "Front Royal",
 				"begin": "1950",
 				"end": "1974",
@@ -13481,6 +14020,28 @@
 		{
 			"type": "Feature",
 			"properties": {
+				"name": "Pine Ridge",
+				"begin": "1984",
+				"end": "1988",
+				"denomination": 1,
+				"weight": 8.717797887081348,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.47494964321636,
+					38.201483667503574
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
 				"name": "Stephens City",
 				"begin": "1975",
 				"end": "1994",
@@ -13586,15 +14147,17 @@
 				"end": "2021",
 				"denomination": 1,
 				"weight": 8.774964387392123,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.281562,
-					38.153705
+					-78.281452,
+					38.155985
 				]
 			}
 		},
@@ -14035,6 +14598,28 @@
 				"coordinates": [
 					-78.223788,
 					39.077257
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Madison",
+				"begin": "2000",
+				"end": "2021",
+				"denomination": 1,
+				"weight": 9,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.20484819592511,
+					38.39155272565588
 				]
 			}
 		},
@@ -18485,6 +19070,28 @@
 				"coordinates": [
 					-78.917361,
 					38.395604
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Pine Ridge",
+				"begin": "1989",
+				"end": "2021",
+				"denomination": 1,
+				"weight": 11.313708498984761,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.47494964321636,
+					38.201483667503574
 				]
 			}
 		},

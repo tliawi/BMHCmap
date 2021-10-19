@@ -1,4 +1,4 @@
-function bmhcData(){ return {"idSource":292,"assemblies":{
+function bmhcData(){ return {"idSource":299,"assemblies":{
 	"(Old) Mennonite Church": {
 		"id": 275,
 		"mb": 2,
@@ -4277,6 +4277,36 @@ function bmhcData(){ return {"idSource":292,"assemblies":{
 			}
 		]
 	},
+	"Free Union": {
+		"id": 292,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1962",
+				"verb": "begin-history",
+				"object": "",
+				"comment": ""
+			},
+			{
+				"date": "1962",
+				"verb": "set-locale",
+				"object": "38.15101808046847, -78.56142200250994",
+				"comment": ""
+			},
+			{
+				"date": "1962",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
+			},
+			{
+				"date": "1989",
+				"verb": "set-membership",
+				"object": "74",
+				"comment": ""
+			}
+		]
+	},
 	"Fremont": {
 		"id": 191,
 		"mb": 1,
@@ -4694,6 +4724,30 @@ function bmhcData(){ return {"idSource":292,"assemblies":{
 				"verb": "set-membership",
 				"object": "5",
 				"comment": "year3n"
+			}
+		]
+	},
+	"Gordonsville Chapel": {
+		"id": 295,
+		"mb": 1,
+		"events": [
+			{
+				"date": "2016",
+				"verb": "begin-history",
+				"object": "",
+				"comment": "Gordonsville Chapel founded as mission point of Knight's Chapel"
+			},
+			{
+				"date": "2016",
+				"verb": "set-affiliation",
+				"object": 106,
+				"comment": "Knight's Chapel Church of the Brethren mission point"
+			},
+			{
+				"date": "2016",
+				"verb": "set-locale",
+				"object": "38.138976, -78.188092",
+				"comment": ""
 			}
 		]
 	},
@@ -5830,15 +5884,27 @@ function bmhcData(){ return {"idSource":292,"assemblies":{
 		"mb": 1,
 		"events": [
 			{
-				"date": "1940",
+				"date": "1938",
 				"verb": "begin-history",
 				"object": "",
 				"comment": "founded"
 			},
 			{
-				"date": "1940",
+				"date": "1938",
+				"verb": "set-affiliation",
+				"object": 287,
+				"comment": ""
+			},
+			{
+				"date": "1938",
 				"verb": "set-locale",
-				"object": "38.153705,-78.281562",
+				"object": "38.155985, -78.281452",
+				"comment": ""
+			},
+			{
+				"date": "1952",
+				"verb": "set-affiliation",
+				"object": 288,
 				"comment": ""
 			},
 			{
@@ -5851,13 +5917,25 @@ function bmhcData(){ return {"idSource":292,"assemblies":{
 				"date": "1980",
 				"verb": "just-comment",
 				"object": "",
-				"comment": "organization"
+				"comment": "organization as fellowship in Shenandoah District"
+			},
+			{
+				"date": "1980",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
 			},
 			{
 				"date": "2002",
 				"verb": "set-membership",
 				"object": "52",
 				"comment": "year2n"
+			},
+			{
+				"date": "2016",
+				"verb": "just-comment",
+				"object": "",
+				"comment": "Establishes mission point in Gordonsville"
 			},
 			{
 				"date": "2018",
@@ -6389,6 +6467,90 @@ function bmhcData(){ return {"idSource":292,"assemblies":{
 			}
 		]
 	},
+	"Locust Grove": {
+		"id": 293,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1870",
+				"verb": "begin-history",
+				"object": "",
+				"comment": "Founded by Mill Creek"
+			},
+			{
+				"date": "1870",
+				"verb": "set-affiliation",
+				"object": 98,
+				"comment": ""
+			},
+			{
+				"date": "1870",
+				"verb": "set-locale",
+				"object": "38.19134018044454, -78.65511473797046",
+				"comment": ""
+			},
+			{
+				"date": "1913",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
+			},
+			{
+				"date": "1930",
+				"verb": "just-comment",
+				"object": "",
+				"comment": "Moves to Lower Union meeting house"
+			},
+			{
+				"date": "1930",
+				"verb": "set-locale",
+				"object": "38.15101808046847, -78.56142200250994",
+				"comment": ""
+			},
+			{
+				"date": "1963",
+				"verb": "expire-into",
+				"object": 292,
+				"comment": ""
+			}
+		]
+	},
+	"Lower Union": {
+		"id": 294,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1896",
+				"verb": "begin-history",
+				"object": "",
+				"comment": ""
+			},
+			{
+				"date": "1896",
+				"verb": "just-comment",
+				"object": "",
+				"comment": "Builds meeting house"
+			},
+			{
+				"date": "1896",
+				"verb": "set-locale",
+				"object": "38.15101808046847, -78.56142200250994",
+				"comment": ""
+			},
+			{
+				"date": "1896",
+				"verb": "set-affiliation",
+				"object": 293,
+				"comment": ""
+			},
+			{
+				"date": "1930",
+				"verb": "expire-into",
+				"object": 293,
+				"comment": ""
+			}
+		]
+	},
 	"Luray": {
 		"id": 175,
 		"mb": 1,
@@ -6494,6 +6656,60 @@ function bmhcData(){ return {"idSource":292,"assemblies":{
 				"verb": "set-membership",
 				"object": "58",
 				"comment": "year5n"
+			}
+		]
+	},
+	"Madison": {
+		"id": 298,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1760",
+				"verb": "begin-history",
+				"object": "",
+				"comment": ""
+			},
+			{
+				"date": "1760",
+				"verb": "set-affiliation",
+				"object": 281,
+				"comment": ""
+			},
+			{
+				"date": "1760",
+				"verb": "set-locale",
+				"object": "38.39155272565588, -78.20484819592511",
+				"comment": ""
+			},
+			{
+				"date": "1878",
+				"verb": "set-affiliation",
+				"object": 98,
+				"comment": ""
+			},
+			{
+				"date": "1879",
+				"verb": "set-membership",
+				"object": "32",
+				"comment": ""
+			},
+			{
+				"date": "1899",
+				"verb": "set-affiliation",
+				"object": 281,
+				"comment": ""
+			},
+			{
+				"date": "1989",
+				"verb": "set-membership",
+				"object": "70",
+				"comment": ""
+			},
+			{
+				"date": "2000",
+				"verb": "set-membership",
+				"object": "81",
+				"comment": ""
 			}
 		]
 	},
@@ -7643,6 +7859,36 @@ function bmhcData(){ return {"idSource":292,"assemblies":{
 			}
 		]
 	},
+	"Mount Lebanon Fellowship": {
+		"id": 294,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1931",
+				"verb": "begin-history",
+				"object": "",
+				"comment": ""
+			},
+			{
+				"date": "1931",
+				"verb": "set-affiliation",
+				"object": 287,
+				"comment": ""
+			},
+			{
+				"date": "1931",
+				"verb": "set-locale",
+				"object": "38.1836069738692, -78.34039951899243",
+				"comment": ""
+			},
+			{
+				"date": "1967",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": "A separate fellowship in Shenandoah District, Church of the Brethren"
+			}
+		]
+	},
 	"Mount Olive": {
 		"id": 206,
 		"mb": 1,
@@ -8018,6 +8264,42 @@ function bmhcData(){ return {"idSource":292,"assemblies":{
 				"verb": "set-membership",
 				"object": "370",
 				"comment": "year4n"
+			}
+		]
+	},
+	"Mountain Grove Chapel": {
+		"id": 296,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1914",
+				"verb": "begin-history",
+				"object": "",
+				"comment": ""
+			},
+			{
+				"date": "1914",
+				"verb": "set-affiliation",
+				"object": 287,
+				"comment": ""
+			},
+			{
+				"date": "1914",
+				"verb": "set-locale",
+				"object": "38.294816120992564, -78.57432251381192",
+				"comment": ""
+			},
+			{
+				"date": "1952",
+				"verb": "set-affiliation",
+				"object": 290,
+				"comment": ""
+			},
+			{
+				"date": "1961",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
 			}
 		]
 	},
@@ -9728,6 +10010,54 @@ function bmhcData(){ return {"idSource":292,"assemblies":{
 				"verb": "set-membership",
 				"object": "55",
 				"comment": "year4n"
+			}
+		]
+	},
+	"Pine Ridge": {
+		"id": 297,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1942",
+				"verb": "begin-history",
+				"object": "",
+				"comment": ""
+			},
+			{
+				"date": "1942",
+				"verb": "set-affiliation",
+				"object": 287,
+				"comment": ""
+			},
+			{
+				"date": "1942",
+				"verb": "set-locale",
+				"object": "38.201483667503574, -78.47494964321636",
+				"comment": ""
+			},
+			{
+				"date": "1952",
+				"verb": "set-affiliation",
+				"object": 288,
+				"comment": ""
+			},
+			{
+				"date": "1973",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
+			},
+			{
+				"date": "1984",
+				"verb": "set-membership",
+				"object": "76",
+				"comment": ""
+			},
+			{
+				"date": "1989",
+				"verb": "set-membership",
+				"object": "128",
+				"comment": ""
 			}
 		]
 	},
