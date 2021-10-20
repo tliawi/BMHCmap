@@ -2132,6 +2132,36 @@ function bmhcData(){ return {"idSource":299,"assemblies":{
 				"verb": "set-affiliation",
 				"object": 280,
 				"comment": ""
+			},
+			{
+				"date": "1958",
+				"verb": "set-locale",
+				"object": "38.0700195824663, -78.46693195042305",
+				"comment": ""
+			},
+			{
+				"date": "1980",
+				"verb": "set-membership",
+				"object": "164",
+				"comment": ""
+			},
+			{
+				"date": "1985",
+				"verb": "set-membership",
+				"object": "160",
+				"comment": ""
+			},
+			{
+				"date": "1990",
+				"verb": "set-membership",
+				"object": "173",
+				"comment": ""
+			},
+			{
+				"date": "1995",
+				"verb": "set-membership",
+				"object": "199",
+				"comment": ""
 			}
 		]
 	},
@@ -8118,7 +8148,7 @@ function bmhcData(){ return {"idSource":299,"assemblies":{
 			{
 				"date": "1850",
 				"verb": "set-locale",
-				"object": "38.632423,-78.456977",
+				"object": "38.630486938836206, -78.45563589758386",
 				"comment": ""
 			},
 			{
@@ -8131,7 +8161,7 @@ function bmhcData(){ return {"idSource":299,"assemblies":{
 				"date": "1908",
 				"verb": "set-membership",
 				"object": "400",
-				"comment": "year1n"
+				"comment": "6 meeting houses: Rileyville, Newport, Leakes Chapel, Luray, Beahms Chapel,Ida Grove and Trinity"
 			},
 			{
 				"date": "1925",
@@ -8150,6 +8180,24 @@ function bmhcData(){ return {"idSource":299,"assemblies":{
 				"verb": "set-membership",
 				"object": "233",
 				"comment": "year4n"
+			},
+			{
+				"date": "1989",
+				"verb": "set-membership",
+				"object": "222",
+				"comment": ""
+			},
+			{
+				"date": "1996",
+				"verb": "set-membership",
+				"object": "98",
+				"comment": ""
+			},
+			{
+				"date": "1999",
+				"verb": "set-membership",
+				"object": "86",
+				"comment": ""
 			},
 			{
 				"date": "2002",
