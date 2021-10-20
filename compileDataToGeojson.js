@@ -99,10 +99,12 @@ bmhc.getAllAssemblyNames().forEach(name=>{
             }
         }
 
-        //sort them by weight so larger congregation's names are given display precedence
-        features.sort((a,b)=>{return (a.properties.weight - b.properties.weight);});
     } else console.log("Assembly '"+name+"' has no events.");
+    
 });
+
+//sort them by weight so larger congregation's names are given display precedence
+features.sort((a,b)=>{return (a.properties.weight - b.properties.weight);});
 
 function jsonFeatureCollection(){
     return JSON.stringify(new FeatureCollection(features),null,'\t');
