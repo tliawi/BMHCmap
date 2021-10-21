@@ -884,6 +884,28 @@
 		{
 			"type": "Feature",
 			"properties": {
+				"name": "Charlottesville",
+				"begin": "1958",
+				"end": "1979",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.46693195042305,
+					38.0700195824663
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
 				"name": "Chimney Run",
 				"begin": "1909",
 				"end": "1924",
@@ -3182,19 +3204,22 @@
 			"type": "Feature",
 			"properties": {
 				"name": "Mount Zion",
-				"begin": "1850",
+				"begin": "1872",
 				"end": "1907",
 				"denomination": 1,
 				"weight": 0,
-				"affiliations": [],
+				"affiliations": [
+					"German Baptist Brethren",
+					"Page County"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.456977,
-					38.632423
+					-78.45563589758386,
+					38.630486938836206
 				]
 			}
 		},
@@ -3723,6 +3748,50 @@
 				"coordinates": [
 					-79.271958,
 					37.743944
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Page County",
+				"begin": "1850",
+				"end": "1907",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"German Baptist Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.466439,
+					38.64887
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Page County",
+				"begin": "1908",
+				"end": "2021",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.466439,
+					38.64887
 				]
 			}
 		},
@@ -15168,6 +15237,28 @@
 		{
 			"type": "Feature",
 			"properties": {
+				"name": "Mount Zion",
+				"begin": "1999",
+				"end": "2001",
+				"denomination": 1,
+				"weight": 9.273618495495704,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.45563589758386,
+					38.630486938836206
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
 				"name": "Oronoco",
 				"begin": "1975",
 				"end": "2001",
@@ -15433,15 +15524,17 @@
 				"end": "2017",
 				"denomination": 1,
 				"weight": 9.486832980505138,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.456977,
-					38.632423
+					-78.45563589758386,
+					38.630486938836206
 				]
 			}
 		},
@@ -16130,6 +16223,28 @@
 		{
 			"type": "Feature",
 			"properties": {
+				"name": "Mount Zion",
+				"begin": "1996",
+				"end": "1998",
+				"denomination": 1,
+				"weight": 9.899494936611665,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.45563589758386,
+					38.630486938836206
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
 				"name": "New Dale",
 				"begin": "1975",
 				"end": "2001",
@@ -16777,15 +16892,17 @@
 				"end": "2021",
 				"denomination": 1,
 				"weight": 10.14889156509222,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.456977,
-					38.632423
+					-78.45563589758386,
+					38.630486938836206
 				]
 			}
 		},
@@ -21266,6 +21383,28 @@
 		{
 			"type": "Feature",
 			"properties": {
+				"name": "Charlottesville",
+				"begin": "1985",
+				"end": "1989",
+				"denomination": 1,
+				"weight": 12.649110640673518,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.46693195042305,
+					38.0700195824663
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
 				"name": "Cloverdale",
 				"begin": "1913",
 				"end": "1924",
@@ -21620,6 +21759,28 @@
 				"coordinates": [
 					-81.75853,
 					37.061329
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Charlottesville",
+				"begin": "1980",
+				"end": "1984",
+				"denomination": 1,
+				"weight": 12.806248474865697,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.46693195042305,
+					38.0700195824663
 				]
 			}
 		},
@@ -22040,6 +22201,28 @@
 				"coordinates": [
 					-78.81732,
 					38.680447
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Charlottesville",
+				"begin": "1990",
+				"end": "1994",
+				"denomination": 1,
+				"weight": 13.152946437965905,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.46693195042305,
+					38.0700195824663
 				]
 			}
 		},
@@ -23030,6 +23213,28 @@
 				"coordinates": [
 					-79.955562,
 					37.120476
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Charlottesville",
+				"begin": "1995",
+				"end": "2021",
+				"denomination": 1,
+				"weight": 14.106735979665885,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.46693195042305,
+					38.0700195824663
 				]
 			}
 		},
@@ -24078,6 +24283,28 @@
 		{
 			"type": "Feature",
 			"properties": {
+				"name": "Mount Zion",
+				"begin": "1989",
+				"end": "1995",
+				"denomination": 1,
+				"weight": 14.89966442575134,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.45563589758386,
+					38.630486938836206
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
 				"name": "Blue Ridge Chapel",
 				"begin": "1975",
 				"end": "2001",
@@ -24384,18 +24611,20 @@
 			"properties": {
 				"name": "Mount Zion",
 				"begin": "1975",
-				"end": "2001",
+				"end": "1988",
 				"denomination": 1,
 				"weight": 15.264337522473747,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.456977,
-					38.632423
+					-78.45563589758386,
+					38.630486938836206
 				]
 			}
 		},
@@ -27605,15 +27834,17 @@
 				"end": "1974",
 				"denomination": 1,
 				"weight": 19.8997487421324,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.456977,
-					38.632423
+					-78.45563589758386,
+					38.630486938836206
 				]
 			}
 		},
@@ -27662,18 +27893,43 @@
 			"properties": {
 				"name": "Mount Zion",
 				"begin": "1908",
-				"end": "1924",
+				"end": "1909",
 				"denomination": 1,
 				"weight": 20,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren",
+					"Page County"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.456977,
-					38.632423
+					-78.45563589758386,
+					38.630486938836206
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Mount Zion",
+				"begin": "1910",
+				"end": "1924",
+				"denomination": 1,
+				"weight": 20,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.45563589758386,
+					38.630486938836206
 				]
 			}
 		},
@@ -28245,15 +28501,17 @@
 				"end": "1949",
 				"denomination": 1,
 				"weight": 22.360679774997898,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.456977,
-					38.632423
+					-78.45563589758386,
+					38.630486938836206
 				]
 			}
 		},
