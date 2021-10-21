@@ -1,4 +1,4 @@
-function bmhcData(){ return {"idSource":299,"assemblies":{
+function bmhcData(){ return {"idSource":300,"assemblies":{
 	"(Old) Mennonite Church": {
 		"id": 275,
 		"mb": 2,
@@ -8140,28 +8140,34 @@ function bmhcData(){ return {"idSource":299,"assemblies":{
 		"mb": 1,
 		"events": [
 			{
-				"date": "1850",
+				"date": "1872",
 				"verb": "begin-history",
 				"object": "",
-				"comment": "organization"
+				"comment": ""
 			},
 			{
-				"date": "1850",
+				"date": "1872",
 				"verb": "set-locale",
 				"object": "38.630486938836206, -78.45563589758386",
 				"comment": ""
 			},
 			{
 				"date": "1872",
-				"verb": "just-comment",
-				"object": "",
-				"comment": "founded"
+				"verb": "set-affiliation",
+				"object": 299,
+				"comment": ""
 			},
 			{
 				"date": "1908",
 				"verb": "set-membership",
 				"object": "400",
 				"comment": "6 meeting houses: Rileyville, Newport, Leakes Chapel, Luray, Beahms Chapel,Ida Grove and Trinity"
+			},
+			{
+				"date": "1910",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
 			},
 			{
 				"date": "1925",
@@ -9602,6 +9608,36 @@ function bmhcData(){ return {"idSource":299,"assemblies":{
 				"verb": "set-membership",
 				"object": "78",
 				"comment": "year5n"
+			}
+		]
+	},
+	"Page County": {
+		"id": 299,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1850",
+				"verb": "begin-history",
+				"object": "",
+				"comment": ""
+			},
+			{
+				"date": "1850",
+				"verb": "set-affiliation",
+				"object": 281,
+				"comment": ""
+			},
+			{
+				"date": "1850",
+				"verb": "set-locale",
+				"object": "38.648870, -78.466439",
+				"comment": ""
+			},
+			{
+				"date": "1910",
+				"verb": "expire-into",
+				"object": "",
+				"comment": ""
 			}
 		]
 	},
