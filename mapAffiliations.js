@@ -6,6 +6,7 @@ function mapAffiliations(){ return [
 	"Eastern Mount Carmel",
 	"Western Mount Carmel",
 	"Knights Chapel",
+	"Page County",
 	"Flat Rock",
 	"Pleasant View (VA)",
 	"(Old) Mennonite Church",
