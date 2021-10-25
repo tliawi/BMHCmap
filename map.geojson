@@ -2450,6 +2450,52 @@
 			"properties": {
 				"name": "Leakes Chapel",
 				"begin": "1906",
+				"end": "1907",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"German Baptist Brethren",
+					"Page County"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.528418,
+					38.571556
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Leakes Chapel",
+				"begin": "1908",
+				"end": "1909",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Church of the Brethren",
+					"Page County"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.528418,
+					38.571556
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Leakes Chapel",
+				"begin": "1910",
 				"end": "1958",
 				"denomination": 1,
 				"weight": 0,
@@ -2679,7 +2725,10 @@
 				"end": "1954",
 				"denomination": 1,
 				"weight": 0,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren",
+					"Mount Zion"
+				],
 				"tags": [],
 				"photo": ""
 			},
@@ -17216,7 +17265,9 @@
 				"end": "2021",
 				"denomination": 1,
 				"weight": 10.246950765959598,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
@@ -17785,6 +17836,28 @@
 				"coordinates": [
 					-78.702977,
 					38.601998
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Luray",
+				"begin": "2000",
+				"end": "2017",
+				"denomination": 1,
+				"weight": 10.488088481701515,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.452362,
+					38.664598
 				]
 			}
 		},
@@ -20059,10 +20132,12 @@
 			"properties": {
 				"name": "Luray",
 				"begin": "1999",
-				"end": "2017",
+				"end": "1999",
 				"denomination": 1,
 				"weight": 11.874342087037917,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
@@ -21068,7 +21143,9 @@
 				"end": "2021",
 				"denomination": 1,
 				"weight": 12.489995996796797,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
@@ -21852,7 +21929,9 @@
 				"end": "1974",
 				"denomination": 1,
 				"weight": 12.884098726725126,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
@@ -22654,7 +22733,9 @@
 				"end": "1979",
 				"denomination": 1,
 				"weight": 13.45362404707371,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
@@ -22996,7 +23077,9 @@
 				"end": "1974",
 				"denomination": 1,
 				"weight": 13.784048752090222,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
@@ -23045,6 +23128,28 @@
 				"coordinates": [
 					-78.594486,
 					38.873031
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Luray",
+				"begin": "1989",
+				"end": "1998",
+				"denomination": 1,
+				"weight": 13.856406460551018,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.452362,
+					38.664598
 				]
 			}
 		},
@@ -23526,7 +23631,9 @@
 				"end": "2001",
 				"denomination": 1,
 				"weight": 14.212670403551895,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
@@ -25421,10 +25528,12 @@
 			"properties": {
 				"name": "Luray",
 				"begin": "1975",
-				"end": "1998",
+				"end": "1988",
 				"denomination": 1,
 				"weight": 16.30950643030009,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
@@ -25726,7 +25835,9 @@
 				"end": "2017",
 				"denomination": 1,
 				"weight": 16.64331697709324,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
