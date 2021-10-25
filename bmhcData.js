@@ -6100,6 +6100,12 @@ function bmhcData(){ return {"idSource":300,"assemblies":{
 				"comment": ""
 			},
 			{
+				"date": "1906",
+				"verb": "set-affiliation",
+				"object": 299,
+				"comment": ""
+			},
+			{
 				"date": "1959",
 				"verb": "just-comment",
 				"object": "",
@@ -6116,6 +6122,12 @@ function bmhcData(){ return {"idSource":300,"assemblies":{
 				"verb": "set-membership",
 				"object": "166",
 				"comment": "year1n"
+			},
+			{
+				"date": "1959",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
 			},
 			{
 				"date": "1975",
@@ -6598,6 +6610,12 @@ function bmhcData(){ return {"idSource":300,"assemblies":{
 				"comment": ""
 			},
 			{
+				"date": "1920",
+				"verb": "set-affiliation",
+				"object": 176,
+				"comment": ""
+			},
+			{
 				"date": "1955",
 				"verb": "just-comment",
 				"object": "",
@@ -6608,6 +6626,12 @@ function bmhcData(){ return {"idSource":300,"assemblies":{
 				"verb": "set-membership",
 				"object": "190",
 				"comment": "membership at organization"
+			},
+			{
+				"date": "1955",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
 			},
 			{
 				"date": "1956",
@@ -6622,10 +6646,22 @@ function bmhcData(){ return {"idSource":300,"assemblies":{
 				"comment": "year2n"
 			},
 			{
+				"date": "1989",
+				"verb": "set-membership",
+				"object": "192",
+				"comment": ""
+			},
+			{
 				"date": "1999",
 				"verb": "set-membership",
 				"object": "141",
 				"comment": "year3n"
+			},
+			{
+				"date": "2000",
+				"verb": "set-membership",
+				"object": "110",
+				"comment": ""
 			},
 			{
 				"date": "2018",
