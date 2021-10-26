@@ -4,7 +4,7 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"name": "Antioch",
+				"name": "Antioch (Franklin)",
 				"begin": "1873",
 				"end": "1924",
 				"denomination": 1,
@@ -1942,6 +1942,29 @@
 		{
 			"type": "Feature",
 			"properties": {
+				"name": "Gouchenour's Chapel",
+				"begin": "1932",
+				"end": "2021",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Church of the Brethren",
+					"Mount Zion"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.44815384041367,
+					38.61717477827462
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
 				"name": "Grace Menn. Fellow.",
 				"begin": "1997",
 				"end": "1999",
@@ -2499,7 +2522,10 @@
 				"end": "1958",
 				"denomination": 1,
 				"weight": 0,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren",
+					"Mount Zion"
+				],
 				"tags": [],
 				"photo": ""
 			},
@@ -3253,12 +3279,57 @@
 			"type": "Feature",
 			"properties": {
 				"name": "Mount Zion",
+				"begin": "1910",
+				"end": "1924",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.45563589758386,
+					38.630486938836206
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Mount Zion meetinghouse",
 				"begin": "1872",
 				"end": "1907",
 				"denomination": 1,
 				"weight": 0,
 				"affiliations": [
 					"German Baptist Brethren",
+					"Page County"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.45563589758386,
+					38.630486938836206
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Mount Zion meetinghouse",
+				"begin": "1908",
+				"end": "2021",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Church of the Brethren",
 					"Page County"
 				],
 				"tags": [],
@@ -3585,10 +3656,59 @@
 			"properties": {
 				"name": "Newport",
 				"begin": "1896",
+				"end": "1907",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"German Baptist Brethren",
+					"Page County"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.599717,
+					38.574904
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Newport",
+				"begin": "1908",
+				"end": "1909",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Church of the Brethren",
+					"Page County"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.599717,
+					38.574904
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Newport",
+				"begin": "1910",
 				"end": "1958",
 				"denomination": 1,
 				"weight": 0,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren",
+					"Mount Zion"
+				],
 				"tags": [],
 				"photo": ""
 			},
@@ -3723,26 +3843,6 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"name": "Oak Hill (Powells Fort)",
-				"begin": "1871",
-				"end": "1924",
-				"denomination": 1,
-				"weight": 0,
-				"affiliations": [],
-				"tags": [],
-				"photo": ""
-			},
-			"geometry": {
-				"type": "Point",
-				"coordinates": [
-					-78.417149,
-					38.843662
-				]
-			}
-		},
-		{
-			"type": "Feature",
-			"properties": {
 				"name": "Oakvale",
 				"begin": "1906",
 				"end": "1924",
@@ -3810,28 +3910,6 @@
 				"weight": 0,
 				"affiliations": [
 					"German Baptist Brethren"
-				],
-				"tags": [],
-				"photo": ""
-			},
-			"geometry": {
-				"type": "Point",
-				"coordinates": [
-					-78.466439,
-					38.64887
-				]
-			}
-		},
-		{
-			"type": "Feature",
-			"properties": {
-				"name": "Page County",
-				"begin": "1908",
-				"end": "2021",
-				"denomination": 1,
-				"weight": 0,
-				"affiliations": [
-					"Church of the Brethren"
 				],
 				"tags": [],
 				"photo": ""
@@ -4255,6 +4333,73 @@
 		{
 			"type": "Feature",
 			"properties": {
+				"name": "Powell's Fort",
+				"begin": "1871",
+				"end": "1900",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"German Baptist Brethren",
+					"Woodstock"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.41673057739706,
+					38.843260877796745
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Powell's Fort",
+				"begin": "1901",
+				"end": "1907",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"German Baptist Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.41673057739706,
+					38.843260877796745
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Powell's Fort",
+				"begin": "1908",
+				"end": "1924",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.41673057739706,
+					38.843260877796745
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
 				"name": "Pulaski",
 				"begin": "1915",
 				"end": "1920",
@@ -4357,18 +4502,44 @@
 			"properties": {
 				"name": "Rileyville",
 				"begin": "1908",
-				"end": "1926",
+				"end": "1909",
 				"denomination": 1,
 				"weight": 0,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren",
+					"Page County"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.387668,
-					38.764882
+					-78.38814745534067,
+					38.76361533654518
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Rileyville",
+				"begin": "1910",
+				"end": "1926",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Church of the Brethren",
+					"Mount Zion"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.38814745534067,
+					38.76361533654518
 				]
 			}
 		},
@@ -5048,6 +5219,28 @@
 		{
 			"type": "Feature",
 			"properties": {
+				"name": "Trinity (Luray)",
+				"begin": "1961",
+				"end": "1988",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.44815384041367,
+					38.61717477827462
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
 				"name": "Trissels",
 				"begin": "1822",
 				"end": "1904",
@@ -5503,6 +5696,50 @@
 		{
 			"type": "Feature",
 			"properties": {
+				"name": "Woodstock",
+				"begin": "1827",
+				"end": "1907",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"German Baptist Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.51953745963506,
+					38.86745340263874
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Woodstock",
+				"begin": "1908",
+				"end": "2021",
+				"denomination": 1,
+				"weight": 0,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.51953745963506,
+					38.86745340263874
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
 				"name": "Zion",
 				"begin": "1885",
 				"end": "1904",
@@ -5943,7 +6180,7 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"name": "Antioch, Woodstock",
+				"name": "Antioch (Woodstock)",
 				"begin": "1827",
 				"end": "1924",
 				"denomination": 1,
@@ -10458,18 +10695,20 @@
 			"properties": {
 				"name": "Rileyville",
 				"begin": "1975",
-				"end": "2001",
+				"end": "1988",
 				"denomination": 1,
 				"weight": 6.6332495807108,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.387668,
-					38.764882
+					-78.38814745534067,
+					38.76361533654518
 				]
 			}
 		},
@@ -11440,20 +11679,22 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"name": "Oak Hill (Powells Fort)",
+				"name": "Powell's Fort",
 				"begin": "1925",
 				"end": "1949",
 				"denomination": 1,
 				"weight": 7.211102550927978,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.417149,
-					38.843662
+					-78.41673057739706,
+					38.843260877796745
 				]
 			}
 		},
@@ -11574,6 +11815,28 @@
 				"coordinates": [
 					-79.041151,
 					38.496004
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Rileyville",
+				"begin": "1989",
+				"end": "2001",
+				"denomination": 1,
+				"weight": 7.280109889280518,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.38814745534067,
+					38.76361533654518
 				]
 			}
 		},
@@ -12484,20 +12747,22 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"name": "Oak Hill (Powells Fort)",
+				"name": "Oak Hill (Powell's Fort)",
 				"begin": "2018",
 				"end": "2021",
 				"denomination": 1,
 				"weight": 7.874007874011811,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.417149,
-					38.843662
+					-78.41673057739706,
+					38.843260877796745
 				]
 			}
 		},
@@ -12851,15 +13116,17 @@
 				"end": "2017",
 				"denomination": 1,
 				"weight": 8.06225774829855,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.387668,
-					38.764882
+					-78.38814745534067,
+					38.76361533654518
 				]
 			}
 		},
@@ -12960,6 +13227,28 @@
 				"coordinates": [
 					-78.915479,
 					38.647708
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Trinity (Luray)",
+				"begin": "1989",
+				"end": "2021",
+				"denomination": 1,
+				"weight": 8.12403840463596,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.44815384041367,
+					38.61717477827462
 				]
 			}
 		},
@@ -13091,15 +13380,17 @@
 				"end": "1974",
 				"denomination": 1,
 				"weight": 8.246211251235321,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.387668,
-					38.764882
+					-78.38814745534067,
+					38.76361533654518
 				]
 			}
 		},
@@ -13290,26 +13581,6 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"name": "Oak Hill (Powells Fort)",
-				"begin": "1950",
-				"end": "1974",
-				"denomination": 1,
-				"weight": 8.306623862918075,
-				"affiliations": [],
-				"tags": [],
-				"photo": ""
-			},
-			"geometry": {
-				"type": "Point",
-				"coordinates": [
-					-78.417149,
-					38.843662
-				]
-			}
-		},
-		{
-			"type": "Feature",
-			"properties": {
 				"name": "Original Old Order Menn.",
 				"begin": "1902",
 				"end": "1956",
@@ -13324,6 +13595,28 @@
 				"coordinates": [
 					-78.961819,
 					38.432664
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Powell's Fort",
+				"begin": "1950",
+				"end": "1974",
+				"denomination": 1,
+				"weight": 8.306623862918075,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.41673057739706,
+					38.843260877796745
 				]
 			}
 		},
@@ -13452,20 +13745,22 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"name": "Oak Hill (Powells Fort)",
+				"name": "Powell's Fort",
 				"begin": "1975",
-				"end": "1998",
+				"end": "2021",
 				"denomination": 1,
 				"weight": 8.366600265340756,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.417149,
-					38.843662
+					-78.41673057739706,
+					38.843260877796745
 				]
 			}
 		},
@@ -13992,6 +14287,28 @@
 				"coordinates": [
 					-78.821456,
 					38.257439
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Oak Hill (Powell's Fort)",
+				"begin": "1997",
+				"end": "1998",
+				"denomination": 1,
+				"weight": 8.660254037844387,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.41673057739706,
+					38.843260877796745
 				]
 			}
 		},
@@ -15106,6 +15423,28 @@
 		{
 			"type": "Feature",
 			"properties": {
+				"name": "Oak Hill (Powell's Fort)",
+				"begin": "1980",
+				"end": "1988",
+				"denomination": 1,
+				"weight": 9.16515138991168,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.41673057739706,
+					38.843260877796745
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
 				"name": "Collinsville",
 				"begin": "1964",
 				"end": "1974",
@@ -15308,6 +15647,28 @@
 		{
 			"type": "Feature",
 			"properties": {
+				"name": "Oak Hill (Powell's Fort)",
+				"begin": "1989",
+				"end": "1996",
+				"denomination": 1,
+				"weight": 9.273618495495704,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.41673057739706,
+					38.843260877796745
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
 				"name": "Oronoco",
 				"begin": "1975",
 				"end": "2001",
@@ -15388,20 +15749,22 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"name": "Oak Hill (Powells Fort)",
+				"name": "Oak Hill (Powell's Fort)",
 				"begin": "1999",
 				"end": "2017",
 				"denomination": 1,
 				"weight": 9.38083151964686,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.417149,
-					38.843662
+					-78.41673057739706,
+					38.843260877796745
 				]
 			}
 		},
@@ -16901,15 +17264,17 @@
 				"end": "2021",
 				"denomination": 1,
 				"weight": 10.099504938362077,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.387668,
-					38.764882
+					-78.38814745534067,
+					38.76361533654518
 				]
 			}
 		},
@@ -17467,7 +17832,9 @@
 				"end": "2021",
 				"denomination": 1,
 				"weight": 10.295630140987,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
@@ -17944,7 +18311,7 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"name": "Antioch, Woodstock",
+				"name": "Antioch (Woodstock)",
 				"begin": "1999",
 				"end": "2017",
 				"denomination": 1,
@@ -18058,6 +18425,28 @@
 				"coordinates": [
 					-78.995987,
 					38.041971
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Newport",
+				"begin": "1996",
+				"end": "1999",
+				"denomination": 1,
+				"weight": 10.583005244258363,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.599717,
+					38.574904
 				]
 			}
 		},
@@ -18189,15 +18578,17 @@
 				"end": "1949",
 				"denomination": 1,
 				"weight": 10.677078252031311,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.387668,
-					38.764882
+					-78.38814745534067,
+					38.76361533654518
 				]
 			}
 		},
@@ -18666,6 +19057,28 @@
 		{
 			"type": "Feature",
 			"properties": {
+				"name": "Newport",
+				"begin": "2000",
+				"end": "2001",
+				"denomination": 1,
+				"weight": 10.954451150103322,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.599717,
+					38.574904
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
 				"name": "Pleasant Dale",
 				"begin": "1980",
 				"end": "2001",
@@ -18751,7 +19164,9 @@
 				"end": "1974",
 				"denomination": 1,
 				"weight": 11.090536506409418,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
@@ -19051,7 +19466,9 @@
 				"end": "2017",
 				"denomination": 1,
 				"weight": 11.224972160321824,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
@@ -20596,7 +21013,7 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"name": "Antioch, Woodstock",
+				"name": "Antioch (Woodstock)",
 				"begin": "1925",
 				"end": "1949",
 				"denomination": 1,
@@ -20616,7 +21033,7 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"name": "Antioch, Woodstock",
+				"name": "Antioch (Woodstock)",
 				"begin": "1975",
 				"end": "1998",
 				"denomination": 1,
@@ -24412,6 +24829,28 @@
 		{
 			"type": "Feature",
 			"properties": {
+				"name": "Newport",
+				"begin": "1989",
+				"end": "1995",
+				"denomination": 1,
+				"weight": 14.89966442575134,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.599717,
+					38.574904
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
 				"name": "Blue Ridge Chapel",
 				"begin": "1975",
 				"end": "2001",
@@ -26432,10 +26871,12 @@
 			"properties": {
 				"name": "Newport",
 				"begin": "1975",
-				"end": "2001",
+				"end": "1979",
 				"denomination": 1,
 				"weight": 17.406895185529212,
-				"affiliations": [],
+				"affiliations": [
+					"Church of the Brethren"
+				],
 				"tags": [],
 				"photo": ""
 			},
@@ -26490,7 +26931,7 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"name": "Antioch, Woodstock",
+				"name": "Antioch (Woodstock)",
 				"begin": "2018",
 				"end": "2021",
 				"denomination": 1,
@@ -26938,7 +27379,7 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"name": "Antioch",
+				"name": "Antioch (Franklin)",
 				"begin": "2018",
 				"end": "2021",
 				"denomination": 1,
@@ -27078,7 +27519,7 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"name": "Antioch",
+				"name": "Antioch (Franklin)",
 				"begin": "1925",
 				"end": "1949",
 				"denomination": 1,
@@ -27092,6 +27533,28 @@
 				"coordinates": [
 					-79.97997,
 					37.038064
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Newport",
+				"begin": "1980",
+				"end": "1988",
+				"denomination": 1,
+				"weight": 18.439088914585774,
+				"affiliations": [
+					"Church of the Brethren"
+				],
+				"tags": [],
+				"photo": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-78.599717,
+					38.574904
 				]
 			}
 		},
@@ -27498,7 +27961,7 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"name": "Antioch",
+				"name": "Antioch (Franklin)",
 				"begin": "1975",
 				"end": "2017",
 				"denomination": 1,
@@ -27518,7 +27981,7 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"name": "Antioch, Woodstock",
+				"name": "Antioch (Woodstock)",
 				"begin": "1950",
 				"end": "1974",
 				"denomination": 1,
@@ -28002,32 +28465,9 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"name": "Mount Zion",
+				"name": "Page County",
 				"begin": "1908",
-				"end": "1909",
-				"denomination": 1,
-				"weight": 20,
-				"affiliations": [
-					"Church of the Brethren",
-					"Page County"
-				],
-				"tags": [],
-				"photo": ""
-			},
-			"geometry": {
-				"type": "Point",
-				"coordinates": [
-					-78.45563589758386,
-					38.630486938836206
-				]
-			}
-		},
-		{
-			"type": "Feature",
-			"properties": {
-				"name": "Mount Zion",
-				"begin": "1910",
-				"end": "1924",
+				"end": "2021",
 				"denomination": 1,
 				"weight": 20,
 				"affiliations": [
@@ -28039,8 +28479,8 @@
 			"geometry": {
 				"type": "Point",
 				"coordinates": [
-					-78.45563589758386,
-					38.630486938836206
+					-78.466439,
+					38.64887
 				]
 			}
 		},
@@ -28969,7 +29409,7 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"name": "Antioch",
+				"name": "Antioch (Franklin)",
 				"begin": "1950",
 				"end": "1974",
 				"denomination": 1,
