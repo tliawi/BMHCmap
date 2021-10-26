@@ -1,4 +1,4 @@
-function bmhcData(){ return {"idSource":304,"assemblies":{
+function bmhcData(){ return {"idSource":307,"assemblies":{
 	"(Old) Mennonite Church": {
 		"id": 275,
 		"mb": 2,
@@ -17,7 +17,7 @@ function bmhcData(){ return {"idSource":304,"assemblies":{
 			}
 		]
 	},
-	"Antioch": {
+	"Antioch (Franklin)": {
 		"id": 245,
 		"mb": 1,
 		"events": [
@@ -71,7 +71,7 @@ function bmhcData(){ return {"idSource":304,"assemblies":{
 			}
 		]
 	},
-	"Antioch, Woodstock": {
+	"Antioch (Woodstock)": {
 		"id": 133,
 		"mb": 1,
 		"events": [
@@ -8206,28 +8206,16 @@ function bmhcData(){ return {"idSource":304,"assemblies":{
 		"mb": 1,
 		"events": [
 			{
-				"date": "1872",
+				"date": "1910",
 				"verb": "begin-history",
 				"object": "",
 				"comment": ""
 			},
 			{
-				"date": "1872",
+				"date": "1910",
 				"verb": "set-locale",
 				"object": "38.630486938836206, -78.45563589758386",
 				"comment": ""
-			},
-			{
-				"date": "1872",
-				"verb": "set-affiliation",
-				"object": 299,
-				"comment": ""
-			},
-			{
-				"date": "1908",
-				"verb": "set-membership",
-				"object": "400",
-				"comment": "6 meeting houses: Rileyville, Newport, Leakes Chapel, Luray, Beahms Chapel,Ida Grove and Trinity"
 			},
 			{
 				"date": "1910",
@@ -8282,6 +8270,36 @@ function bmhcData(){ return {"idSource":304,"assemblies":{
 				"verb": "set-membership",
 				"object": "103",
 				"comment": "year6n"
+			}
+		]
+	},
+	"Mount Zion meetinghouse": {
+		"id": 306,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1872",
+				"verb": "begin-history",
+				"object": "",
+				"comment": ""
+			},
+			{
+				"date": "1872",
+				"verb": "set-locale",
+				"object": "38.630486938836206, -78.45563589758386",
+				"comment": ""
+			},
+			{
+				"date": "1872",
+				"verb": "set-affiliation",
+				"object": 299,
+				"comment": ""
+			},
+			{
+				"date": "1910",
+				"verb": "expire-into",
+				"object": 176,
+				"comment": ""
 			}
 		]
 	},
@@ -9437,63 +9455,27 @@ function bmhcData(){ return {"idSource":304,"assemblies":{
 			}
 		]
 	},
-	"Oak Hill (Powells Fort)": {
+	"Oak Hill (Powell's Fort)": {
 		"id": 138,
 		"mb": 1,
 		"events": [
 			{
-				"date": "1871",
+				"date": "1980",
 				"verb": "begin-history",
 				"object": "",
-				"comment": "founded"
-			},
-			{
-				"date": "1871",
-				"verb": "set-locale",
-				"object": "38.843260877796745, -78.41673057739706",
 				"comment": ""
 			},
 			{
-				"date": "1901",
-				"verb": "just-comment",
-				"object": "",
-				"comment": "organization"
-			},
-			{
-				"date": "1901",
-				"verb": "set-affiliation",
-				"object": 302,
-				"comment": ""
-			},
-			{
-				"date": "1901",
-				"verb": "set-affiliation",
-				"object": 281,
-				"comment": ""
-			},
-			{
-				"date": "1908",
+				"date": "1980",
 				"verb": "set-affiliation",
 				"object": 280,
 				"comment": ""
 			},
 			{
-				"date": "1925",
-				"verb": "set-membership",
-				"object": "52",
-				"comment": "year1n"
-			},
-			{
-				"date": "1950",
-				"verb": "set-membership",
-				"object": "69",
-				"comment": "year2n"
-			},
-			{
-				"date": "1975",
-				"verb": "set-membership",
-				"object": "70",
-				"comment": "year3n"
+				"date": "1980",
+				"verb": "set-locale",
+				"object": "38.843260877796745, -78.41673057739706",
+				"comment": ""
 			},
 			{
 				"date": "1980",
@@ -9772,9 +9754,15 @@ function bmhcData(){ return {"idSource":304,"assemblies":{
 				"comment": ""
 			},
 			{
+				"date": "1908",
+				"verb": "set-membership",
+				"object": "400",
+				"comment": ""
+			},
+			{
 				"date": "1910",
 				"verb": "expire-into",
-				"object": "",
+				"object": 176,
 				"comment": ""
 			}
 		]
@@ -10790,6 +10778,60 @@ function bmhcData(){ return {"idSource":304,"assemblies":{
 				"verb": "set-membership",
 				"object": "98",
 				"comment": "year5n"
+			}
+		]
+	},
+	"Powell's Fort": {
+		"id": 305,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1871",
+				"verb": "begin-history",
+				"object": "",
+				"comment": ""
+			},
+			{
+				"date": "1871",
+				"verb": "set-locale",
+				"object": "38.843260877796745, -78.41673057739706",
+				"comment": ""
+			},
+			{
+				"date": "1871",
+				"verb": "set-affiliation",
+				"object": 302,
+				"comment": ""
+			},
+			{
+				"date": "1901",
+				"verb": "set-affiliation",
+				"object": 281,
+				"comment": ""
+			},
+			{
+				"date": "1925",
+				"verb": "set-membership",
+				"object": "52",
+				"comment": ""
+			},
+			{
+				"date": "1950",
+				"verb": "set-membership",
+				"object": "69",
+				"comment": ""
+			},
+			{
+				"date": "1975",
+				"verb": "set-membership",
+				"object": "70",
+				"comment": ""
+			},
+			{
+				"date": "1980",
+				"verb": "expire-into",
+				"object": 138,
+				"comment": ""
 			}
 		]
 	},
