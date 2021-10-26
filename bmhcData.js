@@ -1,4 +1,4 @@
-function bmhcData(){ return {"idSource":300,"assemblies":{
+function bmhcData(){ return {"idSource":304,"assemblies":{
 	"(Old) Mennonite Church": {
 		"id": 275,
 		"mb": 2,
@@ -4883,6 +4883,36 @@ function bmhcData(){ return {"idSource":300,"assemblies":{
 			}
 		]
 	},
+	"Gouchenour's Chapel": {
+		"id": 300,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1932",
+				"verb": "begin-history",
+				"object": "",
+				"comment": ""
+			},
+			{
+				"date": "1932",
+				"verb": "set-affiliation",
+				"object": 176,
+				"comment": ""
+			},
+			{
+				"date": "1932",
+				"verb": "set-locale",
+				"object": "38.61717477827462, -78.44815384041367",
+				"comment": ""
+			},
+			{
+				"date": "1961",
+				"verb": "expire-into",
+				"object": 209,
+				"comment": ""
+			}
+		]
+	},
 	"Grace Menn. Fellow.": {
 		"id": 56,
 		"mb": 2,
@@ -8920,6 +8950,12 @@ function bmhcData(){ return {"idSource":300,"assemblies":{
 				"comment": ""
 			},
 			{
+				"date": "1896",
+				"verb": "set-affiliation",
+				"object": 299,
+				"comment": ""
+			},
+			{
 				"date": "1959",
 				"verb": "just-comment",
 				"object": "",
@@ -8933,15 +8969,39 @@ function bmhcData(){ return {"idSource":300,"assemblies":{
 			},
 			{
 				"date": "1959",
-				"verb": "set-membership",
-				"object": "123",
-				"comment": "year1n"
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
 			},
 			{
 				"date": "1975",
 				"verb": "set-membership",
 				"object": "303",
 				"comment": "year2n"
+			},
+			{
+				"date": "1980",
+				"verb": "set-membership",
+				"object": "340",
+				"comment": ""
+			},
+			{
+				"date": "1989",
+				"verb": "set-membership",
+				"object": "222",
+				"comment": ""
+			},
+			{
+				"date": "1996",
+				"verb": "set-membership",
+				"object": "112",
+				"comment": ""
+			},
+			{
+				"date": "2000",
+				"verb": "set-membership",
+				"object": "120",
+				"comment": ""
 			},
 			{
 				"date": "2002",
@@ -9390,7 +9450,7 @@ function bmhcData(){ return {"idSource":300,"assemblies":{
 			{
 				"date": "1871",
 				"verb": "set-locale",
-				"object": "38.843662,-78.417149",
+				"object": "38.843260877796745, -78.41673057739706",
 				"comment": ""
 			},
 			{
@@ -9398,6 +9458,24 @@ function bmhcData(){ return {"idSource":300,"assemblies":{
 				"verb": "just-comment",
 				"object": "",
 				"comment": "organization"
+			},
+			{
+				"date": "1901",
+				"verb": "set-affiliation",
+				"object": 302,
+				"comment": ""
+			},
+			{
+				"date": "1901",
+				"verb": "set-affiliation",
+				"object": 281,
+				"comment": ""
+			},
+			{
+				"date": "1908",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
 			},
 			{
 				"date": "1925",
@@ -9416,6 +9494,30 @@ function bmhcData(){ return {"idSource":300,"assemblies":{
 				"verb": "set-membership",
 				"object": "70",
 				"comment": "year3n"
+			},
+			{
+				"date": "1980",
+				"verb": "just-comment",
+				"object": "",
+				"comment": "Powell's Fort name changed to Oak Hill"
+			},
+			{
+				"date": "1980",
+				"verb": "set-membership",
+				"object": "84",
+				"comment": ""
+			},
+			{
+				"date": "1989",
+				"verb": "set-membership",
+				"object": "86",
+				"comment": ""
+			},
+			{
+				"date": "1997",
+				"verb": "set-membership",
+				"object": "75",
+				"comment": ""
 			},
 			{
 				"date": "1999",
@@ -10980,7 +11082,13 @@ function bmhcData(){ return {"idSource":300,"assemblies":{
 			{
 				"date": "1908",
 				"verb": "set-locale",
-				"object": "38.764882,-78.387668",
+				"object": "38.76361533654518, -78.38814745534067",
+				"comment": ""
+			},
+			{
+				"date": "1908",
+				"verb": "set-affiliation",
+				"object": 299,
 				"comment": ""
 			},
 			{
@@ -10994,6 +11102,12 @@ function bmhcData(){ return {"idSource":300,"assemblies":{
 				"verb": "set-membership",
 				"object": "114",
 				"comment": "membership at organization"
+			},
+			{
+				"date": "1927",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
 			},
 			{
 				"date": "1929",
@@ -11012,6 +11126,12 @@ function bmhcData(){ return {"idSource":300,"assemblies":{
 				"verb": "set-membership",
 				"object": "44",
 				"comment": "year3n"
+			},
+			{
+				"date": "1989",
+				"verb": "set-membership",
+				"object": "53",
+				"comment": ""
 			},
 			{
 				"date": "2002",
@@ -12803,6 +12923,36 @@ function bmhcData(){ return {"idSource":300,"assemblies":{
 			}
 		]
 	},
+	"Trinity (Luray)": {
+		"id": 301,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1961",
+				"verb": "begin-history",
+				"object": "",
+				"comment": "Gouchenour's Chapel is renamed Trinity"
+			},
+			{
+				"date": "1961",
+				"verb": "set-locale",
+				"object": "38.61717477827462, -78.44815384041367",
+				"comment": ""
+			},
+			{
+				"date": "1961",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
+			},
+			{
+				"date": "1989",
+				"verb": "set-membership",
+				"object": "66",
+				"comment": ""
+			}
+		]
+	},
 	"Trissels": {
 		"id": 72,
 		"mb": 2,
@@ -14042,6 +14192,36 @@ function bmhcData(){ return {"idSource":300,"assemblies":{
 				"verb": "set-membership",
 				"object": "12",
 				"comment": "year5n"
+			}
+		]
+	},
+	"Woodstock": {
+		"id": 302,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1827",
+				"verb": "begin-history",
+				"object": "",
+				"comment": ""
+			},
+			{
+				"date": "1827",
+				"verb": "set-locale",
+				"object": "38.86745340263874, -78.51953745963506",
+				"comment": ""
+			},
+			{
+				"date": "1827",
+				"verb": "set-affiliation",
+				"object": 281,
+				"comment": ""
+			},
+			{
+				"date": "1908",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
 			}
 		]
 	},
