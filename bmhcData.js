@@ -1,4 +1,4 @@
-function bmhcData(){ return {"idSource":299,"assemblies":{
+function bmhcData(){ return {"idSource":307,"assemblies":{
 	"(Old) Mennonite Church": {
 		"id": 275,
 		"mb": 2,
@@ -17,7 +17,7 @@ function bmhcData(){ return {"idSource":299,"assemblies":{
 			}
 		]
 	},
-	"Antioch": {
+	"Antioch (Franklin)": {
 		"id": 245,
 		"mb": 1,
 		"events": [
@@ -71,7 +71,7 @@ function bmhcData(){ return {"idSource":299,"assemblies":{
 			}
 		]
 	},
-	"Antioch, Woodstock": {
+	"Antioch (Woodstock)": {
 		"id": 133,
 		"mb": 1,
 		"events": [
@@ -2131,6 +2131,36 @@ function bmhcData(){ return {"idSource":299,"assemblies":{
 				"date": "1957",
 				"verb": "set-affiliation",
 				"object": 280,
+				"comment": ""
+			},
+			{
+				"date": "1958",
+				"verb": "set-locale",
+				"object": "38.0700195824663, -78.46693195042305",
+				"comment": ""
+			},
+			{
+				"date": "1980",
+				"verb": "set-membership",
+				"object": "164",
+				"comment": ""
+			},
+			{
+				"date": "1985",
+				"verb": "set-membership",
+				"object": "160",
+				"comment": ""
+			},
+			{
+				"date": "1990",
+				"verb": "set-membership",
+				"object": "173",
+				"comment": ""
+			},
+			{
+				"date": "1995",
+				"verb": "set-membership",
+				"object": "199",
 				"comment": ""
 			}
 		]
@@ -4853,6 +4883,36 @@ function bmhcData(){ return {"idSource":299,"assemblies":{
 			}
 		]
 	},
+	"Gouchenour's Chapel": {
+		"id": 300,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1932",
+				"verb": "begin-history",
+				"object": "",
+				"comment": ""
+			},
+			{
+				"date": "1932",
+				"verb": "set-affiliation",
+				"object": 176,
+				"comment": ""
+			},
+			{
+				"date": "1932",
+				"verb": "set-locale",
+				"object": "38.61717477827462, -78.44815384041367",
+				"comment": ""
+			},
+			{
+				"date": "1961",
+				"verb": "expire-into",
+				"object": 209,
+				"comment": ""
+			}
+		]
+	},
 	"Grace Menn. Fellow.": {
 		"id": 56,
 		"mb": 2,
@@ -6070,6 +6130,12 @@ function bmhcData(){ return {"idSource":299,"assemblies":{
 				"comment": ""
 			},
 			{
+				"date": "1906",
+				"verb": "set-affiliation",
+				"object": 299,
+				"comment": ""
+			},
+			{
 				"date": "1959",
 				"verb": "just-comment",
 				"object": "",
@@ -6086,6 +6152,12 @@ function bmhcData(){ return {"idSource":299,"assemblies":{
 				"verb": "set-membership",
 				"object": "166",
 				"comment": "year1n"
+			},
+			{
+				"date": "1959",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
 			},
 			{
 				"date": "1975",
@@ -6568,6 +6640,12 @@ function bmhcData(){ return {"idSource":299,"assemblies":{
 				"comment": ""
 			},
 			{
+				"date": "1920",
+				"verb": "set-affiliation",
+				"object": 176,
+				"comment": ""
+			},
+			{
 				"date": "1955",
 				"verb": "just-comment",
 				"object": "",
@@ -6578,6 +6656,12 @@ function bmhcData(){ return {"idSource":299,"assemblies":{
 				"verb": "set-membership",
 				"object": "190",
 				"comment": "membership at organization"
+			},
+			{
+				"date": "1955",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
 			},
 			{
 				"date": "1956",
@@ -6592,10 +6676,22 @@ function bmhcData(){ return {"idSource":299,"assemblies":{
 				"comment": "year2n"
 			},
 			{
+				"date": "1989",
+				"verb": "set-membership",
+				"object": "192",
+				"comment": ""
+			},
+			{
 				"date": "1999",
 				"verb": "set-membership",
 				"object": "141",
 				"comment": "year3n"
+			},
+			{
+				"date": "2000",
+				"verb": "set-membership",
+				"object": "110",
+				"comment": ""
 			},
 			{
 				"date": "2018",
@@ -8110,28 +8206,22 @@ function bmhcData(){ return {"idSource":299,"assemblies":{
 		"mb": 1,
 		"events": [
 			{
-				"date": "1850",
+				"date": "1910",
 				"verb": "begin-history",
 				"object": "",
-				"comment": "organization"
-			},
-			{
-				"date": "1850",
-				"verb": "set-locale",
-				"object": "38.632423,-78.456977",
 				"comment": ""
 			},
 			{
-				"date": "1872",
-				"verb": "just-comment",
-				"object": "",
-				"comment": "founded"
+				"date": "1910",
+				"verb": "set-locale",
+				"object": "38.630486938836206, -78.45563589758386",
+				"comment": ""
 			},
 			{
-				"date": "1908",
-				"verb": "set-membership",
-				"object": "400",
-				"comment": "year1n"
+				"date": "1910",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
 			},
 			{
 				"date": "1925",
@@ -8152,6 +8242,24 @@ function bmhcData(){ return {"idSource":299,"assemblies":{
 				"comment": "year4n"
 			},
 			{
+				"date": "1989",
+				"verb": "set-membership",
+				"object": "222",
+				"comment": ""
+			},
+			{
+				"date": "1996",
+				"verb": "set-membership",
+				"object": "98",
+				"comment": ""
+			},
+			{
+				"date": "1999",
+				"verb": "set-membership",
+				"object": "86",
+				"comment": ""
+			},
+			{
 				"date": "2002",
 				"verb": "set-membership",
 				"object": "90",
@@ -8162,6 +8270,36 @@ function bmhcData(){ return {"idSource":299,"assemblies":{
 				"verb": "set-membership",
 				"object": "103",
 				"comment": "year6n"
+			}
+		]
+	},
+	"Mount Zion meetinghouse": {
+		"id": 306,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1872",
+				"verb": "begin-history",
+				"object": "",
+				"comment": ""
+			},
+			{
+				"date": "1872",
+				"verb": "set-locale",
+				"object": "38.630486938836206, -78.45563589758386",
+				"comment": ""
+			},
+			{
+				"date": "1872",
+				"verb": "set-affiliation",
+				"object": 299,
+				"comment": ""
+			},
+			{
+				"date": "1910",
+				"verb": "expire-into",
+				"object": 176,
+				"comment": ""
 			}
 		]
 	},
@@ -8830,6 +8968,12 @@ function bmhcData(){ return {"idSource":299,"assemblies":{
 				"comment": ""
 			},
 			{
+				"date": "1896",
+				"verb": "set-affiliation",
+				"object": 299,
+				"comment": ""
+			},
+			{
 				"date": "1959",
 				"verb": "just-comment",
 				"object": "",
@@ -8843,15 +8987,39 @@ function bmhcData(){ return {"idSource":299,"assemblies":{
 			},
 			{
 				"date": "1959",
-				"verb": "set-membership",
-				"object": "123",
-				"comment": "year1n"
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
 			},
 			{
 				"date": "1975",
 				"verb": "set-membership",
 				"object": "303",
 				"comment": "year2n"
+			},
+			{
+				"date": "1980",
+				"verb": "set-membership",
+				"object": "340",
+				"comment": ""
+			},
+			{
+				"date": "1989",
+				"verb": "set-membership",
+				"object": "222",
+				"comment": ""
+			},
+			{
+				"date": "1996",
+				"verb": "set-membership",
+				"object": "112",
+				"comment": ""
+			},
+			{
+				"date": "2000",
+				"verb": "set-membership",
+				"object": "120",
+				"comment": ""
 			},
 			{
 				"date": "2002",
@@ -9287,45 +9455,51 @@ function bmhcData(){ return {"idSource":299,"assemblies":{
 			}
 		]
 	},
-	"Oak Hill (Powells Fort)": {
+	"Oak Hill (Powell's Fort)": {
 		"id": 138,
 		"mb": 1,
 		"events": [
 			{
-				"date": "1871",
+				"date": "1980",
 				"verb": "begin-history",
 				"object": "",
-				"comment": "founded"
-			},
-			{
-				"date": "1871",
-				"verb": "set-locale",
-				"object": "38.843662,-78.417149",
 				"comment": ""
 			},
 			{
-				"date": "1901",
+				"date": "1980",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
+			},
+			{
+				"date": "1980",
+				"verb": "set-locale",
+				"object": "38.843260877796745, -78.41673057739706",
+				"comment": ""
+			},
+			{
+				"date": "1980",
 				"verb": "just-comment",
 				"object": "",
-				"comment": "organization"
+				"comment": "Powell's Fort name changed to Oak Hill"
 			},
 			{
-				"date": "1925",
+				"date": "1980",
 				"verb": "set-membership",
-				"object": "52",
-				"comment": "year1n"
+				"object": "84",
+				"comment": ""
 			},
 			{
-				"date": "1950",
+				"date": "1989",
 				"verb": "set-membership",
-				"object": "69",
-				"comment": "year2n"
+				"object": "86",
+				"comment": ""
 			},
 			{
-				"date": "1975",
+				"date": "1997",
 				"verb": "set-membership",
-				"object": "70",
-				"comment": "year3n"
+				"object": "75",
+				"comment": ""
 			},
 			{
 				"date": "1999",
@@ -9554,6 +9728,42 @@ function bmhcData(){ return {"idSource":299,"assemblies":{
 				"verb": "set-membership",
 				"object": "78",
 				"comment": "year5n"
+			}
+		]
+	},
+	"Page County": {
+		"id": 299,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1850",
+				"verb": "begin-history",
+				"object": "",
+				"comment": ""
+			},
+			{
+				"date": "1850",
+				"verb": "set-affiliation",
+				"object": 281,
+				"comment": ""
+			},
+			{
+				"date": "1850",
+				"verb": "set-locale",
+				"object": "38.648870, -78.466439",
+				"comment": ""
+			},
+			{
+				"date": "1908",
+				"verb": "set-membership",
+				"object": "400",
+				"comment": ""
+			},
+			{
+				"date": "1910",
+				"verb": "expire-into",
+				"object": 176,
+				"comment": ""
 			}
 		]
 	},
@@ -10571,6 +10781,60 @@ function bmhcData(){ return {"idSource":299,"assemblies":{
 			}
 		]
 	},
+	"Powell's Fort": {
+		"id": 305,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1871",
+				"verb": "begin-history",
+				"object": "",
+				"comment": ""
+			},
+			{
+				"date": "1871",
+				"verb": "set-locale",
+				"object": "38.843260877796745, -78.41673057739706",
+				"comment": ""
+			},
+			{
+				"date": "1871",
+				"verb": "set-affiliation",
+				"object": 302,
+				"comment": ""
+			},
+			{
+				"date": "1901",
+				"verb": "set-affiliation",
+				"object": 281,
+				"comment": ""
+			},
+			{
+				"date": "1925",
+				"verb": "set-membership",
+				"object": "52",
+				"comment": ""
+			},
+			{
+				"date": "1950",
+				"verb": "set-membership",
+				"object": "69",
+				"comment": ""
+			},
+			{
+				"date": "1975",
+				"verb": "set-membership",
+				"object": "70",
+				"comment": ""
+			},
+			{
+				"date": "1980",
+				"verb": "expire-into",
+				"object": 138,
+				"comment": ""
+			}
+		]
+	},
 	"Pulaski": {
 		"id": 180,
 		"mb": 1,
@@ -10860,7 +11124,13 @@ function bmhcData(){ return {"idSource":299,"assemblies":{
 			{
 				"date": "1908",
 				"verb": "set-locale",
-				"object": "38.764882,-78.387668",
+				"object": "38.76361533654518, -78.38814745534067",
+				"comment": ""
+			},
+			{
+				"date": "1908",
+				"verb": "set-affiliation",
+				"object": 299,
 				"comment": ""
 			},
 			{
@@ -10874,6 +11144,12 @@ function bmhcData(){ return {"idSource":299,"assemblies":{
 				"verb": "set-membership",
 				"object": "114",
 				"comment": "membership at organization"
+			},
+			{
+				"date": "1927",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
 			},
 			{
 				"date": "1929",
@@ -10892,6 +11168,12 @@ function bmhcData(){ return {"idSource":299,"assemblies":{
 				"verb": "set-membership",
 				"object": "44",
 				"comment": "year3n"
+			},
+			{
+				"date": "1989",
+				"verb": "set-membership",
+				"object": "53",
+				"comment": ""
 			},
 			{
 				"date": "2002",
@@ -12683,6 +12965,36 @@ function bmhcData(){ return {"idSource":299,"assemblies":{
 			}
 		]
 	},
+	"Trinity (Luray)": {
+		"id": 301,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1961",
+				"verb": "begin-history",
+				"object": "",
+				"comment": "Gouchenour's Chapel is renamed Trinity"
+			},
+			{
+				"date": "1961",
+				"verb": "set-locale",
+				"object": "38.61717477827462, -78.44815384041367",
+				"comment": ""
+			},
+			{
+				"date": "1961",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
+			},
+			{
+				"date": "1989",
+				"verb": "set-membership",
+				"object": "66",
+				"comment": ""
+			}
+		]
+	},
 	"Trissels": {
 		"id": 72,
 		"mb": 2,
@@ -13922,6 +14234,36 @@ function bmhcData(){ return {"idSource":299,"assemblies":{
 				"verb": "set-membership",
 				"object": "12",
 				"comment": "year5n"
+			}
+		]
+	},
+	"Woodstock": {
+		"id": 302,
+		"mb": 1,
+		"events": [
+			{
+				"date": "1827",
+				"verb": "begin-history",
+				"object": "",
+				"comment": ""
+			},
+			{
+				"date": "1827",
+				"verb": "set-locale",
+				"object": "38.86745340263874, -78.51953745963506",
+				"comment": ""
+			},
+			{
+				"date": "1827",
+				"verb": "set-affiliation",
+				"object": 281,
+				"comment": ""
+			},
+			{
+				"date": "1908",
+				"verb": "set-affiliation",
+				"object": 280,
+				"comment": ""
 			}
 		]
 	},
