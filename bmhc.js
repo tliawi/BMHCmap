@@ -629,7 +629,7 @@ function BMHCobj(){
     //So by 2010 Weavers church, whose most recent set-affiliation was to Middle District, 
     // whose mostRecentIdentity is Central District, and Central District is affiliated to
     //to Virginia Conference, whose most recent set-affiliation was to (Old) Mennonites,
-    //whose mostRecentIdentity was MCUSA.
+    //whose mostRecentIdentity is MCUSA.
     
     function mostRecentAffiliation(id,date){
         if (id=='') return id;
@@ -660,12 +660,13 @@ function BMHCobj(){
     
     //name and date must be validated beforehand, does not check.
     //returns an array of the ascending affiliations of the named assembly, at the given date
+    //Note: recursion puts most immediate affiliation is last in the array, 
     function getCurrentAffiliations(name, date){
         var mra = mostRecentAffiliation(db.assemblies[name].id,date);
         if (mra == '') return [];
         else {
-            let result = getCurrentAffiliations(mra,date); //damn push returns length of modified array, not the array itself!
-            result.push(mra); //no circularity possible, was excluded in data entry.
+            let result = getCurrentAffiliations(mra,date); //unshift, like push, returns length of modified array, not the array itself!
+            result.unshift(mra); //no circularity possible, was excluded in data entry. Put in front of array 
             return result;
         }
     }

@@ -220,7 +220,7 @@
     
     <script> //my stuff
         
-        var filterBase = new FilterBase();
+        var filterGlobals = new FilterBase(); //holder for filter related globals
         
         function maxMembership(){ return 1000;}
         
@@ -258,9 +258,9 @@
         function setAddedTagsHTML(){
             var str = '';
             
-            Object.keys(filterBase.tags).forEach(tag=>{
-                var delin = filterBase.tags[tag]?'':'<del>';
-                var delout = filterBase.tags[tag]?'':'</del>';
+            Object.keys(filterGlobals.tags).forEach(tag=>{
+                var delin = filterGlobals.tags[tag]?'':'<del>';
+                var delout = filterGlobals.tags[tag]?'':'</del>';
                 
                 str += '<button type="button" class="tagFlag" value="'+tag+'" onclick="negateTag(this.value) "> not</button><button type="button" class="tagFlag" value="'+tag+'" onclick="dismissTag(this.value)">&nbsp;'+delin+tag+delout+'&nbsp;&nbsp;&nbsp;x</button><br>';
             });
@@ -269,28 +269,28 @@
         }
         
         function handleAddTag(tag) {
-            filterBase.tags[tag] = true;
+            filterGlobals.tags[tag] = true;
             setAddedTagsHTML();
-            setMapFilters();
+            updateMap();
             
             document.getElementById("addTag").value = 'none';
         }
         
         function negateTag(tag){
-            filterBase.tags[tag] = !filterBase.tags[tag];
+            filterGlobals.tags[tag] = !filterGlobals.tags[tag];
             setAddedTagsHTML();
-            setMapFilters();
+            updateMap();
         }
         
         function dismissTag(tag){
-            delete filterBase.tags[tag];
+            delete filterGlobals.tags[tag];
             setAddedTagsHTML();
-            setMapFilters();
+            updateMap();
         }
         
         function handleAffiliationChange(affil){
-            filterBase.affiliation=affil;
-            setMapFilters();
+            filterGlobals.affiliation=affil;
+            updateMap();
         }
         
         var toggleBrethren = false;
@@ -298,15 +298,15 @@
         function changeBrethrenCB(){
             toggleBrethren = !toggleBrethren;
             if (toggleBrethren) {
-                filterBase.mb = filterBase.mb | 1;
+                filterGlobals.mb = filterGlobals.mb | 1;
                 document.getElementById('BrethrenCB').src = 'butCheck.png';
             }
             else {
-                filterBase.mb = filterBase.mb & 2;
+                filterGlobals.mb = filterGlobals.mb & 2;
                 document.getElementById('BrethrenCB').src = 'butEmpty.png';
             }
             
-            setMapFilters();
+            updateMap();
         }
         
         //clobber 2's bit
@@ -314,21 +314,17 @@
         function changeMennoniteCB(){
             toggleMennonite = !toggleMennonite;
             if (toggleMennonite) {
-                filterBase.mb = filterBase.mb | 2;
+                filterGlobals.mb = filterGlobals.mb | 2;
                 document.getElementById('MennoniteCB').src = 'butCheck.png';
             }
             else {
-                filterBase.mb = filterBase.mb & 1;
+                filterGlobals.mb = filterGlobals.mb & 1;
                 document.getElementById('MennoniteCB').src = 'butEmpty.png';
             }
             
-            setMapFilters();
+            updateMap();
         }
         
-        function setMapFilters(){
-            map.setFilter('assemblyCircles',filterBase.filterSet());
-            map.setFilter('assemblyNames',filterBase.filterSet());
-        }
         
         function initYearSlider(){
             var ySlider = document.getElementById('yearSlider');
@@ -359,20 +355,21 @@
         }
         
         //https://www.w3schools.com/howto/howto_js_close_list_items.asp nice formatting
-        
         function FilterBase(){
             this.activeYear = Math.round((1700+currentYear())/2)+'';
             this.mb = 3;
             this.membershipSqrtRange = [ 0, Math.sqrt(maxMembership()) ];
             this.tags = {};
             this.affiliation = 'any';
+            this.overlords=[];//names of assemblies that are ever targets of other assembly set-affiliation events
+            this.cacheAffiliation = ''; //logical false
         }
         
         
         //mb must be absent (in which case it runs off of prior established this.mb),
         //or element of {0,1,2,3}
         FilterBase.prototype.filterDenom = function(mb){
-            let ds = [];
+            let ds = ['any'];
             
             if (mb!=undefined)this.mb = mb;
             
@@ -380,7 +377,7 @@
             if (this.mb==1 || this.mb == 3) ds.push(['==',['get','denomination'],1]);
             if (this.mb==2 || this.mb == 3) ds.push(['==',['get','denomination'],2]);
             
-            return ['any',...ds];
+            return ds;
         }
         
         FilterBase.prototype.filterMembership = function(){
@@ -393,7 +390,8 @@
         FilterBase.prototype.filterAffiliation = function(){
             if (this.affiliation == 'any')return ['to-boolean',1];
             if (this.affiliation == 'unaffiliated') return ['==',['length',['get','affiliations']],0];
-            return ['in',this.affiliation,['get','affiliations']];
+            //targeted assembly or anybody affiliated thereto, no matter how indirectly
+            return ['any',['==',this.affiliation,['get','name']],['in',this.affiliation,['get','affiliations']]]; 
         }
         
         //activeYear must be absent (in which case it runs off of prior established this.activeYear)
@@ -414,8 +412,48 @@
             return result;
         }
         
+        FilterBase.prototype.filterCenters = function(){
+            this.overlords = this.makeOverlords();
+            return ['in',['get','name'],['literal',this.overlords]] ;
+        }
+        
         FilterBase.prototype.filterSet = function(){  
             return ['all',this.filterTime(),this.filterDenom(), this.filterMembership(),this.filterAffiliation(), this.filterTags()];
+        }
+        
+        FilterBase.prototype.filterSetCenters = function(){  
+            return ['all',this.filterTime(),this.filterDenom(), this.filterMembership(),this.filterAffiliation(), this.filterTags(),this.filterCenters()];
+        }
+        /* 
+        
+            //duplicates: experiments in console show that each circle appears twice in features, don't know why
+            //grow nameToUnderlings element arrays to list only immediate underlings, not deep underlings...
+            features.forEach(feature => {
+                let affiliations = JSON.parse(feature.properties.affiliations); //string to array
+                if (affiliations.length && 
+                    this.nameToUnderlings[affiliations[0]] != undefined && //is visible
+                    !this.nameToUnderlings[affiliations[0]].includes(feature.properties.name)) { //not a duplicate
+                        //first one is the immediate superior of this underling
+                        this.nameToUnderlings[affiliations[0]].push(feature.properties.name);
+                        this.overlords[affiliations[0]] = true;
+                }
+            });
+            */
+        
+        FilterBase.prototype.makeOverlords = function (){
+            
+            olords = {};//will be converted to an array
+            
+            //get visible circles, i.e. of the activeyear, and since visible these have locations.
+            let features = map.queryRenderedFeatures({layers: ['assemblyCircles']});
+           
+            //duplicates: experiments in console show that each circle appears twice in features, don't know why
+            features.forEach(feature => {
+                let affiliations = JSON.parse(feature.properties.affiliations); //string to array
+                affiliations.forEach(affil => { olords[affil] = true;} );
+            });
+            
+            return Object.keys(olords); //convert to array
         }
        
         function lengthFour(x,left){
@@ -457,20 +495,20 @@
         }).addControl(new mapboxgl.AttributionControl({customAttribution: 'version 0.5 2021 John Fairfield.'}))
         
         
-        var updateMapTimer=null;
+        //var updateMapTimer=null;
         
         map.on('load', function() {
-            
-          map.addSource('assembliesSource', {
-            'type': 'geojson',
-            'data': './map.geojson'
-          });
-            
-          map.addLayer({
-              id: 'assemblyCircles',
-              type: 'circle',
-              source: 'assembliesSource',
-              paint: {
+
+            map.addSource('assembliesSource', {
+                'type': 'geojson',
+                'data': './map.geojson'
+            });
+
+            map.addLayer({
+                id: 'assemblyCircles',
+                type: 'circle',
+                source: 'assembliesSource',
+                paint: {
                   'circle-radius': [
                         'interpolate',
                         ['linear'],
@@ -481,148 +519,238 @@
                   'circle-color': ['case',['to-boolean',['%',['get','denomination'],2]], '#ff0055', '#00ccff'],
                   'circle-opacity': 0.5,
                   'circle-pitch-alignment':'map'
-              },
-            filter: filterBase.filterSet()
-          });
-        
-          map.addLayer({
-              id: 'assemblyNames',
-              type: 'symbol',
-              source: 'assembliesSource',
-              layout: {
+                },
+                filter: filterGlobals.filterSet()
+            });
+
+            map.addLayer({
+                id: 'assemblyCenters',
+                type: 'circle',
+                source: 'assembliesSource',
+                paint: {
+                  'circle-radius': 
+                            ['interpolate',
+                                ['linear'],
+                                ['number', ['get', 'weight']],
+                                0, 2,
+                                40, 23
+                            ],       
+                  'circle-color': '#ffffff',
+                  'circle-opacity': 0.8,
+                  'circle-pitch-alignment':'map'
+                },
+                filter: filterGlobals.filterSetCenters()
+            });
+
+            map.addLayer({
+                id: 'assemblyNames',
+                type: 'symbol',
+                source: 'assembliesSource',
+                layout: {
                     'text-field': ['get', 'name'],
                     'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
                     'text-radial-offset': 0.5,
                     'text-justify': 'auto',
                     'text-pitch-alignment':'map'
-              },
-            filter: filterBase.filterSet()
-          });
-        
-        
-            
-          //in js console map.getStyle() will show you all the layers, so you can suppress what you don't want
-          let layers=map.getStyle().layers;
-          map.setLayoutProperty('settlement-label', 'visibility', 'none');
-          map.setLayoutProperty('poi-label', 'visibility', 'none');
-          layers.forEach(layer=>{
-              if (layer.id.search('road')==0) map.setLayoutProperty(layer.id,'visibility', 'none');
-          });
-          map.setLayoutProperty('road-primary','visibility', 'visible');
-          map.setLayoutProperty('road-secondary-tertiary','visibility','visible');
-          map.setLayoutProperty('road-street','visibility', 'visible');
-            
-        function updateMap(){
-            
-            var aY = filterBase.activeYear;
-            
-            function setPhotoImage(){
-                if (!divSwitcher[0].display) { //has been toggled, so is displaying if display==false
-                    let name = document.getElementById('photoName').innerText;
-                    let features = map.queryRenderedFeatures({options:{ 
-                        layers: ['assemblyCircles'], 
-                        filter: ['==', ['get','name'], name],
-                        validate:true}}
-                    );
+                },
+                filter: filterGlobals.filterSet()
+            });
 
-                    //but the filter doesn't filter! Returns hundreds of stuff, everything visible I believe
-                    //console.log('>>'+name, features.length);
-                    //sooo...
-                    var i;//there can be more than one, and they're not always the same...
-                    for (i=0;i<features.length;i++) if (features[i].properties.name == name && features[i].properties.begin <= aY && features[i].properties.end >= aY) break;
-                    
-                    if (i<features.length && features[i].properties.photo.length){
-                        //console.log(i,features[i].properties.photo);
-                        document.getElementById('photoImage').src = features[i].properties.photo;
-                    } else {
-                        document.getElementById('photoImage').src = "./photos/nada.png";
-                    }
+
+
+            //in js console map.getStyle() will show you all the layers, so you can suppress what you don't want
+            let layers=map.getStyle().layers;
+            map.setLayoutProperty('settlement-label', 'visibility', 'none');
+            map.setLayoutProperty('poi-label', 'visibility', 'none');
+            layers.forEach(layer=>{
+              if (layer.id.search('road')==0) map.setLayoutProperty(layer.id,'visibility', 'none');
+            });
+            map.setLayoutProperty('road-primary','visibility', 'visible');
+            map.setLayoutProperty('road-secondary-tertiary','visibility','visible');
+            //map.setLayoutProperty('road-street','visibility', 'visible');
+
+
+            document.getElementById('yearSlider').noUiSlider.on('update',function (values, handle){
+                //handle is always 0, there's only one element in values
+                let activeYear = Math.round(values[handle]) + '';
+                document.getElementById('active-year').innerText = activeYear;
+                filterGlobals.filterTime(activeYear);
+                updateMap();
+                
+                /*
+                //workaround for bug when user quickly 'tosses' the slider, somehow the map
+                //doesn't wholly update. So call updateMap again a bit later... 
+                if (updateMapTimer != null) window.clearTimeout(updateMapTimer);
+                updateMapTimer = window.setTimeout(updateMap,300); //300 seems to be enough that map has cleared its throat.
+*/
+            });
+
+            document.getElementById('maxMinSlider').noUiSlider.on('update', function (values, handle) {
+                var mmElements = [
+                    document.getElementById('minMembership'),
+                    document.getElementById('maxMembership')
+                ];
+                mmElements[handle].innerHTML =  lengthFour(Math.round(values[handle]), handle==0);
+                filterGlobals.membershipSqrtRange[handle] = Math.sqrt(values[handle]);
+                updateMap();
+            });
+
+
+            var popup = new mapboxgl.Popup({
+                closeButton: false,
+                closeOnClick: false
+            });
+
+            map.on('click','assemblyCircles',function (e){
+                if (e.features[0].properties.photo.length){
+                    document.getElementById('photoName').innerText = e.features[0].properties.name;
+                    document.getElementById('photoImage').src = e.features[0].properties.photo;
+                    toggleSwitcher();
+                }
+            })
+
+            map.on('mouseenter', 'assemblyCircles', function (e) {
+                // Change the cursor style as a UI indicator.
+                map.getCanvas().style.cursor = 'pointer';
+
+                var coordinates = e.features[0].geometry.coordinates.slice();
+                var name = e.features[0].properties.name;
+                var photo = e.features[0].properties.photo;
+
+                // Ensure that if the map is zoomed out such that multiple
+                // copies of the feature are visible, the popup appears
+                // over the copy being pointed to.
+                while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                    coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+                }
+
+                // Populate the popup and set its coordinates
+                // based on the feature found.
+                var str = name;
+                str += photo.length?'<br><img src="'+photo+'" style="max-width:100%; max-height:100%">':'';
+                popup.setLngLat(coordinates).setMaxWidth('150px').setHTML(str).addTo(map);
+
+                if (filterGlobals.overlords.includes(name) && !filterGlobals.cacheAffiliation){
+                    filterGlobals.cacheAffiliation = filterGlobals.affiliation;
+                    filterGlobals.affiliation=name;
+                    updateMap();
+                };
+            });
+
+            map.on('mouseleave', 'assemblyCircles', function () {
+                map.getCanvas().style.cursor = '';
+                popup.remove();
+            });
+            
+            
+            map.on('idle', (e) => {
+                if (updatingMap) {
+                    finishUpdateMap(); 
+                    //console.log('on idle finishing update')
+                }//else console.log('on idle unnecessary');
+            });
+                
+            map.on('click','landcover',(e) =>{clickHandler(e)});
+            map.on('click','road-primary',(e) =>{clickHandler(e)});
+            map.on('click','road-secondary-tertiary',(e) =>{clickHandler(e)});
+            map.on('click','road-street',(e) =>{clickHandler(e)});
+            map.on('click','water',(e) =>{clickHandler(e)});
+            
+
+            document.getElementById("BrethrenCB").click();
+            document.getElementById("MennoniteCB").click();
+            
+            //if you do updateMap immediately it doesn't work, stuff still hasn't finished loading?
+            //updateMapTimer = window.setTimeout(updateMap,1500); //seems to be enough that map has cleared its throat.
+            
+        }); // end of map.on('load')
+        
+        function setPhotoImage(){
+            if (!divSwitcher[0].display) { //has been toggled, so is displaying if display==false
+                let name = document.getElementById('photoName').innerText;
+                let features = map.queryRenderedFeatures({options:{ 
+                    layers: ['assemblyCircles'], 
+                    filter: ['==', ['get','name'], name],
+                    validate:true}}
+                );
+
+                //but the filter doesn't filter! Returns hundreds of stuff, everything visible I believe
+                console.log('>>'+name, features.length);
+                //sooo...
+                var i;//there can be more than one, and they're not always the same...
+                for (i=0;i<features.length;i++) if (features[i].properties.name == name && features[i].properties.begin <= aY && features[i].properties.end >= aY) break;
+
+                if (i<features.length && features[i].properties.photo.length){
+                    //console.log(i,features[i].properties.photo);
+                    document.getElementById('photoImage').src = features[i].properties.photo;
+                } else {
+                    document.getElementById('photoImage').src = "./photos/nada.png";
                 }
             }
-            
-            filterBase.filterTime(aY+'/00/00'); //make a non-change change!
-            setMapFilters();
-            filterBase.filterTime(aY); //undo it, so that currentYear displays correctly
-            setMapFilters();
-            
-            setPhotoImage(); //now that filters have settled down?
         }
-            
-        document.getElementById('yearSlider').noUiSlider.on('update',function (values, handle){
-            //handle is always 0, there's only one element in values
-            let activeYear = Math.round(values[handle]) + '';
-            document.getElementById('active-year').innerText = activeYear;
-            filterBase.filterTime(activeYear);
-            setMapFilters(); //should update the map
-            
-            //workaround for bug when user quickly 'tosses' the slider, somehow the map
-            //doesn't update.
-            if (updateMapTimer != null) window.clearTimeout(updateMapTimer);
-            updateMapTimer = window.setTimeout(updateMap,300); //300 seems to be enough that map has cleared its throat.
-            
-        });
-            
-        document.getElementById('maxMinSlider').noUiSlider.on('update', function (values, handle) {
-            var mmElements = [
-                document.getElementById('minMembership'),
-                document.getElementById('maxMembership')
-            ];
-            mmElements[handle].innerHTML =  lengthFour(Math.round(values[handle]), handle==0);
-            filterBase.membershipSqrtRange[handle] = Math.sqrt(values[handle]);
+        
+        
+        function setMapFilters(){
+            map.setFilter('assemblyCircles',filterGlobals.filterSet());
+            map.setFilter('assemblyCenters',filterGlobals.filterSetCenters());
+            map.setFilter('assemblyNames',filterGlobals.filterSet());
+        }
+        
+        var updatingMap = false;
+        
+        function updateMap(){
+
+            //so map now has all circles, after click on landcover to finish with display only of assemblies of one overlord
+            map.setFilter('assemblyCircles',filterGlobals.filterSet());
+            updatingMap = true; //see finishUpdateMap
+        }
+        
+        function finishUpdateMap(){
+            updatingMap = false;
+
+            //console.log("affiliation: "+filterGlobals.affiliation+"*"+filterGlobals.cacheAffiliation+"* overlords:"+filterGlobals.makeOverlords());
+
+            setMapFilters(); //and impose centers on overlords, could just do filterSetCenters()?
+
+            setPhotoImage(); //now that filters have settled down? on mouseenter
+
+        }
+        
+        
+        /*
+        function oldupdateMap(){
+
+            var aY = filterGlobals.activeYear;
+
+            filterGlobals.filterTime(aY+'/00/00'); //make a non-change change!
             setMapFilters();
-        });
 
-            
-        var popup = new mapboxgl.Popup({
-            closeButton: false,
-            closeOnClick: false
-        });
-    
-        map.on('click','assemblyCircles',function (e){
-            if (e.features[0].properties.photo.length){
-                document.getElementById('photoName').innerText = e.features[0].properties.name;
-                document.getElementById('photoImage').src = e.features[0].properties.photo;
-                toggleSwitcher();
+            filterGlobals.makeOverlords(); //depends on filtered ('visible') map features, i.e. current and in window
+
+            filterGlobals.filterTime(aY); //undo it, so that currentYear displays correctly
+            setMapFilters(); //and impose centers on overlords
+
+            setPhotoImage(); //now that filters have settled down?
+
+        }
+        */
+        
+        
+        function clickHandler(e){
+            if (filterGlobals.cacheAffiliation){
+                filterGlobals.affiliation = filterGlobals.cacheAffiliation; //from pulldown list
+                filterGlobals.cacheAffiliation = '';//false
+                updateMap();
             }
-        })
-
-        map.on('mouseenter', 'assemblyCircles', function (e) {
-            // Change the cursor style as a UI indicator.
-            map.getCanvas().style.cursor = 'pointer';
-
-            var coordinates = e.features[0].geometry.coordinates.slice();
-            var name = e.features[0].properties.name;
-            var photo = e.features[0].properties.photo;
-
-            // Ensure that if the map is zoomed out such that multiple
-            // copies of the feature are visible, the popup appears
-            // over the copy being pointed to.
-            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-            }
-
-            // Populate the popup and set its coordinates
-            // based on the feature found.
-            var str = name;
-            str += photo.length?'<br><img src="'+photo+'" style="max-width:100%; max-height:100%">':'';
-            popup.setLngLat(coordinates).setMaxWidth('150px').setHTML(str).addTo(map);
-        });
-
-        map.on('mouseleave', 'assemblyCircles', function () {
-            map.getCanvas().style.cursor = '';
-            popup.remove();
-        });
-            
-        document.getElementById("BrethrenCB").click();
-        document.getElementById("MennoniteCB").click();
-            
-        });
+        }
         
         initAffiliationHTML();
+        
         initAddTagHTML();
         initYearSlider();
         initMaxMinSlider();
         toggleSwitcher();
+        
         
         //it's great that these two don't track the movement of the physical key,
         //but the setting and unsetting of the caps lock logic
@@ -633,7 +761,6 @@
         document.getElementById('body').addEventListener('keyup', function(e) {
             if(!e.getModifierState('CapsLock')) document.getElementById('console').style.display = 'block';
         });
-        
         
         //in support of automatic refresh after time of no user activity:
         
