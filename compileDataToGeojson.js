@@ -1,4 +1,5 @@
 //compileGeojson.js
+//version 0.7
 
 //node compileGeojson.js
 //includes bmhc.js, bmhcTags.js, and bmhcData.js

@@ -1,7 +1,7 @@
 /* 
 BMHC.js
 
-version 0.6 Copyright 2021 John R C Fairfield, see MIT License
+version 0.7 Copyright 2021 John R C Fairfield, see MIT License
 
 */
 
